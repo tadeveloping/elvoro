@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elvoro — Viac zákazníkov. Menej chaosu.</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#fafafa;
+  --bg2:#f2f2f0;
+  --bg-dark:#111118;
+  --bg-dark2:#1a1a24;
+  --white:#fff;
+  --text:#111118;
+  --text2:#3a3a4a;
+  --text-light:#6e6e7a;
+  --accent:#2563eb;
+  --accent-dark:#1d4ed8;
+  --accent-light:#3b82f6;
+  --accent-bg:rgba(37,99,235,0.06);
+  --orange:#f59e0b;
+  --green:#10b981;
+  --border:rgba(0,0,0,0.07);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md:0 4px 24px rgba(0,0,0,0.07);
+  --shadow-lg:0 16px 48px rgba(0,0,0,0.1);
+  --r:14px;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleUp{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+@keyframes slideL{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideR{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+
+.sr{opacity:0;transform:translateY(50px)}
+.sr.v{animation:fadeUp .9s cubic-bezier(.22,1,.36,1) forwards}
+.sr-l{opacity:0;transform:translateX(-40px)}
+.sr-l.v{animation:slideL .9s cubic-bezier(.22,1,.36,1) forwards}
+.sr-r{opacity:0;transform:translateX(40px)}
+.sr-r.v{animation:slideR .9s cubic-bezier(.22,1,.36,1) forwards}
+.d1{animation-delay:.07s}.d2{animation-delay:.14s}.d3{animation-delay:.21s}
+.d4{animation-delay:.28s}.d5{animation-delay:.35s}.d6{animation-delay:.42s}
+.d7{animation-delay:.49s}.d8{animation-delay:.56s}
+
+/* LAYOUT */
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+section{padding:120px 0}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:70px;
+  display:flex;align-items:center;
+  background:rgba(250,250,250,.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:var(--shadow-sm)}
+.nav-w{
+  max-width:1200px;margin:0 auto;padding:0 40px;width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-weight:800;font-size:1.4rem;color:var(--text);
+  text-decoration:none;letter-spacing:-.5px;
+}
+.logo span{color:var(--accent)}
+.n-links{display:flex;align-items:center;gap:28px;list-style:none}
+.n-links a{
+  font-size:.82rem;font-weight:600;color:var(--text2);
+  text-decoration:none;transition:color .3s;
+}
+.n-links a:hover{color:var(--accent)}
+.n-cta{
+  padding:10px 22px;background:var(--accent);color:#fff!important;
+  border-radius:8px;font-weight:700;font-size:.8rem;transition:all .3s;
+}
+.n-cta:hover{background:var(--accent-dark);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+
+/* ═══ HERO ═══ */
+.hero{
+  padding:150px 0 100px;position:relative;overflow:hidden;
+  background:var(--white);
+}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.hero-text{position:relative;z-index:2}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 16px;background:var(--accent-bg);border-radius:100px;
+  font-size:.72rem;font-weight:700;color:var(--accent);
+  letter-spacing:.5px;margin-bottom:24px;text-transform:uppercase;
+}
+.hero-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+.hero h1{
+  font-size:clamp(2.4rem,4.5vw,3.6rem);font-weight:800;
+  line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px;
+}
+.hero h1 .hl{
+  color:var(--accent);position:relative;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-p{
+  font-size:1.08rem;color:var(--text2);line-height:1.75;
+  max-width:460px;margin-bottom:36px;
+}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+.btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 30px;background:var(--accent);color:#fff;
+  border:none;border-radius:10px;font-family:inherit;
+  font-size:.88rem;font-weight:700;cursor:pointer;
+  text-decoration:none;transition:all .3s;
+  box-shadow:0 4px 16px rgba(37,99,235,.22);
+}
+.btn-main:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,99,235,.28)}
+.btn-main svg{transition:transform .3s}
+.btn-main:hover svg{transform:translateX(3px)}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:15px 24px;background:var(--bg);color:var(--text);
+  border:1px solid var(--border);border-radius:10px;
+  font-family:inherit;font-size:.88rem;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:all .3s;
+}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+
+.hero-stats{display:flex;gap:32px}
+.h-stat-val{font-size:1.6rem;font-weight:800;color:var(--text);letter-spacing:-1px}
+.h-stat-val span{color:var(--accent)}
+.h-stat-lbl{font-size:.72rem;color:var(--text-light);font-weight:500;margin-top:2px}
+
+.hero-visual{position:relative;z-index:2}
+.hero-img{
+  width:100%;border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--shadow-lg);position:relative;
+}
+.hero-img img{width:100%;height:480px;object-fit:cover;display:block}
+.hero-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(37,99,235,.08),transparent 60%);
+  pointer-events:none;
+}
+.hero-float-card{
+  position:absolute;bottom:-20px;left:-20px;
+  background:var(--white);border-radius:12px;padding:16px 20px;
+  box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;z-index:3;
+  animation:floatCard 4s ease-in-out infinite;
+}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hfc-icon{
+  width:40px;height:40px;border-radius:10px;background:rgba(16,185,129,.1);
+  display:flex;align-items:center;justify-content:center;
+}
+.hfc-icon svg{color:var(--green)}
+.hfc-text{font-size:.78rem;font-weight:700;color:var(--text)}
+.hfc-sub{font-size:.65rem;color:var(--text-light);font-weight:500}
+
+.hero-float-card2{
+  position:absolute;top:40px;right:-16px;
+  background:var(--white);border-radius:12px;padding:14px 18px;
+  box-shadow:var(--shadow-lg);border:1px solid var(--border);z-index:3;
+  animation:floatCard 4s ease-in-out infinite;animation-delay:-2s;
+}
+.hfc2-num{font-size:1.2rem;font-weight:800;color:var(--accent)}
+.hfc2-lbl{font-size:.62rem;color:var(--text-light);font-weight:500;text-transform:uppercase;letter-spacing:1px}
+
+/* ═══ PROBLEMS ═══ */
+.problems{background:var(--bg);border-top:1px solid var(--border)}
+.problems-top{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  align-items:center;margin-bottom:56px;
+}
+.sec-badge{
+  font-size:.65rem;font-weight:700;letter-spacing:3px;
+  text-transform:uppercase;color:var(--accent);margin-bottom:12px;
+}
+.sec-h{
+  font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;
+  line-height:1.15;letter-spacing:-1px;margin-bottom:14px;
+}
+.sec-p{font-size:.95rem;color:var(--text2);line-height:1.7}
+
+.prob-img{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-md)}
+.prob-img img{width:100%;height:340px;object-fit:cover;display:block}
+
+.prob-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.prob-card{
+  padding:28px 24px;border-radius:var(--r);background:var(--white);
+  border:1px solid var(--border);transition:all .4s cubic-bezier(.22,1,.36,1);
+  position:relative;overflow:hidden;
+}
+.prob-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--orange);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s;
+}
+.prob-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.prob-card:hover::after{transform:scaleX(1)}
+.prob-card .p-icon{font-size:1.5rem;margin-bottom:14px}
+.prob-card h3{font-size:.9rem;font-weight:700;margin-bottom:8px;line-height:1.3}
+.prob-card p{font-size:.78rem;color:var(--text-light);line-height:1.6}
+
+/* ═══ SOLUTIONS ═══ */
+.solutions{background:var(--white);border-top:1px solid var(--border)}
+.sol-header{text-align:center;max-width:580px;margin:0 auto 64px}
+.sol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.sol-card{
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+  padding:32px;border-radius:var(--r);background:var(--bg);
+  border:1px solid var(--border);transition:all .4s cubic-bezier(.22,1,.36,1);
+}
+.sol-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.15)}
+.sol-icon{
+  width:52px;height:52px;border-radius:12px;background:var(--accent-bg);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .4s;
+}
+.sol-card:hover .sol-icon{background:var(--accent);box-shadow:0 4px 16px rgba(37,99,235,.2)}
+.sol-card:hover .sol-icon svg{color:#fff}
+.sol-icon svg{color:var(--accent);transition:color .4s}
+.sol-card h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.sol-card p{font-size:.83rem;color:var(--text2);line-height:1.65}
+
+/* ═══ PROCESS ═══ */
+.process{
+  background:var(--bg-dark);color:#fff;position:relative;overflow:hidden;
+}
+.process::before{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.1),transparent 70%);pointer-events:none;
+}
+.proc-header{max-width:500px;margin-bottom:64px;position:relative}
+.process .sec-badge{color:var(--accent-light)}
+.process .sec-h{color:#fff}
+.process .sec-p{color:rgba(255,255,255,.5)}
+
+.proc-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;
+}
+.proc-steps{display:flex;flex-direction:column;gap:0;position:relative}
+.proc-steps::before{
+  content:'';position:absolute;top:28px;bottom:28px;left:23px;
+  width:2px;background:rgba(255,255,255,.06);
+}
+.p-step{
+  display:grid;grid-template-columns:48px 1fr;gap:20px;
+  padding:24px 0;position:relative;
+}
+.p-dot{
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.9rem;color:var(--accent-light);
+  position:relative;z-index:1;transition:all .3s;
+}
+.p-step:hover .p-dot{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+  box-shadow:0 0 24px rgba(37,99,235,.3);
+}
+.p-step h3{font-size:1rem;font-weight:700;margin-bottom:6px}
+.p-step p{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.6}
+
+.proc-img{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-lg)}
+.proc-img img{width:100%;height:420px;object-fit:cover;display:block}
+
+/* ═══ BENEFITS ═══ */
+.benefits{background:var(--bg);border-top:1px solid var(--border)}
+.ben-header{text-align:center;max-width:540px;margin:0 auto 56px}
+.ben-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ben{
+  text-align:center;padding:36px 20px;border-radius:var(--r);
+  background:var(--white);border:1px solid var(--border);
+  transition:all .4s cubic-bezier(.22,1,.36,1);
+}
+.ben:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:rgba(37,99,235,.12)}
+.ben-num{
+  font-size:2.2rem;font-weight:800;letter-spacing:-1px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin-bottom:8px;
+}
+.ben h3{font-size:.88rem;font-weight:700;margin-bottom:6px}
+.ben p{font-size:.76rem;color:var(--text-light);line-height:1.55}
+
+/* ═══ TRUST ═══ */
+.trust{background:var(--white);border-top:1px solid var(--border)}
+.trust-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.trust-img{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-md)}
+.trust-img img{width:100%;height:380px;object-fit:cover;display:block}
+.trust-text .sec-h{margin-bottom:20px}
+.trust-text p{font-size:.92rem;color:var(--text2);line-height:1.75;margin-bottom:24px}
+.trust-checks{display:flex;flex-direction:column;gap:12px}
+.t-check{display:flex;align-items:center;gap:10px;font-size:.85rem;font-weight:600;color:var(--text)}
+.t-check-icon{
+  width:24px;height:24px;border-radius:6px;background:rgba(16,185,129,.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.t-check-icon svg{color:var(--green)}
+
+/* ═══ CTA ═══ */
+.final-cta{
+  background:var(--accent);color:#fff;text-align:center;
+  padding:100px 0;position:relative;overflow:hidden;
+}
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,0,0,.05),transparent 50%,rgba(255,255,255,.05));
+  pointer-events:none;
+}
+.final-cta h2{
+  font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;
+  line-height:1.15;letter-spacing:-.5px;margin-bottom:16px;
+  position:relative;max-width:600px;margin-left:auto;margin-right:auto;
+}
+.final-cta p{font-size:1rem;color:rgba(255,255,255,.75);margin-bottom:32px;position:relative}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:17px 36px;background:#fff;color:var(--accent);
+  border:none;border-radius:10px;font-family:inherit;
+  font-size:.9rem;font-weight:700;cursor:pointer;
+  text-decoration:none;transition:all .3s;
+  box-shadow:0 4px 20px rgba(0,0,0,.12);position:relative;
+}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.cta-note{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:16px;position:relative}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--bg-dark);color:rgba(255,255,255,.35);padding:36px 0}
+.f-inner{
+  max-width:1200px;margin:0 auto;padding:0 40px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.f-brand{font-weight:800;font-size:1.1rem;color:rgba(255,255,255,.6)}
+.f-brand span{color:var(--accent-light)}
+.f-links{display:flex;gap:24px;list-style:none}
+.f-links a{font-size:.75rem;color:rgba(255,255,255,.35);text-decoration:none;transition:color .3s}
+.f-links a:hover{color:rgba(255,255,255,.7)}
+.f-c{font-size:.7rem}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .hero-grid,.problems-top,.proc-row,.trust-row{grid-template-columns:1fr;gap:40px}
+  .prob-grid{grid-template-columns:repeat(2,1fr)}
+  .sol-grid{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:repeat(2,1fr)}
+  .proc-img{order:-1}
+}
+@media(max-width:768px){
+  .n-links{display:none}
+  .wrap{padding:0 20px}
+  .nav-w{padding:0 20px}
+  section{padding:80px 0}
+  .hero{padding:120px 0 80px}
+  .prob-grid{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:1fr}
+  .hero-stats{flex-direction:column;gap:16px}
+  .hero-btns{flex-direction:column}
+  .f-inner{flex-direction:column;text-align:center;padding:0 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+<div class="nav-w">
+  <a href="#" class="logo">elvoro<span>.</span></a>
+  <ul class="n-links">
+    <li><a href="#problems">Prečo my</a></li>
+    <li><a href="#solutions">Riešenia</a></li>
+    <li><a href="#process">Proces</a></li>
+    <li><a href="#trust">O nás</a></li>
+    <li><a href="#cta" class="n-cta">Konzultácia zadarmo</a></li>
+  </ul>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="wrap">
+  <div class="hero-grid">
+    <div class="hero-text">
+      <div class="hero-badge sr d1">Prijímame nových klientov</div>
+      <h1 class="sr d2">Viac zákazníkov.<br>Menej <span class="hl">chaosu.</span></h1>
+      <p class="hero-p sr d3">Pomáhame firmám získavať viac dopytov, reagovať rýchlejšie a premieňať záujemcov na platiacich zákazníkov. Jednoducho a bez komplikácií.</p>
+      <div class="hero-btns sr d4">
+        <a href="#cta" class="btn-main">
+          Bezplatná konzultácia
+          <svg width="16" height="16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#solutions" class="btn-sec">Čo robíme ↓</a>
+      </div>
+      <div class="hero-stats sr d5">
+        <div><div class="h-stat-val">&lt;48<span>h</span></div><div class="h-stat-lbl">Čas odpovede na dopyt</div></div>
+        <div><div class="h-stat-val">24<span>/7</span></div><div class="h-stat-lbl">Vaše systémy bežia non-stop</div></div>
+        <div><div class="h-stat-val">100<span>%</span></div><div class="h-stat-lbl">Riešenia na mieru</div></div>
+      </div>
+    </div>
+    <div class="hero-visual sr-r d3">
+      <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80" alt="Business meeting">
+      </div>
+      <div class="hero-float-card">
+        <div class="hfc-icon">
+          <svg width="20" height="20" fill="none"><path d="M16.7 5L7.5 14.2 3.3 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="hfc-text">Nový dopyt prijatý</div>
+          <div class="hfc-sub">Automatická odpoveď odoslaná</div>
+        </div>
+      </div>
+      <div class="hero-float-card2">
+        <div class="hfc2-num">+34%</div>
+        <div class="hfc2-lbl">Viac dopytov</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="problems" id="problems">
+<div class="wrap">
+  <div class="problems-top">
+    <div>
+      <div class="sec-badge sr">Poznáte to?</div>
+      <h2 class="sec-h sr d1">Problémy, ktoré<br>riešia takmer všetci<br>podnikatelia</h2>
+      <p class="sec-p sr d2">Ak sa spoznáte v niektorom z týchto bodov, nie ste sami. A dá sa s tým niečo spraviť.</p>
+    </div>
+    <div class="prob-img sr-r d2">
+      <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80" alt="Frustrated business owner">
+    </div>
+  </div>
+  <div class="prob-grid">
+    <div class="prob-card sr d3">
+      <div class="p-icon">📉</div>
+      <h3>Máte málo dopytov</h3>
+      <p>Web máte, ale zákazníci z neho neprichádzajú. Chýba systém na získavanie záujemcov.</p>
+    </div>
+    <div class="prob-card sr d4">
+      <div class="p-icon">⏳</div>
+      <h3>Odpovedáte neskoro</h3>
+      <p>Kým sa ozvete, zákazník už volal konkurencii. Rýchlosť reakcie rozhoduje.</p>
+    </div>
+    <div class="prob-card sr d5">
+      <div class="p-icon">🎯</div>
+      <h3>Marketing bez systému</h3>
+      <p>Raz reklama, raz príspevok, raz nič. Chýba konzistentnosť a merateľnosť.</p>
+    </div>
+    <div class="prob-card sr d6">
+      <div class="p-icon">🗣️</div>
+      <h3>Len odporúčania</h3>
+      <p>Odporúčania sú fajn, ale nepredvídateľné. Keď sa zastavia, nemáte plán B.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SOLUTIONS -->
+<section class="solutions" id="solutions">
+<div class="wrap">
+  <div class="sol-header">
+    <div class="sec-badge sr">Čo robíme</div>
+    <h2 class="sec-h sr d1">Jednoduché riešenia,<br>ktoré prinášajú zákazníkov</h2>
+    <p class="sec-p sr d2">Žiadne komplikované systémy. Staviame veci, ktoré fungujú a ktoré pochopíte.</p>
+  </div>
+  <div class="sol-grid">
+    <div class="sol-card sr d3">
+      <div class="sol-icon">
+        <svg width="24" height="24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M9 9h6M9 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <h3>Weby, ktoré predávajú</h3>
+        <p>Nie len pekná stránka — web navrhnutý tak, aby ľudia vyplnili formulár, zavolali alebo napísali. Každý detail má účel.</p>
+      </div>
+    </div>
+    <div class="sol-card sr d4">
+      <div class="sol-icon">
+        <svg width="24" height="24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <h3>Reklama, ktorá prináša dopytov</h3>
+        <p>Nastavíme kampane tak, aby vám pravidelne chodili noví záujemcovia. S jasnými číslami a mesačným reportingom.</p>
+      </div>
+    </div>
+    <div class="sol-card sr d5">
+      <div class="sol-icon">
+        <svg width="24" height="24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <h3>Automatické odpovede na dopyty</h3>
+        <p>Keď sa niekto ozve, systém mu hneď odpovie a upozorní vás. Nikdy nestratíte zákazníka kvôli pomalej reakcii.</p>
+      </div>
+    </div>
+    <div class="sol-card sr d6">
+      <div class="sol-icon">
+        <svg width="24" height="24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <h3>Prehľad o zákazníkoch</h3>
+        <p>Všetky dopyty, záujemcovia a stav obchodu prehľadne na jednom mieste. Koniec chaosu v mailoch a správach.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+<div class="wrap">
+  <div class="proc-header">
+    <div class="sec-badge sr">Ako to funguje</div>
+    <h2 class="sec-h sr d1">Tri kroky<br>k výsledkom</h2>
+    <p class="sec-p sr d2">Žiadny zbytočný proces. Rýchly štart, jasný plán, merateľné výsledky.</p>
+  </div>
+  <div class="proc-row">
+    <div class="proc-steps">
+      <div class="p-step sr d3">
+        <div class="p-dot">1</div>
+        <div>
+          <h3>Analyzujeme váš biznis</h3>
+          <p>Pozrieme sa na web, marketing a zákaznícky tok. Nájdeme kde strácate zákazníkov a kde sú príležitosti.</p>
+        </div>
+      </div>
+      <div class="p-step sr d4">
+        <div class="p-dot">2</div>
+        <div>
+          <h3>Postavíme systém</h3>
+          <p>Vytvoríme jednoduchý systém na získavanie dopytov a rýchlu reakciu. Nič zložité, všetko funkčné.</p>
+        </div>
+      </div>
+      <div class="p-step sr d5">
+        <div class="p-dot">3</div>
+        <div>
+          <h3>Ladíme a rastieme</h3>
+          <p>Každý mesiac sledujeme čísla, optimalizujeme a vylepšujeme. Vaše výsledky sa zlepšujú, vy sa staráte o biznis.</p>
+        </div>
+      </div>
+    </div>
+    <div class="proc-img sr-r d3">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Analytics dashboard">
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits" id="benefits">
+<div class="wrap">
+  <div class="ben-header">
+    <div class="sec-badge sr">Výsledky</div>
+    <h2 class="sec-h sr d1">Čo získate<br>spoluprácou s Elvoro</h2>
+  </div>
+  <div class="ben-grid">
+    <div class="ben sr d2">
+      <div class="ben-num">+40%</div>
+      <h3>Viac zákazníkov</h3>
+      <p>Systematický prísun dopytov, nie náhodné odporúčania</p>
+    </div>
+    <div class="ben sr d3">
+      <div class="ben-num">2×</div>
+      <h3>Vyššia konverzia</h3>
+      <p>Viac návštevníkov webu sa stane platiacimi zákazníkmi</p>
+    </div>
+    <div class="ben sr d4">
+      <div class="ben-num">-60%</div>
+      <h3>Menej manuálnej práce</h3>
+      <p>Odpovede a follow-upy bežia samy bez vášho zásahu</p>
+    </div>
+    <div class="ben sr d5">
+      <div class="ben-num">∞</div>
+      <h3>Predvídateľné tržby</h3>
+      <p>Viete odkiaľ prídu zákazníci aj budúci mesiac</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- TRUST -->
+<section class="trust" id="trust">
+<div class="wrap">
+  <div class="trust-row">
+    <div class="trust-img sr-l d1">
+      <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80" alt="Team collaboration">
+    </div>
+    <div class="trust-text">
+      <div class="sec-badge sr">O nás</div>
+      <h2 class="sec-h sr d1">Lokálny partner,<br>ktorý rozumie<br>vášmu biznisu</h2>
+      <p class="sr d2">Sme malý tím z Trenčianskeho kraja, ktorý pracuje priamo s podnikateľmi. Žiadne korporátne rozprávky — len konkrétne riešenia a ľudský prístup.</p>
+      <div class="trust-checks sr d3">
+        <div class="t-check">
+          <div class="t-check-icon"><svg width="14" height="14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Osobný prístup ku každému klientovi
+        </div>
+        <div class="t-check">
+          <div class="t-check-icon"><svg width="14" height="14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Transparentné ceny bez skrytých poplatkov
+        </div>
+        <div class="t-check">
+          <div class="t-check-icon"><svg width="14" height="14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Merateľné výsledky s mesačným reportingom
+        </div>
+        <div class="t-check">
+          <div class="t-check-icon"><svg width="14" height="14" fill="none"><path d="M11.5 3.5L5.5 9.5 2.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Komunikácia po slovensky, bez žargónu
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="final-cta" id="cta">
+<div class="wrap">
+  <h2 class="sr">Premeňte svoju firmu na systém,<br>ktorý prináša zákazníkov</h2>
+  <p class="sr d1">15-minútový hovor. Povieme čo by sme zmenili — bez záväzkov.</p>
+  <div class="sr d2">
+    <a href="mailto:ahoj@elvoro.sk" class="cta-btn">
+      Dohodnúť bezplatnú konzultáciu
+      <svg width="16" height="16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <p class="cta-note sr d3">ahoj@elvoro.sk · +421 XXX XXX XXX</p>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="f-inner">
+  <div class="f-brand">elvoro<span>.</span></div>
+  <ul class="f-links">
+    <li><a href="#problems">Prečo my</a></li>
+    <li><a href="#solutions">Riešenia</a></li>
+    <li><a href="#process">Proces</a></li>
+    <li><a href="#cta">Kontakt</a></li>
+  </ul>
+  <div class="f-c">&copy; 2026 Elvoro. Všetky práva vyhradené.</div>
+</div>
+</footer>
+
+<script>
+document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20);
+},{passive:true});
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');io.unobserve(e.target)}});
+},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.sr,.sr-l,.sr-r').forEach(el=>io.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-80,behavior:'smooth'})}
+  });
+});
+</script>
+</body>
+</html>
