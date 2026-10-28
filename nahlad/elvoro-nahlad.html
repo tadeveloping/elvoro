@@ -328,7 +328,8 @@ footer.foot .wrap span:first-child { color: var(--ink); }
 
 /* Logo: v poslednom O smajlík (prekreslené podľa popisu, oficiálne SVG doplniť) */
 .logo .o { position: relative; display: inline-block; letter-spacing: 0; }
-.logo .o svg { position: absolute; left: 50%; top: 56%; width: .36em; height: .22em; transform: translate(-50%, -50%); fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; overflow: visible; }
+.logo .o svg { position: absolute; left: 50%; top: 52%; width: .4em; height: .4em; transform: translate(-50%, -50%); fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; overflow: visible; }
+.logo .o svg circle { fill: currentColor; stroke: none; }
 /* v2: ASCII úvod a doplnky */
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: stretch; padding-block: clamp(36px, 5vw, 72px) clamp(56px, 7vw, 96px); }
 .hero .eyebrow { margin-bottom: 0; }
@@ -368,7 +369,7 @@ footer.foot .wrap span:first-child { color: var(--ink); }
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#uvod" aria-label="Elvoro">ELVOR<span class="o">O<svg viewBox="0 0 10 6" aria-hidden="true"><path d="M1.2 1.2 Q5 6.2 8.8 1.2"/></svg></span></a>
+    <a class="logo" href="#uvod" aria-label="Elvoro">ELVOR<span class="o">O<svg viewBox="0 0 10 10" aria-hidden="true"><circle cx="3.1" cy="3" r="1"/><circle cx="6.9" cy="3" r="1"/><path d="M1.6 5.6 Q5 10 8.4 5.6"/></svg></span></a>
     <nav class="links" aria-label="Hlavná navigácia">
       <a class="nl" href="#problemy">Čo riešime</a>
       <a class="nl" href="#riesenia">Príklady</a>
@@ -1023,10 +1024,14 @@ footer.foot .wrap span:first-child { color: var(--ink); }
       o.strokeStyle = "#000";
       o.lineCap = "round";
       o.lineWidth = Math.max(1.6 / sq, F * 0.06);
-      var rx = geo.wO * 0.2;
+      var rx = geo.wO * 0.17;
       o.beginPath();
-      o.ellipse(0, geo.capT * 0.06 - rx * 0.35, rx, rx * 1.1, 0, 0.18 * Math.PI, 0.82 * Math.PI);
+      o.ellipse(0, geo.capT * 0.08 - rx * 0.4, rx, rx * 1.0, 0, 0.18 * Math.PI, 0.82 * Math.PI);
       o.stroke();
+      // oči
+      var er = Math.max(1.5, F * 0.055);
+      o.beginPath(); o.ellipse(-rx * 0.62, -geo.capT * 0.075, er, er / Math.max(sq, 0.5), 0, 0, Math.PI * 2); o.fill();
+      o.beginPath(); o.ellipse(rx * 0.62, -geo.capT * 0.075, er, er / Math.max(sq, 0.5), 0, 0, Math.PI * 2); o.fill();
       o.restore();
     }
     function layout() {
