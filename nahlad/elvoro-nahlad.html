@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Elvoro web náhľad</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: biela redakčná plocha, ľavá os textu, odvážnosť len v ukážkach riešení */
+:root {
+  --paper: #FFFFFF;
+  --soft: #F7F6F3;
+  --ink: #09090B;
+  --ink-2: #3F3F46;
+  --muted: #6B6B73;
+  --line: #E7E4DD;
+  --gold: #A6843F;
+  --gold-text: #8C6D2E;
+  --display: "Syne", "Helvetica Neue", Arial, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --wrap: 1180px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+svg.i { width: 1.25em; height: 1.25em; flex: none; fill: currentColor; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.label {
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Tlačidlá */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 500 16px/1 var(--body);
+  padding: 16px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  background: var(--ink); color: var(--paper);
+  text-decoration: none; cursor: pointer;
+  transition: transform 140ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+.btn:hover { background: #26262B; }
+.btn:active { transform: scale(0.97); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--ink); }
+.btn.small { font-size: 14px; padding: 11px 18px; }
+.btn svg.i { transition: transform 160ms var(--ease-out); }
+.btn:hover svg.i { transform: translateX(3px); }
+
+/* Hlavička */
+header.top { border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
+.logo {
+  font: 700 21px/1 var(--display);
+  letter-spacing: .14em;
+  padding-bottom: 7px;
+  border-bottom: 2px solid var(--gold);
+  text-decoration: none;
+}
+nav.links { display: flex; align-items: center; gap: 28px; font-size: 15px; color: var(--ink-2); }
+nav.links a { text-decoration: none; }
+nav.links a:hover { color: var(--ink); }
+@media (max-width: 760px) { nav.links .nl { display: none; } }
+
+/* Úvod */
+.hero .wrap {
+  display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(0, .6fr);
+  gap: clamp(32px, 5vw, 72px); align-items: end;
+  padding-block: clamp(56px, 9vw, 120px) clamp(48px, 7vw, 96px);
+}
+.hero .eyebrow { font: 500 14px/1.5 var(--mono); color: var(--ink-2); margin-bottom: 26px; display: flex; gap: 12px; align-items: center; }
+.hero .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--ink); }
+.hero h1 {
+  font: 700 clamp(40px, 5.6vw, 80px)/.98 var(--display);
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.hero h1 .ln { display: block; }
+.hero .lead { margin-top: 30px; max-width: 34em; font-size: clamp(17px, 1.6vw, 20px); color: var(--ink-2); }
+.hero .cta { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+.portrait {
+  aspect-ratio: 4 / 5; max-width: 100%;
+  background: var(--soft);
+  border: 1px dashed #CFCAC0;
+  border-radius: 6px;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 6px;
+  padding: 20px;
+}
+.portrait .ph { font: 500 12px/1.5 var(--mono); color: var(--muted); }
+.portrait strong { font: 600 16px/1.3 var(--body); }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .portrait { aspect-ratio: 16 / 10; }
+}
+
+/* Sekcie */
+section.block { border-top: 1px solid var(--line); }
+section.block > .wrap { padding-block: clamp(64px, 9vw, 120px); }
+.sec-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px 48px; align-items: end; margin-bottom: clamp(40px, 6vw, 72px); }
+.sec-head h2 { font: 700 clamp(32px, 4.4vw, 56px)/1.02 var(--display); letter-spacing: -.03em; text-wrap: balance; }
+.sec-head p { color: var(--ink-2); max-width: 36em; }
+.sec-head .label { grid-column: 1 / -1; }
+@media (max-width: 860px) { .sec-head { grid-template-columns: minmax(0, 1fr); } }
+
+/* Čo firmy trápi */
+.pains { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.pain { padding: 32px 32px 36px 0; border-bottom: 1px solid var(--line); display: grid; gap: 14px; align-content: start; }
+.pain:nth-child(even) { padding-left: 32px; padding-right: 0; border-left: 1px solid var(--line); }
+.pain q { font: 600 clamp(21px, 2.1vw, 27px)/1.25 var(--display); letter-spacing: -.02em; quotes: "„" "“"; text-wrap: balance; }
+.pain p { font-size: 15px; color: var(--muted); }
+.pain p a { color: var(--ink); text-underline-offset: 3px; }
+@media (max-width: 760px) {
+  .pains { grid-template-columns: minmax(0, 1fr); }
+  .pain, .pain:nth-child(even) { padding: 26px 0 28px; border-left: 0; }
+}
+
+/* Riešenia */
+.solution { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); padding-block: clamp(40px, 6vw, 72px); border-top: 1px solid var(--line); }
+.solution:first-of-type { border-top: 1px solid var(--ink); }
+.sol-text { display: grid; gap: 16px; align-content: start; }
+.sol-text .kind { display: flex; gap: 10px; align-items: baseline; }
+.sol-text .kind .n { font: 500 13px/1 var(--mono); color: var(--gold-text); }
+.sol-text h3 { font: 700 clamp(26px, 3vw, 38px)/1.05 var(--display); letter-spacing: -.03em; text-wrap: balance; }
+.sol-text p { color: var(--ink-2); max-width: 30em; }
+.sol-text .for { font-size: 14px; color: var(--muted); }
+.sol-text .for b { color: var(--ink); font-weight: 500; }
+.example-tag { font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; justify-self: start; }
+.stage { min-width: 0; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; padding: clamp(16px, 2.6vw, 28px); }
+.stage-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.stage-top .label { color: var(--ink-2); }
+@media (max-width: 900px) { .solution { grid-template-columns: minmax(0, 1fr); } }
+
+/* 1: tok procesu */
+.flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; position: relative; }
+.step {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+  padding: 14px 10px 12px; display: grid; justify-items: center; gap: 8px; text-align: center;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  transition: border-color 200ms var(--ease-out), color 200ms var(--ease-out);
+}
+.step svg.i { width: 26px; height: 26px; }
+.step.on { border-color: var(--ink); color: var(--ink); }
+.step.on svg.i { color: var(--gold); }
+.flow-track { height: 2px; background: var(--line); margin: 14px 0 18px; position: relative; overflow: hidden; border-radius: 2px; }
+.flow-bar { position: absolute; inset: 0 auto 0 0; width: 20%; background: var(--ink); }
+.log { display: grid; gap: 2px; font: 400 13px/1.5 var(--mono); }
+.log li { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 12px; padding: 8px 10px; border-radius: 6px; color: var(--muted); transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out); }
+.log li time { color: var(--muted); font-variant-numeric: tabular-nums; }
+.log li.on { background: var(--paper); color: var(--ink); }
+@media (max-width: 560px) {
+  .flow { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .step { padding: 10px 2px; font-size: 10.5px; }
+  .step svg.i { width: 20px; height: 20px; }
+  .log li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+
+/* 2: hovor */
+.call { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); gap: 16px; }
+.player { display: flex; align-items: center; gap: 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 8px 18px 8px 8px; margin-bottom: 14px; }
+.play { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--ink); color: var(--paper); display: grid; place-items: center; cursor: pointer; transition: transform 140ms var(--ease-out); }
+.play:active { transform: scale(0.95); }
+.play svg.i { width: 20px; height: 20px; }
+.wave { flex: 1; display: flex; align-items: center; gap: 3px; height: 28px; min-width: 0; overflow: hidden; }
+.wave i { flex: 1; min-width: 2px; max-width: 4px; border-radius: 2px; background: #CFCAC0; height: 30%; }
+.player .t { font: 400 12px/1 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.transcript { display: grid; gap: 8px; }
+.transcript li { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 10px; font-size: 15px; line-height: 1.5; color: var(--ink-2); padding: 6px 8px; border-radius: 6px; transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out); }
+.transcript li .who { font: 500 11px/1.9 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.transcript li.agent .who { color: var(--gold-text); }
+.transcript li.on { background: var(--paper); color: var(--ink); }
+.record { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 12px; align-content: start; }
+.record dl { margin: 0; display: grid; gap: 10px; }
+.record dt { font: 500 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.record dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; }
+.record .ok { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--ink-2); border-top: 1px solid var(--line); padding-top: 12px; }
+.note { margin-top: 12px; font: 400 12px/1.5 var(--mono); color: var(--muted); }
+@media (max-width: 640px) {
+  .call { grid-template-columns: minmax(0, 1fr); }
+  .transcript li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+
+/* 3: pred a po */
+.merge { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.merge .arrow { justify-self: center; transform: rotate(90deg); }
+.scatter { display: flex; flex-wrap: wrap; gap: 8px; align-content: center; }
+.chip { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; color: var(--ink-2); }
+.chip svg.i { width: 16px; height: 16px; color: var(--muted); }
+.chip.f { font-family: var(--mono); font-size: 12px; }
+.chip:nth-child(1) { transform: rotate(-2deg); }
+.chip:nth-child(3) { transform: rotate(1.5deg); }
+.chip:nth-child(5) { transform: rotate(-1deg); }
+.arrow { color: var(--muted); }
+.arrow svg.i { width: 28px; height: 28px; }
+.sys { background: var(--paper); border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; }
+.sys-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); font: 500 12px/1 var(--mono); }
+.sys-bar span:last-child { color: var(--muted); }
+.cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.col { padding: 12px; display: grid; gap: 6px; align-content: start; }
+.col + .col { border-left: 1px solid var(--line); }
+.col h4 { margin: 0 0 4px; font: 500 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.row { font-size: 12.5px; line-height: 1.35; padding: 7px 8px; background: var(--soft); border-radius: 4px; display: flex; justify-content: space-between; gap: 6px; }
+.row em { font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 640px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .col + .col { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* Vlastný nápad */
+.idea .wrap { padding-block: clamp(64px, 9vw, 112px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px 48px; align-items: end; }
+.idea h2 { font: 700 clamp(34px, 5vw, 64px)/1 var(--display); letter-spacing: -.035em; text-wrap: balance; }
+.idea p { margin-top: 16px; color: var(--ink-2); max-width: 34em; }
+@media (max-width: 760px) { .idea .wrap { grid-template-columns: minmax(0, 1fr); } }
+footer.foot { border-top: 1px solid var(--line); }
+footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 400 12px/1.5 var(--mono); color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="envelope-simple" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM208.58,62,128,135.86,47.42,62ZM216,194H40a2,2,0,0,1-2-2V69.64l86,78.78a6,6,0,0,0,8.1,0L218,69.64V192A2,2,0,0,1,216,194Z"/></symbol><symbol id="file-text" viewBox="0 0 256 256"><path d="M212.24,83.76l-56-56A6,6,0,0,0,152,26H56A14,14,0,0,0,42,40V216a14,14,0,0,0,14,14H200a14,14,0,0,0,14-14V88A6,6,0,0,0,212.24,83.76ZM158,46.48,193.52,82H158ZM200,218H56a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2h90V88a6,6,0,0,0,6,6h50V216A2,2,0,0,1,200,218Zm-34-82a6,6,0,0,1-6,6H96a6,6,0,0,1,0-12h64A6,6,0,0,1,166,136Zm0,32a6,6,0,0,1-6,6H96a6,6,0,0,1,0-12h64A6,6,0,0,1,166,168Z"/></symbol><symbol id="user-plus" viewBox="0 0 256 256"><path d="M254,136a6,6,0,0,1-6,6H230v18a6,6,0,0,1-12,0V142H200a6,6,0,0,1,0-12h18V112a6,6,0,0,1,12,0v18h18A6,6,0,0,1,254,136Zm-57.41,60.14a6,6,0,1,1-9.18,7.72C166.9,179.45,138.69,166,108,166s-58.89,13.45-79.41,37.86a6,6,0,0,1-9.18-7.72C35.14,177.41,55,164.48,77,158.25a66,66,0,1,1,62,0C161,164.48,180.86,177.41,196.59,196.14ZM108,154a54,54,0,1,0-54-54A54.06,54.06,0,0,0,108,154Z"/></symbol><symbol id="bell-ringing" viewBox="0 0 256 256"><path d="M223.05,69.33A6,6,0,0,1,215,66.76,96,96,0,0,0,180.8,29.08a6,6,0,0,1,6.4-10.15,109.26,109.26,0,0,1,38.41,42.31A6,6,0,0,1,223.05,69.33ZM41,66.76A96,96,0,0,1,75.2,29.08a6,6,0,0,0-6.4-10.15A109.26,109.26,0,0,0,30.39,61.24,6,6,0,1,0,41,66.76Zm179,110.18A14,14,0,0,1,208,198h-42.5a38,38,0,0,1-75,0H48a14,14,0,0,1-12.06-21.06C45.13,161.09,50,138.63,50,112a78,78,0,0,1,156,0C206,139,210.74,160.86,220.08,176.94ZM153.29,198H102.71a26,26,0,0,0,50.58,0Zm56.42-15C199.29,165,194,141.15,194,112a66,66,0,0,0-132,0c0,29.16-5.29,53-15.71,71a2,2,0,0,0,0,2,1.9,1.9,0,0,0,1.7,1H208a1.9,1.9,0,0,0,1.7-1A2,2,0,0,0,209.71,183Z"/></symbol><symbol id="receipt" viewBox="0 0 256 256"><path d="M182,104a6,6,0,0,1-6,6H80a6,6,0,0,1,0-12h96A6,6,0,0,1,182,104Zm-6,26H80a6,6,0,0,0,0,12h96a6,6,0,0,0,0-12Zm54-74V208a6,6,0,0,1-2.85,5.1,5.93,5.93,0,0,1-3.15.9,6,6,0,0,1-2.68-.63L192,198.71l-29.32,14.66a6,6,0,0,1-5.36,0L128,198.71,98.68,213.37a6,6,0,0,1-5.36,0L64,198.71,34.68,213.37A6,6,0,0,1,26,208V56A14,14,0,0,1,40,42H216A14,14,0,0,1,230,56Zm-12,0a2,2,0,0,0-2-2H40a2,2,0,0,0-2,2V198.29l23.32-11.66a6,6,0,0,1,5.36,0L96,201.29l29.32-14.66a6,6,0,0,1,5.36,0L160,201.29l29.32-14.66a6,6,0,0,1,5.36,0L218,198.29Z"/></symbol><symbol id="arrow-right" viewBox="0 0 256 256"><path d="M220.24,132.24l-72,72a6,6,0,0,1-8.48-8.48L201.51,134H40a6,6,0,0,1,0-12H201.51L139.76,60.24a6,6,0,0,1,8.48-8.48l72,72A6,6,0,0,1,220.24,132.24Z"/></symbol><symbol id="play" viewBox="0 0 256 256"><path d="M231.36,116.19,87.28,28.06a14,14,0,0,0-14.18-.27A13.69,13.69,0,0,0,66,39.87V216.13a13.69,13.69,0,0,0,7.1,12.08,14,14,0,0,0,14.18-.27l144.08-88.13a13.82,13.82,0,0,0,0-23.62Zm-6.26,13.38L81,217.7a2,2,0,0,1-2.06,0,1.78,1.78,0,0,1-1-1.61V39.87a1.78,1.78,0,0,1,1-1.61A2.06,2.06,0,0,1,80,38a2,2,0,0,1,1,.31L225.1,126.43a1.82,1.82,0,0,1,0,3.14Z"/></symbol><symbol id="pause" viewBox="0 0 256 256"><path d="M200,34H160a14,14,0,0,0-14,14V208a14,14,0,0,0,14,14h40a14,14,0,0,0,14-14V48A14,14,0,0,0,200,34Zm2,174a2,2,0,0,1-2,2H160a2,2,0,0,1-2-2V48a2,2,0,0,1,2-2h40a2,2,0,0,1,2,2ZM96,34H56A14,14,0,0,0,42,48V208a14,14,0,0,0,14,14H96a14,14,0,0,0,14-14V48A14,14,0,0,0,96,34Zm2,174a2,2,0,0,1-2,2H56a2,2,0,0,1-2-2V48a2,2,0,0,1,2-2H96a2,2,0,0,1,2,2Z"/></symbol><symbol id="check-circle" viewBox="0 0 256 256"><path d="M172.24,99.76a6,6,0,0,1,0,8.48l-56,56a6,6,0,0,1-8.48,0l-24-24a6,6,0,0,1,8.48-8.48L112,151.51l51.76-51.75A6,6,0,0,1,172.24,99.76ZM230,128A102,102,0,1,1,128,26,102.12,102.12,0,0,1,230,128Zm-12,0a90,90,0,1,0-90,90A90.1,90.1,0,0,0,218,128Z"/></symbol><symbol id="kanban" viewBox="0 0 256 256"><path d="M216,50H40a6,6,0,0,0-6,6V208a14,14,0,0,0,14,14H88a14,14,0,0,0,14-14V158h52v18a14,14,0,0,0,14,14h40a14,14,0,0,0,14-14V56A6,6,0,0,0,216,50Zm-6,64H166V62h44ZM90,62v52H46V62Zm0,146a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V126H90Zm12-62V62h52v84Zm106,32H168a2,2,0,0,1-2-2V126h44v50A2,2,0,0,1,208,178Z"/></symbol><symbol id="table" viewBox="0 0 256 256"><path d="M224,50H32a6,6,0,0,0-6,6V192a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A6,6,0,0,0,224,50ZM38,110H82v36H38Zm56,0H218v36H94ZM218,62V98H38V62ZM38,192V158H82v36H40A2,2,0,0,1,38,192Zm178,2H94V158H218v34A2,2,0,0,1,216,194Z"/></symbol><symbol id="whatsapp-logo" viewBox="0 0 256 256"><path d="M186.68,146.63l-32-16a6,6,0,0,0-6,.38L133,141.46A42.49,42.49,0,0,1,114.54,123L125,107.33a6,6,0,0,0,.38-6l-16-32A6,6,0,0,0,104,66a38,38,0,0,0-38,38,86.1,86.1,0,0,0,86,86,38,38,0,0,0,38-38A6,6,0,0,0,186.68,146.63ZM152,178a74.09,74.09,0,0,1-74-74,26,26,0,0,1,22.42-25.75l12.66,25.32-10.39,15.58a6,6,0,0,0-.54,5.63,54.43,54.43,0,0,0,29.07,29.07,6,6,0,0,0,5.63-.54l15.58-10.39,25.32,12.66A26,26,0,0,1,152,178ZM128,26A102,102,0,0,0,38.35,176.69L26.73,211.56a14,14,0,0,0,17.71,17.71l34.87-11.62A102,102,0,1,0,128,26Zm0,192a90,90,0,0,1-45.06-12.08,6.09,6.09,0,0,0-3-.81,6.2,6.2,0,0,0-1.9.31L40.65,217.88a2,2,0,0,1-2.53-2.53L50.58,178a6,6,0,0,0-.5-4.91A90,90,0,1,1,128,218Z"/></symbol><symbol id="notebook" viewBox="0 0 256 256"><path d="M182,112a6,6,0,0,1-6,6H112a6,6,0,0,1,0-12h64A6,6,0,0,1,182,112Zm-6,26H112a6,6,0,0,0,0,12h64a6,6,0,0,0,0-12Zm46-90V208a14,14,0,0,1-14,14H48a14,14,0,0,1-14-14V48A14,14,0,0,1,48,34H208A14,14,0,0,1,222,48ZM48,210H74V46H48a2,2,0,0,0-2,2V208A2,2,0,0,0,48,210ZM210,48a2,2,0,0,0-2-2H86V210H208a2,2,0,0,0,2-2Z"/></symbol></svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#uvod" aria-label="Elvoro">ELVORO</a>
+    <nav class="links" aria-label="Hlavná navigácia">
+      <a class="nl" href="#problemy">Čo riešime</a>
+      <a class="nl" href="#riesenia">Príklady</a>
+      <a class="btn small" href="#napad">Zistiť, či sme pre seba</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="uvod">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" data-in>Chcete vo firme využiť AI, ale neviete ako?</p>
+        <h1><span class="ln" data-in>Ukážeme vám kde.</span><span class="ln" data-in>A postavíme to.</span></h1>
+        <p class="lead" data-in>Zmapujeme, kde vaša firma stráca čas, a postavíme riešenie na mieru, ktoré rutinu prevezme. Od jednoduchých automatizácií po vlastný firemný systém.</p>
+        <div class="cta" data-in>
+          <a class="btn" href="#napad">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
+          <a class="btn ghost" href="#riesenia">Pozrieť príklady</a>
+        </div>
+      </div>
+      <figure class="portrait" data-in>
+        <span class="ph">Fotka zakladateľa · doplniť</span>
+        <strong>Meno Priezvisko</strong>
+        <span class="ph">zakladateľ Elvora</span>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="problemy">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Čo firmy trápi</span>
+        <h2>Spoznávate sa v niečom z toho?</h2>
+        <p>Toto počúvame od malých firiem aj od veľkých tímov. Ku každej situácii máme riešenie.</p>
+      </div>
+      <ul class="pains">
+        <li class="pain"><q>Polovica dňa ide na e-maily, ponuky a prepisovanie do tabuliek.</q><p>Riešenie: <a href="#r1">automatizácia</a></p></li>
+        <li class="pain"><q>Každé oddelenie má vlastný systém a nič spolu nehovorí. Report pre vedenie skladáme ručne.</q><p>Riešenie: prepojenie systémov a reporty, ktoré sa pripravia samy.</p></li>
+        <li class="pain"><q>Zákazník volal, nikto to nezdvihol a zákazku dostal niekto iný.</q><p>Riešenie: <a href="#r2">AI hlasový agent</a></p></li>
+        <li class="pain"><q>Ľudia používajú AI na vlastnú päsť a nevieme, aké firemné dáta do nej posielajú.</q><p>Riešenie: jasné pravidlá a bezpečné AI nástroje pre celú firmu.</p></li>
+        <li class="pain"><q>Úlohy máme v jednej appke, čísla v Exceli a dohody v e-mailoch. Prehľad nemá nikto.</q><p>Riešenie: <a href="#r3">vlastný firemný systém</a></p></li>
+        <li class="pain"><q>Know-how je v hlavách pár ľudí. Nový človek sa zaúča mesiace.</q><p>Riešenie: firemný AI asistent, ktorý pozná vaše dokumenty a postupy.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="riesenia">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Čo vieme postaviť</span>
+        <h2>Tri príklady. Každý pre iný typ firmy.</h2>
+        <p>Firmy v príkladoch sú vymyslené, postupy sú skutočné. Presne takéto riešenia staviame na mieru.</p>
+      </div>
+
+      <article class="solution" id="r1">
+        <div class="sol-text">
+          <div class="kind"><span class="n">01</span><span class="label">Automatizácia</span></div>
+          <h3>Dopyt sa sám zmení na ponuku, zákazníka aj faktúru.</h3>
+          <p>Systém prečíta dopyt, pripraví ponuku podľa vášho cenníka, zapíše zákazníka a pripomenie, keď treba zavolať. Vy len skontrolujete a potvrdíte.</p>
+          <p class="for">Pre: <b>servisné, stavebné a remeselné firmy</b></p>
+          <span class="example-tag">Príklad · inštalatérska firma</span>
+        </div>
+        <div class="stage">
+          <div class="stage-top"><span class="label">Jeden dopyt, od e-mailu po faktúru</span><button class="btn ghost small" type="button" id="flowReplay">Prehrať znova</button></div>
+          <ol class="flow" id="flow">
+            <li class="step on"><svg class="i"><use href="#envelope-simple"/></svg>Dopyt</li>
+            <li class="step"><svg class="i"><use href="#file-text"/></svg>Ponuka</li>
+            <li class="step"><svg class="i"><use href="#user-plus"/></svg>Zákazník</li>
+            <li class="step"><svg class="i"><use href="#bell-ringing"/></svg>Pripomienka</li>
+            <li class="step"><svg class="i"><use href="#receipt"/></svg>Faktúra</li>
+          </ol>
+          <div class="flow-track" aria-hidden="true"><div class="flow-bar" id="flowBar"></div></div>
+          <ul class="log" id="log">
+            <li class="on"><time>Po 08:12</time><span>Prišiel e-mail: „Potrebujem vymeniť bojler, rodinný dom, Nitra.“</span></li>
+            <li><time>Po 08:12</time><span>Pripravená ponuka č. 2026-0418 podľa cenníka firmy, čaká na vaše potvrdenie</span></li>
+            <li><time>Po 08:13</time><span>Zákazník zapísaný, priradený technik Marek</span></li>
+            <li><time>St 08:00</time><span>Ponuka je 2 dni bez odpovede: pripomienka zavolať zákazníkovi</span></li>
+            <li><time>St 10:41</time><span>Zákazník potvrdil: faktúra vystavená a odoslaná</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="solution" id="r2">
+        <div class="sol-text">
+          <div class="kind"><span class="n">02</span><span class="label">AI hlasový agent</span></div>
+          <h3>Telefón zdvihne vždy. Aj keď vy práve nemôžete.</h3>
+          <p>Agent pozná vaše služby, ceny a voľné termíny. Hovorí prirodzene, povie, že je AI, vybaví objednávku a všetko zapíše. Kto chce hovoriť s človekom, toho prepojí.</p>
+          <p class="for">Pre: <b>salóny, autoservisy, reštaurácie a firmy s množstvom telefonátov</b></p>
+          <span class="example-tag">Príklad · autoservis</span>
+        </div>
+        <div class="stage">
+          <div class="call">
+            <div>
+              <div class="player">
+                <button class="play" type="button" id="callPlay" aria-label="Prehrať ukážku hovoru"><svg class="i" id="callIcon"><use href="#play"/></svg></button>
+                <div class="wave" id="wave" aria-hidden="true"></div>
+                <span class="t" id="callTime">0:00 / 0:48</span>
+              </div>
+              <ol class="transcript" id="transcript">
+                <li class="agent"><span class="who">Agent</span><span>Dobrý deň, tu je virtuálna asistentka Autoservisu Horák. Hovor nahrávame, aby sme mohli vybaviť vašu požiadavku. S čím vám pomôžem?</span></li>
+                <li><span class="who">Zákazník</span><span>Potreboval by som prezuť pneumatiky. Máte tento týždeň voľno?</span></li>
+                <li class="agent"><span class="who">Agent</span><span>Áno, vo štvrtok o 9:00 alebo o 14:30. Ide o osobné auto?</span></li>
+                <li><span class="who">Zákazník</span><span>Áno. Dajte mi štvrtok o deviatej.</span></li>
+                <li class="agent"><span class="who">Agent</span><span>Zapísané. Chcete u nás uskladniť letné pneumatiky?</span></li>
+                <li><span class="who">Zákazník</span><span>To by bolo super.</span></li>
+                <li class="agent"><span class="who">Agent</span><span>Dobre. Potvrdenie aj cenu vám pošlem v SMS. Pekný deň.</span></li>
+              </ol>
+            </div>
+            <aside class="record" aria-label="Čo sa zapísalo do systému">
+              <span class="label">Zapísané do systému</span>
+              <dl>
+                <div><dt>Termín</dt><dd>Štvrtok 9:00</dd></div>
+                <div><dt>Služba</dt><dd>Prezutie, osobné auto</dd></div>
+                <div><dt>Navyše</dt><dd>Uskladnenie pneumatík</dd></div>
+              </dl>
+              <span class="ok"><svg class="i"><use href="#check-circle"/></svg>SMS s potvrdením odoslaná</span>
+            </aside>
+          </div>
+          <p class="note">Ilustračný prepis. Nahrávku so skutočným agentom doplníme.</p>
+        </div>
+      </article>
+
+      <article class="solution" id="r3">
+        <div class="sol-text">
+          <div class="kind"><span class="n">03</span><span class="label">Vlastný firemný systém</span></div>
+          <h3>Päť nástrojov a zošit nahradí jeden systém.</h3>
+          <p>Objednávky, úlohy aj sklad na jednom mieste, postavené presne podľa toho, ako vaša firma funguje. Každý vidí to, čo potrebuje, a nič sa nestratí v e-mailoch.</p>
+          <p class="for">Pre: <b>obchodné firmy a tímy, ktoré prerástli Excel</b></p>
+          <span class="example-tag">Príklad · obchodná firma</span>
+        </div>
+        <div class="stage">
+          <div class="stage-top"><span class="label">Predtým a teraz</span><button class="btn ghost small" type="button" id="mergeBtn">Spojiť do systému</button></div>
+          <div class="merge">
+            <div class="scatter" id="scatter">
+              <span class="chip"><svg class="i"><use href="#kanban"/></svg>Úlohy v ClickUpe</span>
+              <span class="chip f"><svg class="i"><use href="#table"/></svg>objednavky_FINAL_v3.xlsx</span>
+              <span class="chip"><svg class="i"><use href="#envelope-simple"/></svg>Dohody v e-mailoch</span>
+              <span class="chip"><svg class="i"><use href="#whatsapp-logo"/></svg>Skupina „Sklad“</span>
+              <span class="chip"><svg class="i"><use href="#notebook"/></svg>Zošit na predajni</span>
+            </div>
+            <span class="arrow" aria-hidden="true"><svg class="i"><use href="#arrow-right"/></svg></span>
+            <div class="sys" id="sys">
+              <div class="sys-bar"><span>Firemný systém</span><span>3 ľudia online</span></div>
+              <div class="cols">
+                <div class="col"><h4>Objednávky</h4><div class="row">Stavebniny Kováč <em>nová</em></div><div class="row">Hotel Lipa <em>expedovaná</em></div><div class="row">Ing. Šimko <em>uhradená</em></div></div>
+                <div class="col"><h4>Úlohy</h4><div class="row">Objednať tovar <em>Jana</em></div><div class="row">Faktúra Lipa <em>Peter</em></div><div class="row">Inventúra <em>piatok</em></div></div>
+                <div class="col"><h4>Sklad</h4><div class="row">Dlažba 60×60 <em>42 m²</em></div><div class="row">Lepidlo C2 <em>18 ks</em></div><div class="row">Silikón <em>dochádza</em></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block idea" id="napad">
+    <div class="wrap">
+      <div>
+        <h2>Máte vlastný nápad? Postavíme ho.</h2>
+        <p>Napíšte nám v krátkej prihláške, čo vaša firma robí a kde stráca čas. Na prvý hovor prídeme s konkrétnymi návrhmi.</p>
+      </div>
+      <a class="btn" href="#napad">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap"><span>ELVORO · AI po ľudsky</span><span>Náhľad webu, nie finálna verzia</span></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hasGsap = typeof window.gsap !== "undefined";
+
+  // Úvod: jemný vstup pri načítaní
+  if (hasGsap && !reduce) {
+    gsap.from("[data-in]", { y: 18, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.08, clearProps: "all" });
+  }
+
+  // 1: tok dopytu
+  var steps = Array.prototype.slice.call(document.querySelectorAll("#flow .step"));
+  var logs = Array.prototype.slice.call(document.querySelectorAll("#log li"));
+  var bar = document.getElementById("flowBar");
+  var flowTimer = null, flowIdx = 0, flowVisible = false;
+  function setFlow(i) {
+    steps.forEach(function (s, k) { s.classList.toggle("on", k <= i); });
+    logs.forEach(function (l, k) { l.classList.toggle("on", k === i); });
+    var w = ((i + 1) / steps.length * 100) + "%";
+    if (hasGsap && !reduce) gsap.to(bar, { width: w, duration: 0.5, ease: "power2.inOut" });
+    else bar.style.width = w;
+  }
+  function tickFlow() {
+    flowIdx = (flowIdx + 1) % (steps.length + 1);
+    if (flowIdx === steps.length) { flowIdx = -1; flowTimer = setTimeout(tickFlow, 1400); return; }
+    setFlow(flowIdx);
+    flowTimer = setTimeout(tickFlow, flowIdx === steps.length - 1 ? 3200 : 1700);
+  }
+  function startFlow(fromStart) {
+    clearTimeout(flowTimer);
+    if (fromStart) { flowIdx = 0; setFlow(0); }
+    if (!reduce) flowTimer = setTimeout(tickFlow, 1700);
+  }
+  document.getElementById("flowReplay").addEventListener("click", function () { startFlow(true); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && !flowVisible) { flowVisible = true; startFlow(true); }
+        else if (!e.isIntersecting && flowVisible) { flowVisible = false; clearTimeout(flowTimer); }
+      });
+    }, { threshold: 0.35 }).observe(document.getElementById("r1"));
+  }
+
+  // 2: ukážka hovoru (prepis sa zvýrazňuje, kým nie je skutočná nahrávka)
+  var wave = document.getElementById("wave");
+  var seed = [3,5,8,6,9,4,7,10,6,5,8,3,6,9,7,4,8,10,5,6,4,7,9,6,3,5,8,7,4,6,9,5,7,3,6,8,4,7,5,9,6,4];
+  seed.forEach(function (v) { var b = document.createElement("i"); b.style.height = (v * 9) + "%"; wave.appendChild(b); });
+  var bars = Array.prototype.slice.call(wave.children);
+  var lines = Array.prototype.slice.call(document.querySelectorAll("#transcript li"));
+  var playBtn = document.getElementById("callPlay"), icon = document.getElementById("callIcon"), timeEl = document.getElementById("callTime");
+  var durs = [9, 5, 6, 4, 6, 3, 6];
+  var total = durs.reduce(function (a, b) { return a + b; }, 0) * 1000;
+  var playing = false, startT = 0, elapsed = 0, raf = null;
+  function fmt(ms) { var s = Math.floor(ms / 1000); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+  function render(ms) {
+    var acc = 0, idx = -1;
+    for (var k = 0; k < durs.length; k++) { if (ms >= acc) idx = k; acc += durs[k] * 1000; }
+    lines.forEach(function (l, k) { l.classList.toggle("on", playing && k === idx); });
+    var p = ms / total;
+    bars.forEach(function (b, k) { b.style.background = (k / bars.length) < p ? "var(--ink)" : "#CFCAC0"; });
+    timeEl.textContent = fmt(ms) + " / " + fmt(total);
+  }
+  function loop(now) {
+    elapsed = now - startT;
+    if (elapsed >= total) { stop(true); return; }
+    render(elapsed);
+    raf = requestAnimationFrame(loop);
+  }
+  function setIcon(name) { icon.innerHTML = '<use href="#' + name + '"/>'; }
+  function stop(reset) {
+    playing = false; cancelAnimationFrame(raf); setIcon("play");
+    playBtn.setAttribute("aria-label", "Prehrať ukážku hovoru");
+    if (reset) elapsed = 0;
+    render(elapsed);
+  }
+  playBtn.addEventListener("click", function () {
+    if (playing) { stop(false); return; }
+    playing = true; setIcon("pause"); playBtn.setAttribute("aria-label", "Pozastaviť ukážku hovoru");
+    startT = performance.now() - elapsed; raf = requestAnimationFrame(loop);
+  });
+  timeEl.textContent = "0:00 / " + fmt(total);
+
+  // 3: spojenie nástrojov do systému
+  var merged = false;
+  document.getElementById("mergeBtn").addEventListener("click", function () {
+    var chips = document.querySelectorAll("#scatter .chip");
+    var btn = this;
+    if (!hasGsap || reduce) return;
+    if (!merged) {
+      gsap.to(chips, { y: 24, opacity: 0.25, scale: 0.96, duration: 0.45, ease: "power2.inOut", stagger: 0.05 });
+      gsap.fromTo("#sys", { scale: 0.97 }, { scale: 1, duration: 0.5, ease: "power3.out", delay: 0.25 });
+      gsap.fromTo("#sys .row", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out", stagger: 0.03, delay: 0.3 });
+      btn.textContent = "Ukázať predtým";
+    } else {
+      gsap.to(chips, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "power3.out", stagger: 0.04 });
+      btn.textContent = "Spojiť do systému";
+    }
+    merged = !merged;
+  });
+})();
+</script>
+
+</body>
+</html>
