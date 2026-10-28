@@ -993,102 +993,159 @@ footer.foot .wrap span:first-child { color: var(--ink); }
   });
   showStep(load());
 
-  // ASCII logo: zo šumu znakov sa poskladá ELVORO (z chaosu poriadok)
+  // ASCII logo: smajlík sa prikotúľa zľava, za sebou necháva písmená a zastaví ako posledné O
   (function () {
     var cv = document.getElementById("ascii");
     if (!cv || !cv.getContext) return;
     var ctx = cv.getContext("2d");
     var RAMP = " .:-=+*#%@";
     var NOISE = ".:-=+*#%@01/\\<>{}[]~^";
-    var INK = "#09090B", GOLD = "#A6843F", FAINT = "#CFCAC0";
-    var cells = [], cols = 0, rows = 0, fs = 11, cw = 6.6, ch = 11, t0 = 0, raf = null, visible = true, dpr = 1;
-    var pointer = null;
+    var INK = "#09090B", GOLD = "#A6843F";
+    var FONT = '"Syne", "Helvetica Neue", Arial, sans-serif';
+    var cells = [], cols = 0, rows = 0, fs = 10, cw = 6, ch = 10.5, dpr = 1, sq = 1;
+    var geo = null, ball = null, bctx = null;
+    var mode = "roll", t0 = 0, raf = null, visible = true, pointer = null;
+    var ROLL = 2300;
     function rnd(s) { return s.charAt(Math.floor(Math.random() * s.length)); }
+    function charFor(a) { return a > 0.08 ? RAMP.charAt(Math.min(RAMP.length - 1, 1 + Math.floor(a * (RAMP.length - 1)))) : " "; }
+    function drawO(o, cx, cyT, F, angle, k) {
+      // kreslí O so smajlíkom; súradnice v stlačenom priestore (y * sq)
+      o.save();
+      o.setTransform(1, 0, 0, sq, 0, 0);
+      o.translate(cx, cyT);
+      o.rotate(angle);
+      if (k && k !== 1) o.scale(k, 1);
+      o.font = "700 " + F + "px " + FONT;
+      o.textAlign = "center";
+      o.textBaseline = "alphabetic";
+      o.fillStyle = "#000";
+      o.fillText("O", 0, geo.capT / 2);
+      o.strokeStyle = "#000";
+      o.lineCap = "round";
+      o.lineWidth = Math.max(1.6 / sq, F * 0.06);
+      var rx = geo.wO * 0.2;
+      o.beginPath();
+      o.ellipse(0, geo.capT * 0.06 - rx * 0.35, rx, rx * 1.1, 0, 0.18 * Math.PI, 0.82 * Math.PI);
+      o.stroke();
+      o.restore();
+    }
     function layout() {
       var W = cv.clientWidth || cv.parentNode.clientWidth;
       fs = W < 480 ? 6 : W < 900 ? 8 : 10;
-      cw = fs * 0.6; ch = fs * 1.05;
+      cw = fs * 0.6; ch = fs * 1.05; sq = cw / ch;
       cols = Math.floor(W / cw);
-      var sq = cw / ch;
-      var off = document.createElement("canvas");
-      var o = off.getContext("2d");
+      var probe = document.createElement("canvas").getContext("2d");
       var F = 100;
-      o.font = '700 ' + F + 'px "Syne", "Helvetica Neue", Arial, sans-serif';
-      if ("letterSpacing" in o) o.letterSpacing = (F * 0.08) + "px";
-      var w = o.measureText("ELVORO").width;
-      F = F * (cols * 0.985) / w;
-      var cap = F * 0.72 * sq;
-      var pad = 1;
+      probe.font = "700 " + F + "px " + FONT;
+      if ("letterSpacing" in probe) probe.letterSpacing = (F * 0.08) + "px";
+      F = F * (cols * 0.985) / probe.measureText("ELVORO").width;
+      var cap = F * 0.72 * sq, pad = 1;
       rows = Math.ceil(pad + cap + 3.2 + pad);
+      var off = document.createElement("canvas");
       off.width = cols; off.height = rows;
-      o = off.getContext("2d");
-      o.font = '700 ' + F + 'px "Syne", "Helvetica Neue", Arial, sans-serif';
-      if ("letterSpacing" in o) o.letterSpacing = (F * 0.08) + "px";
+      var o = off.getContext("2d");
+      o.font = "700 " + F + "px " + FONT;
+      var ls = F * 0.08;
+      if ("letterSpacing" in o) o.letterSpacing = ls + "px";
       var tw = o.measureText("ELVORO").width;
-      o.fillStyle = "#000";
+      var x0 = (cols - tw) / 2;
+      var wPre = o.measureText("ELVOR").width, wO = o.measureText("O").width - ls;
+      geo = { F: F, capT: F * 0.72, wO: wO, x0: x0, tw: tw, oStart: x0 + wPre, oEnd: x0 + wPre + wO, cx: x0 + wPre + wO / 2, cyT: (pad + cap / 2) / sq, lineRow: Math.round(pad + cap + 1.8) };
+      // písmená ELVOR (bez posledného O)
       o.setTransform(1, 0, 0, sq, 0, 0);
+      o.fillStyle = "#000";
       o.textBaseline = "alphabetic";
-      o.fillText("ELVORO", (cols - tw) / 2, (pad + cap) / sq);
+      o.fillText("ELVOR", x0, (pad + cap) / sq);
       o.setTransform(1, 0, 0, 1, 0, 0);
-      // smajlík v poslednom O
-      var ls = F * 0.08, wPre = o.measureText("ELVOR").width, wO = o.measureText("O").width - ls;
-      var cx = (cols - tw) / 2 + wPre + wO / 2, cy = pad + cap * 0.56;
-      var rx = wO * 0.2, ry = rx * sq * 1.1;
-      o.save();
-      o.strokeStyle = "#000"; o.lineWidth = Math.max(1.6, F * 0.06); o.lineCap = "round";
-      o.beginPath(); o.ellipse(cx, cy - ry * 0.35, rx, ry, 0, 0.18 * Math.PI, 0.82 * Math.PI); o.stroke();
-      o.restore();
-      var lineRow = Math.round(pad + cap + 1.8);
+      if ("letterSpacing" in o) o.letterSpacing = "0px";
+      drawO(o, geo.cx, geo.cyT, F, 0, 1);
       var data = o.getImageData(0, 0, cols, rows).data;
       cells = [];
       for (var r = 0; r < rows; r++) {
         for (var c = 0; c < cols; c++) {
-          var a = data[(r * cols + c) * 4 + 3] / 255;
-          var gold = r === lineRow && c >= Math.floor((cols - tw) / 2) && c <= Math.ceil((cols + tw) / 2);
-          var target = gold ? "=" : (a > 0.08 ? RAMP.charAt(Math.min(RAMP.length - 1, 1 + Math.floor(a * (RAMP.length - 1)))) : " ");
-          cells.push({ r: r, c: c, target: target, gold: gold, noisy: Math.random() < 0.5, settle: 250 + (c / cols) * 900 + Math.random() * 700, ch: rnd(NOISE) });
+          var gold = r === geo.lineRow && c >= Math.floor(x0) && c <= Math.ceil(x0 + tw);
+          var target = gold ? "=" : charFor(data[(r * cols + c) * 4 + 3] / 255);
+          var inO = c >= Math.floor(geo.oStart) - 1;
+          cells.push({ r: r, c: c, target: target, gold: gold, inO: inO && !gold, reveal: Infinity, settle: 0, ch: rnd(NOISE) });
         }
       }
+      ball = document.createElement("canvas");
+      ball.width = cols; ball.height = rows;
+      bctx = ball.getContext("2d");
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       cv.style.height = Math.round(rows * ch) + "px";
       cv.width = Math.round(cv.clientWidth * dpr);
       cv.height = Math.round(rows * ch * dpr);
     }
-    function draw(now) {
+    function ease(p) { return 1 - Math.pow(1 - p, 3); }
+    function frame(now) {
       var t = now - t0, busy = false;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, cv.width, cv.height);
       ctx.font = fs + 'px "JetBrains Mono", ui-monospace, Menlo, monospace';
       ctx.textBaseline = "top";
+      var bx = null;
+      if (mode === "roll") {
+        var p = Math.min(1, t / ROLL);
+        var startX = -geo.wO * 0.7;
+        bx = startX + (geo.cx - startX) * ease(p);
+        // počas kotúľania je O kruh, na konci sa roztiahne do tvaru písmena
+        var R = geo.capT / 2;
+        var angle = (bx - geo.cx) / R;
+        var circ = geo.capT / geo.wO, m = Math.max(0, Math.min(1, (p - 0.82) / 0.18));
+        bctx.clearRect(0, 0, cols, rows);
+        drawO(bctx, bx, geo.cyT, geo.F, angle, circ + (1 - circ) * m);
+        var bd = bctx.getImageData(0, 0, cols, rows).data;
+        if (p >= 1) { mode = "static"; cells.forEach(function (k) { if (k.reveal === Infinity) k.reveal = t; }); }
+        else busy = true;
+      }
+      var edge = bx === null ? Infinity : bx - geo.wO * 0.45;
       for (var i = 0; i < cells.length; i++) {
         var k = cells[i];
-        if (pointer) {
+        if (k.reveal === Infinity && !k.inO && k.c < edge) { k.reveal = t; k.settle = t + 90 + Math.random() * 260; }
+        if (mode === "roll" && k.inO) continue;
+        if (pointer && mode === "static") {
           var dx = k.c * cw - pointer.x, dy = k.r * ch - pointer.y;
-          if (dx * dx + dy * dy < 2600) { k.settle = t + 180 + Math.random() * 380; }
+          if (dx * dx + dy * dy < 2600) k.settle = t + 180 + Math.random() * 380;
         }
+        if (k.reveal === Infinity || k.target === " ") continue;
         if (t < k.settle) {
           busy = true;
-          if (Math.random() < 0.3) k.ch = rnd(NOISE);
-          if (k.target !== " " || k.noisy) {
-            ctx.fillStyle = k.target !== " " ? (k.gold ? GOLD : "#8A867E") : FAINT;
-            ctx.fillText(k.ch, k.c * cw, k.r * ch);
-          }
-        } else if (k.target !== " ") {
+          if (Math.random() < 0.35) k.ch = rnd(NOISE);
+          ctx.fillStyle = k.gold ? GOLD : "#8A867E";
+          ctx.fillText(k.ch, k.c * cw, k.r * ch);
+        } else {
           ctx.fillStyle = k.gold ? GOLD : INK;
           ctx.fillText(k.target, k.c * cw, k.r * ch);
+        }
+      }
+      if (bd) {
+        ctx.fillStyle = INK;
+        var c0 = Math.max(0, Math.floor(bx - geo.wO)), c1 = Math.min(cols, Math.ceil(bx + geo.wO));
+        for (var r = 0; r < rows; r++) {
+          for (var c = c0; c < c1; c++) {
+            var chr = charFor(bd[(r * cols + c) * 4 + 3] / 255);
+            if (chr !== " ") ctx.fillText(chr, c * cw, r * ch);
+          }
         }
       }
       return busy;
     }
     function loop(now) {
-      var busy = draw(now);
+      var busy = frame(now);
       raf = (busy || pointer) && visible ? requestAnimationFrame(loop) : null;
     }
-    function kick() { if (!raf && !reduce) raf = requestAnimationFrame(loop); }
+    function kick() { if (!raf && !reduce && geo) raf = requestAnimationFrame(loop); }
+    function showStatic() {
+      mode = "static";
+      cells.forEach(function (k) { k.reveal = 0; k.settle = 0; });
+      frame(performance.now());
+    }
     function start() {
       layout();
       t0 = performance.now();
-      if (reduce) { cells.forEach(function (k) { k.settle = 0; }); draw(t0); return; }
+      if (reduce) { showStatic(); return; }
+      mode = "roll";
       kick();
     }
     cv.addEventListener("pointermove", function (e) {
@@ -1097,17 +1154,18 @@ footer.foot .wrap span:first-child { color: var(--ink); }
       kick();
     });
     cv.addEventListener("pointerleave", function () { pointer = null; kick(); });
+    cv.addEventListener("click", function () { if (!reduce && mode === "static") { start(); } });
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) kick(); }).observe(cv);
     }
     var rt = null;
     window.addEventListener("resize", function () {
       clearTimeout(rt);
-      rt = setTimeout(function () { var w = cv.clientWidth; if (Math.abs(w - (cols * cw)) > cw * 2) { layout(); cells.forEach(function (k) { k.settle = 0; }); draw(performance.now()); } }, 200);
+      rt = setTimeout(function () { if (geo && Math.abs(cv.clientWidth - cols * cw) > cw * 2) { layout(); showStatic(); } }, 200);
     });
     var ready = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('700 100px "Syne"'), document.fonts.load('10px "JetBrains Mono"')]) : Promise.resolve();
-    var done = false;
-    function go() { if (!done) { done = true; start(); } }
+    var started = false;
+    function go() { if (!started) { started = true; setTimeout(start, 250); } }
     ready.then(go, go);
     setTimeout(go, 1500);
   })();
