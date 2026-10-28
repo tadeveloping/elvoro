@@ -63,7 +63,7 @@ a { color: inherit; }
   border-radius: 999px;
   border: 1px solid var(--ink);
   background: var(--ink); color: var(--paper);
-  text-decoration: none; cursor: pointer;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
   transition: scale 140ms var(--ease-out), background-color 160ms var(--ease-out);
 }
 .btn:hover { background: #26262B; }
@@ -322,17 +322,16 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
 .qa details p { padding: 0 0 24px; color: var(--ink-2); max-width: 40em; }
 footer.foot .wrap span:first-child { color: var(--ink); }
 
-/* v2: ASCII úvod a doplnky */
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: stretch; padding-block: clamp(36px, 5vw, 72px) clamp(56px, 7vw, 96px); }
-.hero .eyebrow { margin-bottom: 0; }
-.ascii-wrap { width: 100%; min-width: 0; }
-#ascii { display: block; width: 100%; height: 120px; cursor: crosshair; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 24px clamp(32px, 5vw, 80px); align-items: end; border-top: 1px solid var(--line); padding-top: clamp(24px, 3vw, 40px); }
-.hero h1 { font-size: clamp(38px, 5vw, 70px); }
-.hero .lead { margin-top: 0; }
-.hero-side { display: grid; gap: 28px; }
-.hero .cta { margin-top: 0; }
-@media (max-width: 860px) { .hero-grid { grid-template-columns: minmax(0, 1fr); } }
+/* v3: úvod so živým smajlíkom */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 32px clamp(32px, 5vw, 72px); align-items: center; padding-block: clamp(48px, 7vw, 104px) clamp(56px, 7vw, 104px); }
+.hero h1 { font-size: clamp(40px, 5.4vw, 76px); }
+.hero-main { min-width: 0; }
+.smiley-wrap { min-width: 0; }
+#smiley { display: block; width: 100%; height: 300px; }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .smiley-wrap { order: -1; width: min(100%, 300px); }
+}
 
 .sol-text .kind .n, .steps5 .sn { font-family: "Doto", var(--mono); font-weight: 900; font-size: 30px; line-height: 1; color: var(--gold-text); }
 .sol-text .kind { align-items: center; gap: 14px; }
@@ -374,19 +373,17 @@ footer.foot .wrap span:first-child { color: var(--ink); }
 <main>
   <section class="hero" id="uvod">
     <div class="wrap">
-      <p class="eyebrow" data-in>Chcete vo firme využiť AI, ale neviete ako?</p>
-      <div class="ascii-wrap" data-in>
-        <canvas id="ascii" role="img" aria-label="Logo Elvoro poskladané zo znakov"></canvas>
-      </div>
-      <div class="hero-grid">
+      <div class="hero-main">
+        <p class="eyebrow" data-in>Chcete vo firme využiť AI, ale neviete ako?</p>
         <h1><span class="ln" data-in>Ukážeme vám kde.</span><span class="ln" data-in>A postavíme to.</span></h1>
-        <div class="hero-side">
-          <p class="lead" data-in>Zmapujeme, kde vaša firma stráca čas, a postavíme riešenie na mieru, ktoré rutinu prevezme. Od jednoduchých automatizácií po vlastný firemný systém.</p>
-          <div class="cta" data-in>
-            <a class="btn" href="#prihlaska">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
-            <a class="btn ghost" href="#riesenia">Pozrieť príklady</a>
-          </div>
+        <p class="lead" data-in>Zmapujeme, kde vaša firma stráca čas, a postavíme riešenie na mieru, ktoré rutinu prevezme. Od jednoduchých automatizácií po vlastný firemný systém.</p>
+        <div class="cta" data-in>
+          <a class="btn" href="#prihlaska">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
+          <a class="btn ghost" href="#riesenia">Pozrieť príklady</a>
         </div>
+      </div>
+      <div class="smiley-wrap" data-in>
+        <canvas id="smiley" role="img" aria-label="Smajlík Elvora zo znakov"></canvas>
       </div>
     </div>
   </section>
@@ -986,182 +983,126 @@ footer.foot .wrap span:first-child { color: var(--ink); }
   });
   showStep(load());
 
-  // ASCII logo z oficiálneho SVG: smajlík sa prikotúľa zľava, za sebou necháva písmená a zastaví ako posledné O
+  // Živý smajlík zo znakov (tvar z oficiálneho SVG): oči sledujú kurzor, žmurká, okraj jemne žije
   (function () {
-    var cv = document.getElementById("ascii");
+    var cv = document.getElementById("smiley");
     if (!cv || !cv.getContext || typeof Path2D === "undefined") return;
     var ctx = cv.getContext("2d");
     var RAMP = " .:-=+*#%@";
     var NOISE = ".:-=+*#%@01/\\<>{}[]~^";
     var INK = "#09090B", GOLD = "#A6843F";
-    // tvary z elvoro-logo-cierne.svg (súradnice písma, y hore)
-    var D_O = "M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z";
-    var LETTERS = [
-      [0, "M210 270V111H709V0H77V647H708V536H210V375H618V270Z"],
-      [749, "M210 647V111H640V0H77V647Z"],
-      [1416, "M306 0 20 647H167L412 63H366L610 647H755L472 0Z"],
-      [2171, D_O],
-      [3075, "M77 0V647H516Q591 647 646.5 626.5Q702 606 733.0 562.5Q764 519 764 451Q764 405 748.0 373.0Q732 341 703.5 321.0Q675 301 638.0 290.5Q601 280 559 277L545 285Q615 284 660.0 273.5Q705 263 727.5 235.5Q750 208 750 154V0H617V145Q617 182 604.0 202.5Q591 223 557.5 231.0Q524 239 461 239H210V0ZM210 343H516Q572 343 601.5 370.0Q631 397 631 443Q631 487 601.5 510.0Q572 533 516 533H210Z"]
-    ];
-    var P_O = new Path2D(D_O), P_L = LETTERS.map(function (l) { return [l[0], new Path2D(l[1])]; });
-    var X0 = -370, X1 = 4752, YT = 660, YB = -13;
+    var P_O = new Path2D("M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z");
     var OX = 3881, OCX = 3881 + 462, OCY = 323.5, OW = 818, OH = 673;
-    var cells = [], cols = 0, rows = 0, fs = 10, cw = 6, ch = 10.5, dpr = 1, sq = 1, s = 1, ox = 0, oy = 0;
-    var ball = null, bctx = null, ready = false;
-    var mode = "roll", t0 = 0, raf = null, visible = true, pointer = null;
-    var ROLL = 2300;
-    function rnd(str) { return str.charAt(Math.floor(Math.random() * str.length)); }
+    var cols = 0, rows = 0, fs = 9, cw = 5.4, ch = 9.5, sq = 1, s = 1, cx = 0, cy = 0, dpr = 1;
+    var off = null, o = null, lineRow = 0, lineEnd = 0;
+    var eye = { x: 0, y: 0, tx: 0, ty: 0 }, blink = 1, nextBlink = 0, blinkStart = -1;
+    var pointer = null, raf = null, visible = true, last = 0, ready = false;
     function charFor(a) { return a > 0.08 ? RAMP.charAt(Math.min(RAMP.length - 1, 1 + Math.floor(a * (RAMP.length - 1)))) : " "; }
-    function drawSmiley(o, cx, cy, angle, k) {
-      o.save();
-      o.setTransform(1, 0, 0, 1, 0, 0);
-      o.translate(cx, cy);
-      o.scale(1, sq);
-      o.rotate(angle);
-      o.scale(k, 1);
-      o.scale(s, -s);
-      o.translate(-OCX, -OCY);
-      o.fillStyle = "#000"; o.strokeStyle = "#000";
-      o.save(); o.translate(OX, 0); o.fill(P_O); o.restore();
-      o.beginPath(); o.arc(4248.9, 386.8, 36.4 * 1.25, 0, Math.PI * 2); o.fill();
-      o.beginPath(); o.arc(4415.0, 386.8, 36.4 * 1.25, 0, Math.PI * 2); o.fill();
-      o.lineWidth = 45 * 1.2; o.lineCap = "round";
-      o.beginPath(); o.moveTo(4238.3, 256.2); o.quadraticCurveTo(4334.8, 179.5, 4431.3, 256.2); o.stroke();
-      o.restore();
-    }
-    function finalX() { return ox + OCX * s; }
-    function centerY() { return oy - OCY * s * sq; }
     function layout() {
       var W = cv.clientWidth || cv.parentNode.clientWidth;
-      fs = W < 480 ? 6 : W < 900 ? 8 : 10;
+      fs = W < 300 ? 6 : W < 420 ? 7 : 9;
       cw = fs * 0.6; ch = fs * 1.05; sq = cw / ch;
       cols = Math.floor(W / cw);
-      s = (cols * 0.985) / (X1 - X0);
-      var pad = 1;
-      rows = Math.ceil(pad * 2 + (YT - YB) * s * sq);
-      ox = (cols - (X1 - X0) * s) / 2 - X0 * s;
-      oy = pad + YT * s * sq;
-      var off = document.createElement("canvas");
+      var smileCols = cols * 0.74;
+      s = smileCols / OW;
+      rows = Math.ceil(OH * s * sq + 4);
+      cx = cols - smileCols / 2 - 1;
+      cy = rows / 2;
+      lineRow = Math.round(cy);
+      lineEnd = Math.floor(cx - (OW / 2 - 40) * s);
+      off = document.createElement("canvas");
       off.width = cols; off.height = rows;
-      var o = off.getContext("2d");
-      o.setTransform(s, 0, 0, -s * sq, ox, oy);
-      o.fillStyle = "#000";
-      P_L.forEach(function (l) { o.save(); o.translate(l[0], 0); o.fill(l[1]); o.restore(); });
-      o.setTransform(1, 0, 0, 1, 0, 0);
-      drawSmiley(o, finalX(), centerY(), 0, 1);
-      var data = o.getImageData(0, 0, cols, rows).data;
-      var goldRow = Math.round(centerY());
-      var g0 = Math.floor(ox + X0 * s), g1 = Math.floor(ox + 3924 * s);
-      var oStart = ox + (OX + 53) * s;
-      cells = [];
-      for (var r = 0; r < rows; r++) {
-        for (var c = 0; c < cols; c++) {
-          var a = data[(r * cols + c) * 4 + 3] / 255;
-          var target = charFor(a), gold = false;
-          if (r === goldRow && c >= g0 && c <= g1 && target === " ") { target = "-"; gold = true; }
-          cells.push({ r: r, c: c, target: target, gold: gold, inO: c >= Math.floor(oStart) - 1 && !gold, reveal: Infinity, settle: 0, ch: rnd(NOISE) });
-        }
-      }
-      ball = document.createElement("canvas");
-      ball.width = cols; ball.height = rows;
-      bctx = ball.getContext("2d");
+      o = off.getContext("2d");
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       cv.style.height = Math.round(rows * ch) + "px";
       cv.width = Math.round(cv.clientWidth * dpr);
       cv.height = Math.round(rows * ch * dpr);
       ready = true;
     }
-    function ease(p) { return 1 - Math.pow(1 - p, 3); }
+    function paintShape() {
+      o.setTransform(1, 0, 0, 1, 0, 0);
+      o.clearRect(0, 0, cols, rows);
+      o.translate(cx, cy);
+      o.scale(s, -s * sq);
+      o.translate(-OCX, -OCY);
+      o.fillStyle = "#000"; o.strokeStyle = "#000";
+      o.save(); o.translate(OX, 0); o.fill(P_O); o.restore();
+      var r = 36.4 * 1.3;
+      [4248.9, 4415.0].forEach(function (ex) {
+        o.beginPath();
+        o.ellipse(ex + eye.x, 386.8 + eye.y, r, Math.max(4, r * blink), 0, 0, Math.PI * 2);
+        o.fill();
+      });
+      o.lineWidth = 45 * 1.25; o.lineCap = "round";
+      o.beginPath(); o.moveTo(4238.3 + eye.x * 0.3, 256.2); o.quadraticCurveTo(4334.8 + eye.x * 0.3, 179.5, 4431.3 + eye.x * 0.3, 256.2); o.stroke();
+      return o.getImageData(0, 0, cols, rows).data;
+    }
     function frame(now) {
-      var t = now - t0, busy = false, bd = null, bx = null;
+      // oči
+      if (pointer) {
+        var b = cv.getBoundingClientRect();
+        var px = (pointer.x - b.left) / cw - cx, py = (pointer.y - b.top) / ch - cy;
+        var d = Math.sqrt(px * px + py * py) || 1;
+        var k = Math.min(1, d / 40);
+        eye.tx = (px / d) * 70 * k; eye.ty = -(py / d) * 55 * k;
+      } else {
+        var tt = now / 1000;
+        eye.tx = Math.sin(tt * 0.6) * 45; eye.ty = Math.sin(tt * 0.37) * 18;
+      }
+      eye.x += (eye.tx - eye.x) * 0.12; eye.y += (eye.ty - eye.y) * 0.12;
+      // žmurknutie
+      if (!nextBlink) nextBlink = now + 1800 + Math.random() * 2500;
+      if (blinkStart < 0 && now > nextBlink) blinkStart = now;
+      if (blinkStart >= 0) {
+        var p = (now - blinkStart) / 220;
+        blink = p < 0.5 ? 1 - p * 2 * 0.92 : 0.08 + (p - 0.5) * 2 * 0.92;
+        if (p >= 1) { blink = 1; blinkStart = -1; nextBlink = now + 2500 + Math.random() * 3500; }
+      }
+      var data = paintShape();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, cv.width, cv.height);
       ctx.font = fs + 'px "JetBrains Mono", ui-monospace, Menlo, monospace';
       ctx.textBaseline = "top";
-      if (mode === "roll") {
-        var p = Math.min(1, t / ROLL);
-        var fx = finalX(), startX = -OH * s * 0.6;
-        bx = startX + (fx - startX) * ease(p);
-        // počas kotúľania je O kruh, na konci sa roztiahne do tvaru písmena
-        var circ = OH / OW, m = Math.max(0, Math.min(1, (p - 0.82) / 0.18));
-        var angle = (bx - fx) / (OH / 2 * s);
-        bctx.setTransform(1, 0, 0, 1, 0, 0);
-        bctx.clearRect(0, 0, cols, rows);
-        drawSmiley(bctx, bx, centerY(), angle, circ + (1 - circ) * m);
-        bd = bctx.getImageData(0, 0, cols, rows).data;
-        if (p >= 1) { mode = "static"; cells.forEach(function (k) { if (k.reveal === Infinity) k.reveal = t; }); }
-        else busy = true;
-      }
-      var edge = bx === null ? Infinity : bx - OH * s * 0.45;
-      for (var i = 0; i < cells.length; i++) {
-        var k = cells[i];
-        if (k.reveal === Infinity && !k.inO && k.c < edge) { k.reveal = t; k.settle = t + 90 + Math.random() * 260; }
-        if (mode === "roll" && k.inO) continue;
-        if (pointer && mode === "static") {
-          var dx = k.c * cw - pointer.x, dy = k.r * ch - pointer.y;
-          if (dx * dx + dy * dy < 2600) k.settle = t + 180 + Math.random() * 380;
-        }
-        if (k.reveal === Infinity || k.target === " ") continue;
-        if (t < k.settle) {
-          busy = true;
-          if (Math.random() < 0.35) k.ch = rnd(NOISE);
-          ctx.fillStyle = k.gold ? GOLD : "#8A867E";
-          ctx.fillText(k.ch, k.c * cw, k.r * ch);
-        } else {
-          ctx.fillStyle = k.gold ? GOLD : INK;
-          ctx.fillText(k.target, k.c * cw, k.r * ch);
+      ctx.fillStyle = GOLD;
+      for (var c = 0; c < lineEnd; c++) ctx.fillText("-", c * cw, (cy - 0.5) * ch);
+      for (var r = 0; r < rows; r++) {
+        for (var c2 = 0; c2 < cols; c2++) {
+          var a = data[(r * cols + c2) * 4 + 3] / 255;
+          var chr = charFor(a);
+          if (chr === " ") continue;
+          var live = a < 0.9 && Math.random() < 0.06;
+          ctx.fillStyle = live ? "#8A867E" : INK;
+          ctx.fillText(live ? NOISE.charAt(Math.floor(Math.random() * NOISE.length)) : chr, c2 * cw, r * ch);
         }
       }
-      if (bd) {
-        ctx.fillStyle = INK;
-        var span = Math.ceil(OW * s);
-        var c0 = Math.max(0, Math.floor(bx - span)), c1 = Math.min(cols, Math.ceil(bx + span));
-        for (var r = 0; r < rows; r++) {
-          for (var c = c0; c < c1; c++) {
-            var chr = charFor(bd[(r * cols + c) * 4 + 3] / 255);
-            if (chr !== " ") ctx.fillText(chr, c * cw, r * ch);
-          }
-        }
-      }
-      return busy;
     }
     function loop(now) {
-      var busy = frame(now);
-      raf = (busy || pointer) && visible ? requestAnimationFrame(loop) : null;
-    }
-    function kick() { if (!raf && !reduce && ready) raf = requestAnimationFrame(loop); }
-    function showStatic() {
-      mode = "static";
-      cells.forEach(function (k) { k.reveal = 0; k.settle = 0; });
-      frame(performance.now());
+      if (now - last > 33) { last = now; frame(now); }
+      raf = visible ? requestAnimationFrame(loop) : null;
     }
     function start() {
       layout();
-      t0 = performance.now();
-      if (reduce) { showStatic(); return; }
-      mode = "roll";
-      kick();
+      if (reduce) { frame(0); return; }
+      if (!raf) raf = requestAnimationFrame(loop);
     }
-    cv.addEventListener("pointermove", function (e) {
-      var b = cv.getBoundingClientRect();
-      pointer = { x: e.clientX - b.left, y: e.clientY - b.top };
-      kick();
-    });
-    cv.addEventListener("pointerleave", function () { pointer = null; kick(); });
-    cv.addEventListener("click", function () { if (!reduce && mode === "static") start(); });
+    window.addEventListener("pointermove", function (e) { pointer = { x: e.clientX, y: e.clientY }; });
+    document.addEventListener("pointerleave", function () { pointer = null; });
     if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) kick(); }).observe(cv);
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        if (visible && ready && !reduce && !raf) raf = requestAnimationFrame(loop);
+      }).observe(cv);
     }
     var rt = null;
     window.addEventListener("resize", function () {
       clearTimeout(rt);
-      rt = setTimeout(function () { if (ready && Math.abs(cv.clientWidth - cols * cw) > cw * 2) { layout(); showStatic(); } }, 200);
+      rt = setTimeout(function () { if (ready && Math.abs(cv.clientWidth - cols * cw) > cw * 2) { layout(); frame(performance.now()); } }, 200);
     });
     var fontsReady = document.fonts && document.fonts.load ? document.fonts.load('10px "JetBrains Mono"') : Promise.resolve();
     var started = false;
-    function go() { if (!started) { started = true; setTimeout(start, 250); } }
+    function go() { if (!started) { started = true; start(); } }
     fontsReady.then(go, go);
-    setTimeout(go, 1500);
+    setTimeout(go, 1200);
   })();
 
   // Popisky sekcií sa pri prvom zobrazení „dešifrujú“
