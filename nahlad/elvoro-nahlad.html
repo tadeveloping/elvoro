@@ -9,7 +9,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Doto:wght@700;900&display=swap">
 <style>
 /* Layout: biela redakčná plocha, ľavá os textu, odvážnosť len v ukážkach riešení */
 :root {
@@ -29,6 +29,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--paper);
   color: var(--ink);
@@ -62,11 +63,11 @@ a { color: inherit; }
   border-radius: 999px;
   border: 1px solid var(--ink);
   background: var(--ink); color: var(--paper);
-  text-decoration: none; cursor: pointer;
-  transition: transform 140ms var(--ease-out), background-color 160ms var(--ease-out);
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: scale 140ms var(--ease-out), background-color 160ms var(--ease-out);
 }
 .btn:hover { background: #26262B; }
-.btn:active { transform: scale(0.97); }
+.btn:active { scale: 0.97; }
 .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn.ghost:hover { border-color: var(--ink); }
 .btn.small { font-size: 14px; padding: 11px 18px; }
@@ -76,13 +77,9 @@ a { color: inherit; }
 /* Hlavička */
 header.top { border-bottom: 1px solid var(--line); }
 header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; }
-.logo {
-  font: 700 21px/1 var(--display);
-  letter-spacing: .14em;
-  padding-bottom: 7px;
-  border-bottom: 2px solid var(--gold);
-  text-decoration: none;
-}
+.logo { display: inline-flex; text-decoration: none; }
+.logo-svg { display: block; height: 26px; width: auto; }
+@media (max-width: 420px) { .logo-svg { height: 20px; } }
 nav.links { display: flex; align-items: center; gap: 28px; font-size: 15px; color: var(--ink-2); }
 nav.links a { text-decoration: none; }
 nav.links a:hover { color: var(--ink); }
@@ -239,7 +236,128 @@ section.block > .wrap { padding-block: clamp(64px, 9vw, 120px); }
 footer.foot { border-top: 1px solid var(--line); }
 footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 400 12px/1.5 var(--mono); color: var(--muted); }
 
+/* Z praxe */
+.cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.case { border: 1px dashed #CFCAC0; border-radius: 10px; padding: clamp(20px, 3vw, 32px); display: grid; gap: 18px; align-content: start; }
+.case .ph { font: 500 12px/1.5 var(--mono); color: var(--muted); }
+.case dl { margin: 0; display: grid; gap: 14px; }
+.case dt { font: 500 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.case dd { margin: 4px 0 0; color: var(--ink-2); }
+@media (max-width: 760px) { .cases { grid-template-columns: minmax(0, 1fr); } }
+
+/* Ako to prebieha */
+.steps5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.steps5 li { padding: 24px 20px 8px 0; display: grid; gap: 10px; align-content: start; }
+.steps5 li + li { padding-left: 20px; border-left: 1px solid var(--line); }
+.steps5 .sn { font: 500 13px/1 var(--mono); color: var(--gold-text); }
+.steps5 h3 { font: 700 20px/1.15 var(--display); letter-spacing: -.02em; }
+.steps5 p { font-size: 15px; color: var(--ink-2); }
+@media (max-width: 960px) {
+  .steps5 { grid-template-columns: minmax(0, 1fr); }
+  .steps5 li, .steps5 li + li { padding: 20px 0; border-left: 0; border-bottom: 1px solid var(--line); grid-template-columns: 32px minmax(0, 1fr); column-gap: 12px; }
+  .steps5 li .sn { grid-row: span 2; padding-top: 4px; }
+}
+
+/* Kto stojí za Elvorom */
+.about { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: clamp(28px, 5vw, 80px); align-items: center; padding-block: clamp(64px, 9vw, 120px); }
+.portrait.small { aspect-ratio: 4 / 5; }
+.about-text { display: grid; gap: 20px; }
+.about-text h2 { font: 700 clamp(30px, 4vw, 50px)/1.04 var(--display); letter-spacing: -.03em; text-wrap: balance; }
+.about-text > p { color: var(--ink-2); max-width: 38em; }
+.about-text blockquote { margin: 8px 0 0; padding-left: 20px; border-left: 2px solid var(--gold); display: grid; gap: 8px; }
+.about-text blockquote p { font: 600 clamp(19px, 1.8vw, 23px)/1.35 var(--display); letter-spacing: -.015em; }
+.about-text blockquote footer { font: 400 13px/1.4 var(--mono); color: var(--muted); }
+@media (max-width: 860px) { .about { grid-template-columns: minmax(0, 1fr); } .portrait.small { aspect-ratio: 16 / 10; } }
+
+/* Prihláška */
+.apply { background: var(--soft); }
+.wiz { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: clamp(20px, 4vw, 48px); max-width: 820px; display: grid; gap: 28px; }
+.wiz-top { display: grid; gap: 10px; }
+.wiz-prog { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.wiz-prog div { height: 100%; width: 12.5%; background: var(--ink); transition: width 300ms var(--ease-out); }
+.q { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 18px; }
+.q > div[data-path] { display: grid; gap: 18px; }
+.qt { margin: 0; font: 700 clamp(24px, 3vw, 34px)/1.12 var(--display); letter-spacing: -.025em; text-wrap: balance; }
+.sub { font-size: 15px; color: var(--ink-2); }
+.sub.fine, .fine { font-size: 13px; color: var(--muted); }
+.opts { display: flex; gap: 10px; flex-wrap: wrap; }
+.opts.col { flex-direction: column; }
+.opts.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { .opts.grid { grid-template-columns: minmax(0, 1fr); } }
+.opt { position: relative; cursor: pointer; }
+.opt input { position: absolute; opacity: 0; pointer-events: none; }
+.opt > span { display: grid; gap: 4px; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; transition: border-color 150ms var(--ease-out), background-color 150ms var(--ease-out); }
+.opt.pill > span { border-radius: 999px; padding: 11px 16px; font-size: 15px; height: 100%; align-content: center; }
+.opt b { font-weight: 600; }
+.opt small { font-size: 14px; color: var(--muted); }
+.opt:hover > span { border-color: #BDB8AD; }
+.opt input:checked + span { border-color: var(--ink); background: var(--soft); box-shadow: inset 0 0 0 1px var(--ink); }
+.opt input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.fields .fld:nth-child(3) { grid-column: 1 / -1; }
+@media (max-width: 640px) { .fields { grid-template-columns: minmax(0, 1fr); } }
+.fld { display: grid; gap: 6px; }
+.fld > span { font: 500 12px/1.4 var(--mono); letter-spacing: .04em; color: var(--muted); }
+.fld input, .fld textarea { font: 400 17px/1.5 var(--body); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; width: 100%; resize: vertical; }
+.fld input:focus, .fld textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.fld input::placeholder, .fld textarea::placeholder { color: #9A9AA2; }
+.err { margin: 0; font-size: 14px; color: #A3261C; }
+.wiz-nav { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; }
+.wiz-nav #wizNext, .wiz-nav #wizSend { margin-left: auto; }
+.done { display: grid; gap: 14px; }
+.done h3 { font: 700 clamp(26px, 3vw, 36px)/1.1 var(--display); letter-spacing: -.025em; }
+.opps { display: grid; gap: 8px; }
+.opps li { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; }
+.opps li svg.i { color: var(--gold); margin-top: 2px; }
+.done .btn { justify-self: start; }
+
+/* FAQ */
+.faq .sec-head { margin-bottom: 32px; }
+.qa { border-top: 1px solid var(--ink); max-width: 860px; }
+.qa details { border-bottom: 1px solid var(--line); }
+.qa summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 22px 0; font: 600 clamp(18px, 1.8vw, 21px)/1.3 var(--display); letter-spacing: -.015em; }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after { content: "+"; font: 400 22px/1 var(--body); color: var(--muted); transition: transform 200ms var(--ease-out); }
+.qa details[open] summary::after { transform: rotate(45deg); }
+.qa details p { padding: 0 0 24px; color: var(--ink-2); max-width: 40em; }
+footer.foot .wrap span:first-child { color: var(--ink); }
+
+/* v3: úvod so živým smajlíkom */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 32px clamp(32px, 5vw, 72px); align-items: center; padding-block: clamp(48px, 7vw, 104px) clamp(56px, 7vw, 104px); }
+.hero h1 { font-size: clamp(40px, 5.4vw, 76px); }
+.hero-main { min-width: 0; }
+.smiley-wrap { min-width: 0; }
+#smiley { display: block; width: 100%; height: 300px; }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .smiley-wrap { order: -1; width: min(100%, 300px); }
+}
+
+.sol-text .kind .n, .steps5 .sn { font-family: "Doto", var(--mono); font-weight: 900; font-size: 30px; line-height: 1; color: var(--gold-text); }
+.sol-text .kind { align-items: center; gap: 14px; }
+.steps5 .sn { font-size: 34px; }
+
+.stage { background-color: var(--soft); background-image: radial-gradient(#DCD7CC 1px, transparent 1.3px); background-size: 14px 14px; }
+
+@property --beam { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.wiz { position: relative; }
+.wiz::before {
+  content: ""; position: absolute; inset: -1px; border-radius: 13px; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--beam), transparent 0deg 300deg, var(--gold) 335deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: beam 7s linear infinite;
+}
+@keyframes beam { to { --beam: 360deg; } }
+
+/* Otázka na AI vo firemnom systéme */
+.sys-ask { border-top: 1px solid var(--line); padding: 12px 14px; display: grid; gap: 4px; }
+.sys-ask .who { font: 500 11px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--gold-text); }
+.sys-ask .q { font-size: 13.5px; font-weight: 600; }
+.sys-ask .a { font-size: 13.5px; color: var(--ink-2); }
+
 @media (prefers-reduced-motion: reduce) {
+  .wiz::before { animation: none; display: none; }
   *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
 }
 </style>
@@ -248,11 +366,12 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#uvod" aria-label="Elvoro">ELVORO</a>
+    <a class="logo" href="#uvod"><svg class="logo-svg" viewBox="-380 -675 5142 700" role="img" aria-label="Elvoro"><g transform="scale(1 -1)"><rect x="-370.0" y="312.5" width="4294.0" height="22.0" fill="#A6843F"/><path transform="translate(0.0 0)" d="M210 270V111H709V0H77V647H708V536H210V375H618V270Z" fill="#09090B"/><path transform="translate(749.0 0)" d="M210 647V111H640V0H77V647Z" fill="#09090B"/><path transform="translate(1416.0 0)" d="M306 0 20 647H167L412 63H366L610 647H755L472 0Z" fill="#09090B"/><path transform="translate(2171.0 0)" d="M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z" fill="#09090B"/><path transform="translate(3075.0 0)" d="M77 0V647H516Q591 647 646.5 626.5Q702 606 733.0 562.5Q764 519 764 451Q764 405 748.0 373.0Q732 341 703.5 321.0Q675 301 638.0 290.5Q601 280 559 277L545 285Q615 284 660.0 273.5Q705 263 727.5 235.5Q750 208 750 154V0H617V145Q617 182 604.0 202.5Q591 223 557.5 231.0Q524 239 461 239H210V0ZM210 343H516Q572 343 601.5 370.0Q631 397 631 443Q631 487 601.5 510.0Q572 533 516 533H210Z" fill="#09090B"/><path transform="translate(3881.0 0)" d="M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z" fill="#09090B"/><circle cx="4248.9" cy="386.8" r="36.4" fill="#09090B"/><circle cx="4415.0" cy="386.8" r="36.4" fill="#09090B"/><path d="M4238.3 256.2 Q4334.8 179.5 4431.3 256.2" stroke="#09090B" stroke-width="45.0" fill="none" stroke-linecap="round"/></g></svg></a>
     <nav class="links" aria-label="Hlavná navigácia">
       <a class="nl" href="#problemy">Čo riešime</a>
       <a class="nl" href="#riesenia">Príklady</a>
-      <a class="btn small" href="#napad">Zistiť, či sme pre seba</a>
+      <a class="nl" href="#postup">Ako to prebieha</a>
+      <a class="btn small" href="#prihlaska">Zistiť, či sme pre seba</a>
     </nav>
   </div>
 </header>
@@ -260,20 +379,18 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
 <main>
   <section class="hero" id="uvod">
     <div class="wrap">
-      <div>
+      <div class="hero-main">
         <p class="eyebrow" data-in>Chcete vo firme využiť AI, ale neviete ako?</p>
         <h1><span class="ln" data-in>Ukážeme vám kde.</span><span class="ln" data-in>A postavíme to.</span></h1>
         <p class="lead" data-in>Zmapujeme, kde vaša firma stráca čas, a postavíme riešenie na mieru, ktoré rutinu prevezme. Od jednoduchých automatizácií po vlastný firemný systém.</p>
         <div class="cta" data-in>
-          <a class="btn" href="#napad">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
+          <a class="btn" href="#prihlaska">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
           <a class="btn ghost" href="#riesenia">Pozrieť príklady</a>
         </div>
       </div>
-      <figure class="portrait" data-in>
-        <span class="ph">Fotka zakladateľa · doplniť</span>
-        <strong>Meno Priezvisko</strong>
-        <span class="ph">zakladateľ Elvora</span>
-      </figure>
+      <div class="smiley-wrap" data-in>
+        <canvas id="smiley" role="img" aria-label="Smajlík Elvora zo znakov"></canvas>
+      </div>
     </div>
   </section>
 
@@ -303,9 +420,42 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
         <p>Firmy v príkladoch sú vymyslené, postupy sú skutočné. Presne takéto riešenia staviame na mieru.</p>
       </div>
 
+      <article class="solution" id="r3">
+        <div class="sol-text">
+          <div class="kind"><span class="n">01</span><span class="label">Vlastný firemný systém</span></div>
+          <h3>Celá firma v jednom systéme. S AI, ktorá ju pozná.</h3>
+          <p>Objednávky, úlohy, sklad aj dokumenty na jednom mieste, postavené podľa toho, ako vaša firma funguje. AI v systéme pozná celú firmu, takže sa jej opýtate ako kolegu. Dáta ostávajú u vás a systém je váš, nie prenajatý.</p>
+          <p>Staviame po kúskoch: najprv to, čo vás najviac brzdí. Účtovníctvo ani e-mail neprerábame, prepojíme ich.</p>
+          <p class="for">Pre: <b>firmy, ktoré prerástli Excel a päť rôznych appiek</b></p>
+          <span class="example-tag">Príklad · obchodná firma</span>
+        </div>
+        <div class="stage">
+          <div class="stage-top"><span class="label">Predtým a teraz</span><button class="btn ghost small" type="button" id="mergeBtn">Spojiť do systému</button></div>
+          <div class="merge">
+            <div class="scatter" id="scatter">
+              <span class="chip"><svg class="i"><use href="#kanban"/></svg>Úlohy v ClickUpe</span>
+              <span class="chip f"><svg class="i"><use href="#table"/></svg>objednavky_FINAL_v3.xlsx</span>
+              <span class="chip"><svg class="i"><use href="#envelope-simple"/></svg>Dohody v e-mailoch</span>
+              <span class="chip"><svg class="i"><use href="#whatsapp-logo"/></svg>Skupina „Sklad“</span>
+              <span class="chip"><svg class="i"><use href="#notebook"/></svg>Zošit na predajni</span>
+            </div>
+            <span class="arrow" aria-hidden="true"><svg class="i"><use href="#arrow-right"/></svg></span>
+            <div class="sys" id="sys">
+              <div class="sys-bar"><span>Firemný systém</span><span>3 ľudia online</span></div>
+              <div class="cols">
+                <div class="col"><h4>Objednávky</h4><div class="row">Stavebniny Kováč <em>nová</em></div><div class="row">Hotel Lipa <em>expedovaná</em></div><div class="row">Ing. Šimko <em>uhradená</em></div></div>
+                <div class="col"><h4>Úlohy</h4><div class="row">Objednať tovar <em>Jana</em></div><div class="row">Faktúra Lipa <em>Peter</em></div><div class="row">Inventúra <em>piatok</em></div></div>
+                <div class="col"><h4>Sklad</h4><div class="row">Dlažba 60×60 <em>42 m²</em></div><div class="row">Lepidlo C2 <em>18 ks</em></div><div class="row">Silikón <em>dochádza</em></div></div>
+              </div>
+                <div class="sys-ask"><span class="who">Opýtať sa</span><p class="q">Čo je so zákazkou Hotel Lipa?</p><p class="a">Expedovaná v utorok. Faktúru pripravuje Peter, termín piatok.</p></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <article class="solution" id="r1">
         <div class="sol-text">
-          <div class="kind"><span class="n">01</span><span class="label">Automatizácia</span></div>
+          <div class="kind"><span class="n">02</span><span class="label">Automatizácia</span></div>
           <h3>Dopyt sa sám zmení na ponuku, zákazníka aj faktúru.</h3>
           <p>Systém prečíta dopyt, pripraví ponuku podľa vášho cenníka, zapíše zákazníka a pripomenie, keď treba zavolať. Vy len skontrolujete a potvrdíte.</p>
           <p class="for">Pre: <b>servisné, stavebné a remeselné firmy</b></p>
@@ -333,7 +483,7 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
 
       <article class="solution" id="r2">
         <div class="sol-text">
-          <div class="kind"><span class="n">02</span><span class="label">AI hlasový agent</span></div>
+          <div class="kind"><span class="n">03</span><span class="label">AI hlasový agent</span></div>
           <h3>Telefón zdvihne vždy. Aj keď vy práve nemôžete.</h3>
           <p>Agent pozná vaše služby, ceny a voľné termíny. Hovorí prirodzene, povie, že je AI, vybaví objednávku a všetko zapíše. Kto chce hovoriť s človekom, toho prepojí.</p>
           <p class="for">Pre: <b>salóny, autoservisy, reštaurácie a firmy s množstvom telefonátov</b></p>
@@ -370,37 +520,6 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
           <p class="note">Ilustračný prepis. Nahrávku so skutočným agentom doplníme.</p>
         </div>
       </article>
-
-      <article class="solution" id="r3">
-        <div class="sol-text">
-          <div class="kind"><span class="n">03</span><span class="label">Vlastný firemný systém</span></div>
-          <h3>Päť nástrojov a zošit nahradí jeden systém.</h3>
-          <p>Objednávky, úlohy aj sklad na jednom mieste, postavené presne podľa toho, ako vaša firma funguje. Každý vidí to, čo potrebuje, a nič sa nestratí v e-mailoch.</p>
-          <p class="for">Pre: <b>obchodné firmy a tímy, ktoré prerástli Excel</b></p>
-          <span class="example-tag">Príklad · obchodná firma</span>
-        </div>
-        <div class="stage">
-          <div class="stage-top"><span class="label">Predtým a teraz</span><button class="btn ghost small" type="button" id="mergeBtn">Spojiť do systému</button></div>
-          <div class="merge">
-            <div class="scatter" id="scatter">
-              <span class="chip"><svg class="i"><use href="#kanban"/></svg>Úlohy v ClickUpe</span>
-              <span class="chip f"><svg class="i"><use href="#table"/></svg>objednavky_FINAL_v3.xlsx</span>
-              <span class="chip"><svg class="i"><use href="#envelope-simple"/></svg>Dohody v e-mailoch</span>
-              <span class="chip"><svg class="i"><use href="#whatsapp-logo"/></svg>Skupina „Sklad“</span>
-              <span class="chip"><svg class="i"><use href="#notebook"/></svg>Zošit na predajni</span>
-            </div>
-            <span class="arrow" aria-hidden="true"><svg class="i"><use href="#arrow-right"/></svg></span>
-            <div class="sys" id="sys">
-              <div class="sys-bar"><span>Firemný systém</span><span>3 ľudia online</span></div>
-              <div class="cols">
-                <div class="col"><h4>Objednávky</h4><div class="row">Stavebniny Kováč <em>nová</em></div><div class="row">Hotel Lipa <em>expedovaná</em></div><div class="row">Ing. Šimko <em>uhradená</em></div></div>
-                <div class="col"><h4>Úlohy</h4><div class="row">Objednať tovar <em>Jana</em></div><div class="row">Faktúra Lipa <em>Peter</em></div><div class="row">Inventúra <em>piatok</em></div></div>
-                <div class="col"><h4>Sklad</h4><div class="row">Dlažba 60×60 <em>42 m²</em></div><div class="row">Lepidlo C2 <em>18 ks</em></div><div class="row">Silikón <em>dochádza</em></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
     </div>
   </section>
 
@@ -408,16 +527,238 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
     <div class="wrap">
       <div>
         <h2>Máte vlastný nápad? Postavíme ho.</h2>
-        <p>Napíšte nám v krátkej prihláške, čo vaša firma robí a kde stráca čas. Na prvý hovor prídeme s konkrétnymi návrhmi.</p>
+        <p>Napíšte nám v prihláške, čo vaša firma robí a kde stráca čas. Na prvý hovor prídeme s konkrétnymi návrhmi.</p>
       </div>
-      <a class="btn" href="#napad">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
+      <a class="btn" href="#prihlaska">Zistiť, či sme pre seba <svg class="i"><use href="#arrow-right"/></svg></a>
+    </div>
+  </section>
+
+  <section class="block" id="prax">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Z praxe</span>
+        <h2>Čo sa zmenilo u našich klientov.</h2>
+        <p>Len skutočné projekty a len so súhlasom klienta. Žiadne vymyslené čísla.</p>
+      </div>
+      <div class="cases">
+        <article class="case">
+          <span class="ph">Príbeh 1 · čaká na súhlas klienta</span>
+          <dl>
+            <div><dt>Firma</dt><dd>Typ firmy, veľkosť</dd></div>
+            <div><dt>Predtým</dt><dd>Čo firmu trápilo a koľko času to bralo</dd></div>
+            <div><dt>Čo sme postavili</dt><dd>Riešenie jednou vetou</dd></div>
+            <div><dt>Teraz</dt><dd>Čo sa zmenilo, slovami klienta</dd></div>
+          </dl>
+        </article>
+        <article class="case">
+          <span class="ph">Príbeh 2 · čaká na súhlas klienta</span>
+          <dl>
+            <div><dt>Firma</dt><dd>Typ firmy, veľkosť</dd></div>
+            <div><dt>Predtým</dt><dd>Čo firmu trápilo a koľko času to bralo</dd></div>
+            <div><dt>Čo sme postavili</dt><dd>Riešenie jednou vetou</dd></div>
+            <div><dt>Teraz</dt><dd>Čo sa zmenilo, slovami klienta</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="postup">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Ako to prebieha</span>
+        <h2>Od prihlášky po fungujúce riešenie.</h2>
+        <p>Mapovanie začína už vo formulári. Na prvý hovor preto neprichádzame s otázkami, ale s návrhmi.</p>
+      </div>
+      <ol class="steps5">
+        <li><span class="sn">1</span><h3>Prihláška</h3><p>Opíšete, čo vaša firma robí a kde stráca čas. Zaberie to pár minút.</p></li>
+        <li><span class="sn">2</span><h3>Pripravíme sa</h3><p>Prejdeme vaše odpovede a nájdeme miesta, kde sa dá ušetriť najviac.</p></li>
+        <li><span class="sn">3</span><h3>Hovor</h3><p>Ukážeme konkrétne návrhy a spolu vyberieme, čím začať.</p></li>
+        <li><span class="sn">4</span><h3>Postavíme a zaučíme</h3><p>Riešenie postavíme na mieru a naučíme tím, ako s ním pracovať.</p></li>
+        <li><span class="sn">5</span><h3>Ostávame po ruke</h3><p>Keď firma rastie alebo sa niečo zmení, riešenie upravíme.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="kto">
+    <div class="wrap about">
+      <figure class="portrait small">
+        <span class="ph">Fotka zakladateľa · doplniť</span>
+      </figure>
+      <div class="about-text">
+        <span class="label">Kto stojí za Elvorom</span>
+        <h2>AI na rutinu. Hlava a kreativita zostávajú vaše.</h2>
+        <p>Elvoro založil [meno, doplniť]. Pre firmy stavia systémy, automatizácie a weby a pri každom projekte videl to isté: firmy AI chcú, ale nemajú čas ani ľudí, aby sa ju naučili samy. Preto Elvoro neučí kurzy. Riešenie postavíme a zavedieme za vás.</p>
+        <blockquote>
+          <p>„Citát zakladateľa v prvej osobe: prečo to robím a na čom mi záleží. Doplniť.“</p>
+          <footer>Meno Priezvisko, zakladateľ</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="block apply" id="prihlaska">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">Prihláška</span>
+        <h2>Zistime, či sme pre seba.</h2>
+        <p>Pár otázok o vašej firme. Čím presnejšie odpoviete, tým konkrétnejší návrh prinesieme na prvý hovor. Rozpracované odpovede sa uložia vo vašom prehliadači.</p>
+      </div>
+
+      <form class="wiz" id="wiz" novalidate>
+        <div class="wiz-top">
+          <span class="label" id="wizCount">Krok 1 z 8</span>
+          <div class="wiz-prog" aria-hidden="true"><div id="wizBar"></div></div>
+        </div>
+
+        <fieldset class="q" data-step="1">
+          <h3 class="qt">S čím vám môžeme pomôcť?</h3>
+          <div class="opts col">
+            <label class="opt"><input type="radio" name="cesta" value="A" id="cA"><span><b>Zjednodušiť prácu vo firme</b><small>Automatizácie a AI tam, kde sa stráca čas</small></span></label>
+            <label class="opt"><input type="radio" name="cesta" value="B" id="cB"><span><b>Systém na mieru</b><small>Nahradiť rozhádzané nástroje a Excely jedným systémom</small></span></label>
+            <label class="opt"><input type="radio" name="cesta" value="C" id="cC"><span><b>Mám nápad na projekt</b><small>Viem, čo chcem postaviť, hľadám, kto to zrealizuje</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-step="2" hidden>
+          <h3 class="qt">Povedzte nám o firme.</h3>
+          <div class="fields">
+            <label class="fld"><span>Názov firmy</span><input type="text" id="firma" name="firma" autocomplete="organization"></label>
+            <label class="fld"><span>Web (ak máte)</span><input type="text" id="web" name="web" inputmode="url" placeholder="www."></label>
+          </div>
+          <p class="sub">Koľko ľudí vo firme pracuje?</p>
+          <div class="opts row">
+            <label class="opt pill"><input type="radio" name="velkost" value="1-5" id="v1"><span>1 až 5</span></label>
+            <label class="opt pill"><input type="radio" name="velkost" value="6-20" id="v2"><span>6 až 20</span></label>
+            <label class="opt pill"><input type="radio" name="velkost" value="21-50" id="v3"><span>21 až 50</span></label>
+            <label class="opt pill"><input type="radio" name="velkost" value="51-250" id="v4"><span>51 až 250</span></label>
+            <label class="opt pill"><input type="radio" name="velkost" value="250+" id="v5"><span>viac ako 250</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-step="3" hidden>
+          <h3 class="qt">Čo vaša firma robí a kto sú vaši zákazníci?</h3>
+          <label class="fld"><span>Stačia 2 až 3 vety</span><textarea id="coRobite" name="coRobite" rows="4" placeholder="Napríklad: Montujeme kúrenie pre rodinné domy a menšie firmy v okolí Nitry."></textarea></label>
+        </fieldset>
+
+        <fieldset class="q" data-step="4" hidden>
+          <div data-path="A">
+            <h3 class="qt">Čo vám zaberá najviac času?</h3>
+            <p class="sub">Vyberte všetko, čo platí.</p>
+            <div class="opts grid">
+              <label class="opt pill"><input type="checkbox" name="cas" value="emaily" id="t1"><span>E-maily a komunikácia</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="ponuky" id="t2"><span>Ponuky a kalkulácie</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="faktury" id="t3"><span>Faktúry a administratíva</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="objednavky" id="t4"><span>Objednávky a sklad</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="planovanie" id="t5"><span>Plánovanie a termíny</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="reporty" id="t6"><span>Reporty a tabuľky</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="telefony" id="t7"><span>Telefonáty zákazníkov</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="znalosti" id="t8"><span>Zaúčanie a hľadanie informácií</span></label>
+              <label class="opt pill"><input type="checkbox" name="cas" value="obsah" id="t9"><span>Obsah a sociálne siete</span></label>
+            </div>
+          </div>
+          <div data-path="B" hidden>
+            <h3 class="qt">Čo dnes používate?</h3>
+            <p class="sub">Vyberte všetko, čo platí.</p>
+            <div class="opts grid">
+              <label class="opt pill"><input type="checkbox" name="nastroje" value="Excel alebo Google Tabuľky" id="n1"><span>Excel alebo Google Tabuľky</span></label>
+              <label class="opt pill"><input type="checkbox" name="nastroje" value="ClickUp, Asana alebo Trello" id="n2"><span>ClickUp, Asana, Trello</span></label>
+              <label class="opt pill"><input type="checkbox" name="nastroje" value="e-maily" id="n3"><span>E-maily</span></label>
+              <label class="opt pill"><input type="checkbox" name="nastroje" value="WhatsApp skupiny" id="n4"><span>WhatsApp skupiny</span></label>
+              <label class="opt pill"><input type="checkbox" name="nastroje" value="CRM" id="n5"><span>CRM</span></label>
+              <label class="opt pill"><input type="checkbox" name="nastroje" value="papier" id="n6"><span>Papier a zošity</span></label>
+            </div>
+          </div>
+          <div data-path="C" hidden>
+            <h3 class="qt">Opíšte váš nápad.</h3>
+            <label class="fld"><span>Čo by to malo robiť a pre koho</span><textarea id="napadText" name="napadText" rows="4"></textarea></label>
+            <p class="sub">Čo už máte?</p>
+            <div class="opts row">
+              <label class="opt pill"><input type="radio" name="mame" value="nic" id="m1"><span>Len nápad</span></label>
+              <label class="opt pill"><input type="radio" name="mame" value="nacrt" id="m2"><span>Náčrt alebo zadanie</span></label>
+              <label class="opt pill"><input type="radio" name="mame" value="dizajn" id="m3"><span>Dizajn</span></label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-step="5" hidden>
+          <h3 class="qt">Opíšte jednu úlohu, ktorá vás najviac zdržuje.</h3>
+          <label class="fld"><span>Kto ju robí, ako často a ako dlho trvá</span><textarea id="uloha" name="uloha" rows="4" placeholder="Napríklad: Každý piatok Jana tri hodiny prepisuje objednávky z e-mailov do Excelu."></textarea></label>
+        </fieldset>
+
+        <fieldset class="q" data-step="6" hidden>
+          <h3 class="qt">Ako je na tom vaša firma s AI?</h3>
+          <div class="opts col">
+            <label class="opt"><input type="radio" name="ai" value="nie" id="a1"><span><b>Zatiaľ nepoužívame</b></span></label>
+            <label class="opt"><input type="radio" name="ai" value="vlastna" id="a2"><span><b>Ľudia si ju skúšajú na vlastnú päsť</b></span></label>
+            <label class="opt"><input type="radio" name="ai" value="nechytilo" id="a3"><span><b>Skúsili sme, ale nechytilo sa to</b></span></label>
+            <label class="opt"><input type="radio" name="ai" value="aktivne" id="a4"><span><b>Používame ju aktívne</b></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-step="7" hidden>
+          <h3 class="qt">Kedy chcete začať?</h3>
+          <div class="opts row">
+            <label class="opt pill"><input type="radio" name="kedy" value="hned" id="k1"><span>Hneď</span></label>
+            <label class="opt pill"><input type="radio" name="kedy" value="mesiac" id="k2"><span>Do mesiaca</span></label>
+            <label class="opt pill"><input type="radio" name="kedy" value="3mesiace" id="k3"><span>Do 3 mesiacov</span></label>
+            <label class="opt pill"><input type="radio" name="kedy" value="zistujeme" id="k4"><span>Zatiaľ zisťujeme</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="q" data-step="8" hidden>
+          <h3 class="qt">Kam sa vám máme ozvať?</h3>
+          <div class="fields">
+            <label class="fld"><span>Meno a priezvisko</span><input type="text" id="meno" name="meno" autocomplete="name"></label>
+            <label class="fld"><span>E-mail</span><input type="email" id="email" name="email" autocomplete="email"></label>
+            <label class="fld"><span>Telefón</span><input type="tel" id="telefon" name="telefon" autocomplete="tel"></label>
+          </div>
+          <p class="sub fine">Údaje použijeme len na odpoveď na vašu prihlášku. Podrobnosti v časti Ochrana osobných údajov (doplniť).</p>
+        </fieldset>
+
+        <p class="err" id="wizErr" role="alert" hidden></p>
+
+        <div class="wiz-nav">
+          <button class="btn ghost" type="button" id="wizBack" hidden>Späť</button>
+          <button class="btn" type="button" id="wizNext">Pokračovať <svg class="i"><use href="#arrow-right"/></svg></button>
+          <button class="btn" type="submit" id="wizSend" hidden>Odoslať prihlášku</button>
+        </div>
+
+        <div class="done" id="wizDone" hidden>
+          <span class="label">Prihláška prijatá</span>
+          <h3 id="doneTitle">Ďakujeme.</h3>
+          <p>Toto vidíme z vašich odpovedí už teraz. Na hovore to prejdeme podrobne:</p>
+          <ul class="opps" id="opps"></ul>
+          <p class="fine">Ozveme sa vám s návrhom termínu hovoru. Toto je náhľad, odpovede sa nikam neodosielajú.</p>
+          <button class="btn ghost small" type="button" id="wizReset">Vyplniť znova</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <div class="wrap faq">
+      <div class="sec-head">
+        <span class="label">Časté otázky</span>
+        <h2>Čo sa nás firmy pýtajú.</h2>
+      </div>
+      <div class="qa">
+        <details><summary>Koľko to stojí?</summary><p>Každé riešenie je na mieru, preto cenu navrhneme po prvom hovore, keď vieme, čo presne potrebujete. [Doplniť: od akej sumy alebo ako cenu počítame.]</p></details>
+        <details><summary>Ako dlho to trvá?</summary><p>[Doplniť: typická dĺžka od hovoru po prvé fungujúce riešenie.]</p></details>
+        <details><summary>Potrebujeme vlastného technika alebo IT oddelenie?</summary><p>Nie. Riešenie postavíme, zavedieme a tím zaučíme. Vy nám dáte prístup k tomu, čo treba prepojiť.</p></details>
+        <details><summary>Komu patria účty a dáta?</summary><p>Vám. Všetky účty sú na meno a kartu vašej firmy, my sme iba správcovia s dvojfaktorovým prihlásením. Keď spoluprácu ukončíte, všetko ostáva u vás.</p></details>
+        <details><summary>Je to bezpečné? Čo GDPR?</summary><p>Pri každom riešení určíme, aké údaje sa spracúvajú, kde a ako dlho. Ak niečo hovorí so zákazníkmi, napríklad hlasový agent, na začiatku povie, že je AI. Pri citlivých veciach odporúčame overenie vaším právnikom.</p></details>
+        <details><summary>Čo ak spoluprácu ukončíme?</summary><p>Systém zostáva vám. Beží na vašich účtoch a kód aj dokumentácia patria vám, takže ho môže ďalej rozvíjať ktokoľvek.</p></details>
+        <details><summary>Pre aké firmy je Elvoro?</summary><p>Najčastejšie pre firmy s 20 až 250 ľuďmi, ktoré chcú zmenu vo fungovaní firmy, nie ďalší nástroj. Kurzy a návody, ako si to spraviť sami, nerobíme.</p></details>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="foot">
-  <div class="wrap"><span>ELVORO · AI po ľudsky</span><span>Náhľad webu, nie finálna verzia</span></div>
+  <div class="wrap"><span>ELVORO · AI po ľudsky</span><span>Prevádzkovateľ a IČO · doplniť</span><span>Ochrana osobných údajov · doplniť</span><span>Náhľad webu, nie finálna verzia</span></div>
 </footer>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
@@ -519,6 +860,293 @@ footer.foot .wrap { padding-block: 22px; display: flex; justify-content: space-b
     }
     merged = !merged;
   });
+
+  // Prihláška: kroky, vetvy podľa cesty, okamžité príležitosti
+  var form = document.getElementById("wiz");
+  var qs = Array.prototype.slice.call(form.querySelectorAll(".q"));
+  var cur = 1;
+  var nextB = document.getElementById("wizNext"), backB = document.getElementById("wizBack"), sendB = document.getElementById("wizSend");
+  var errEl = document.getElementById("wizErr"), countEl = document.getElementById("wizCount"), barEl = document.getElementById("wizBar");
+  var KEY = "elvoro-prihlaska";
+  function val(name) { var el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ""; }
+  function vals(name) { return Array.prototype.map.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (e) { return e.value; }); }
+  function txt(id) { return (document.getElementById(id).value || "").trim(); }
+  function path() { return val("cesta") || "A"; }
+  function wizSteps() { return path() === "C" ? [1, 2, 3, 4, 6, 7, 8] : [1, 2, 3, 4, 5, 6, 7, 8]; }
+  function showStep(n, dir) {
+    cur = n;
+    var list = wizSteps(), pos = list.indexOf(n) + 1;
+    qs.forEach(function (q) { q.hidden = Number(q.dataset.step) !== n; });
+    form.querySelectorAll("[data-path]").forEach(function (d) { d.hidden = d.dataset.path !== path(); });
+    countEl.textContent = "Krok " + pos + " z " + list.length;
+    barEl.style.width = (pos / list.length * 100) + "%";
+    backB.hidden = pos === 1;
+    nextB.hidden = pos === list.length;
+    sendB.hidden = pos !== list.length;
+    errEl.hidden = true;
+    var q = form.querySelector('.q[data-step="' + n + '"]');
+    if (dir && hasGsap && !reduce) gsap.fromTo(q, { opacity: 0, x: dir * 16 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out", clearProps: "all" });
+  }
+  function check(n) {
+    var p = path();
+    if (n === 1 && !val("cesta")) return "Vyberte, s čím vám môžeme pomôcť.";
+    if (n === 2 && !txt("firma")) return "Napíšte názov firmy.";
+    if (n === 2 && !val("velkost")) return "Vyberte, koľko ľudí vo firme pracuje.";
+    if (n === 3 && txt("coRobite").length < 10) return "Napíšte aspoň jednu vetu o tom, čo robíte.";
+    if (n === 4 && p === "A" && !vals("cas").length) return "Vyberte aspoň jednu oblasť.";
+    if (n === 4 && p === "B" && !vals("nastroje").length) return "Vyberte, čo dnes používate.";
+    if (n === 4 && p === "C" && txt("napadText").length < 10) return "Opíšte nápad aspoň jednou vetou.";
+    if (n === 6 && !val("ai")) return "Vyberte jednu možnosť.";
+    if (n === 7 && !val("kedy")) return "Vyberte, kedy chcete začať.";
+    if (n === 8) {
+      if (!txt("meno")) return "Napíšte meno.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(txt("email"))) return "Napíšte e-mail v tvare meno@firma.sk.";
+    }
+    return "";
+  }
+  function save() {
+    try {
+      var d = {};
+      Array.prototype.forEach.call(form.elements, function (el) {
+        if (!el.name) return;
+        if (el.type === "radio" || el.type === "checkbox") { if (el.checked) d[el.id] = true; }
+        else if (el.value) d[el.id] = el.value;
+      });
+      d._step = cur;
+      localStorage.setItem(KEY, JSON.stringify(d));
+    } catch (e) {}
+  }
+  function load() {
+    try {
+      var d = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (!d) return 1;
+      Object.keys(d).forEach(function (id) {
+        if (id === "_step") return;
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === "radio" || el.type === "checkbox") el.checked = true; else el.value = d[id];
+      });
+      return wizSteps().indexOf(d._step) > -1 ? d._step : 1;
+    } catch (e) { return 1; }
+  }
+  function go(delta) {
+    var list = wizSteps(), i = list.indexOf(cur);
+    if (delta > 0) { var m = check(cur); if (m) { errEl.textContent = m; errEl.hidden = false; return; } }
+    var nx = list[Math.min(Math.max(i + delta, 0), list.length - 1)];
+    showStep(nx, delta);
+    save();
+  }
+  nextB.addEventListener("click", function () { go(1); });
+  backB.addEventListener("click", function () { go(-1); });
+  form.addEventListener("change", save);
+  form.addEventListener("input", save);
+  form.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target.tagName === "INPUT" && sendB.hidden) { e.preventDefault(); go(1); }
+  });
+
+  var OPP = {
+    emaily: "E-maily roztriedené automaticky, s pripraveným návrhom odpovede",
+    ponuky: "Ponuky pripravené z dopytu podľa vášho cenníka",
+    faktury: "Faktúry a administratíva bez ručného prepisovania",
+    objednavky: "Objednávky a sklad prepojené na jednom mieste",
+    planovanie: "Termíny a pripomienky, ktoré sa naplánujú samy",
+    reporty: "Reporty pre vedenie, ktoré sa pripravia samy",
+    telefony: "AI hlasový agent, ktorý zdvihne každý telefonát",
+    znalosti: "Firemný AI asistent, ktorý pozná vaše dokumenty a postupy",
+    obsah: "Príprava obsahu na sociálne siete s pomocou AI"
+  };
+  function opportunities() {
+    var p = path(), out = [];
+    if (p === "A") vals("cas").forEach(function (v) { if (OPP[v]) out.push(OPP[v]); });
+    if (p === "B") out.push("Jeden firemný systém namiesto: " + vals("nastroje").join(", "));
+    if (p === "C") out.push("Prejdeme váš nápad a navrhneme rozsah prvej verzie, ktorá sa dá rýchlo spustiť");
+    if (txt("uloha")) out.push("Úloha, ktorú ste opísali, je prvý kandidát na automatizáciu");
+    if (val("ai") === "vlastna") out.push("Pravidlá a bezpečné AI nástroje, aby firemné dáta nechodili, kam nemajú");
+    if (val("ai") === "nechytilo") out.push("Zavedenie po krokoch so zaučením tímu, aby sa AI tentoraz chytila");
+    if (["21-50", "51-250", "250+"].indexOf(val("velkost")) > -1) out.push("Zaučenie tímu po oddeleniach");
+    return out.slice(0, 5);
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var m = check(cur); if (m) { errEl.textContent = m; errEl.hidden = false; return; }
+    var meno = txt("meno").split(" ")[0];
+    document.getElementById("doneTitle").textContent = "Ďakujeme, " + meno + ".";
+    var ul = document.getElementById("opps"); ul.innerHTML = "";
+    opportunities().forEach(function (t) {
+      var li = document.createElement("li");
+      li.innerHTML = '<svg class="i"><use href="#check-circle"/></svg>';
+      var s = document.createElement("span"); s.textContent = t; li.appendChild(s); ul.appendChild(li);
+    });
+    qs.forEach(function (q) { q.hidden = true; });
+    [nextB, backB, sendB, errEl].forEach(function (b) { b.hidden = true; });
+    form.querySelector(".wiz-top").hidden = true;
+    var done = document.getElementById("wizDone"); done.hidden = false;
+    if (hasGsap && !reduce) gsap.fromTo(done.querySelectorAll(".label, h3, p, .opps li"), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.07, clearProps: "all" });
+    try { localStorage.removeItem(KEY); } catch (er) {}
+  });
+  document.getElementById("wizReset").addEventListener("click", function () {
+    form.reset();
+    document.getElementById("wizDone").hidden = true;
+    form.querySelector(".wiz-top").hidden = false;
+    showStep(1);
+  });
+  showStep(load());
+
+  // Živý smajlík zo znakov (tvar z oficiálneho SVG): oči sledujú kurzor, žmurká, okraj jemne žije
+  (function () {
+    var cv = document.getElementById("smiley");
+    if (!cv || !cv.getContext || typeof Path2D === "undefined") return;
+    var ctx = cv.getContext("2d");
+    var RAMP = " .:-=+*#%@";
+    var NOISE = ".:-=+*#%@01/\\<>{}[]~^";
+    var INK = "#09090B", GOLD = "#A6843F";
+    var P_O = new Path2D("M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z");
+    var OX = 3881, OCX = 3881 + 462, OCY = 323.5, OW = 818, OH = 673;
+    var cols = 0, rows = 0, fs = 9, cw = 5.4, ch = 9.5, sq = 1, s = 1, cx = 0, cy = 0, dpr = 1;
+    var off = null, o = null, lineRow = 0, lineEnd = 0;
+    var eye = { x: 0, y: 0, tx: 0, ty: 0 }, blink = 1, nextBlink = 0, blinkStart = -1;
+    var pointer = null, raf = null, visible = true, last = 0, ready = false;
+    function charFor(a) { return a > 0.08 ? RAMP.charAt(Math.min(RAMP.length - 1, 1 + Math.floor(a * (RAMP.length - 1)))) : " "; }
+    function layout() {
+      var W = cv.clientWidth || cv.parentNode.clientWidth;
+      fs = W < 300 ? 6 : W < 420 ? 7 : 9;
+      cw = fs * 0.6; ch = fs * 1.05; sq = cw / ch;
+      cols = Math.floor(W / cw);
+      var smileCols = cols * 0.74;
+      s = smileCols / OW;
+      rows = Math.ceil(OH * s * sq + 4);
+      cx = cols - smileCols / 2 - 1;
+      cy = rows / 2;
+      lineRow = Math.round(cy);
+      lineEnd = Math.floor(cx - (OW / 2 - 40) * s);
+      off = document.createElement("canvas");
+      off.width = cols; off.height = rows;
+      o = off.getContext("2d");
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cv.style.height = Math.round(rows * ch) + "px";
+      cv.width = Math.round(cv.clientWidth * dpr);
+      cv.height = Math.round(rows * ch * dpr);
+      ready = true;
+    }
+    function paintShape() {
+      o.setTransform(1, 0, 0, 1, 0, 0);
+      o.clearRect(0, 0, cols, rows);
+      o.translate(cx, cy);
+      o.scale(s, -s * sq);
+      o.translate(-OCX, -OCY);
+      o.fillStyle = "#000"; o.strokeStyle = "#000";
+      o.save(); o.translate(OX, 0); o.fill(P_O); o.restore();
+      var r = 36.4 * 1.3;
+      [4248.9, 4415.0].forEach(function (ex) {
+        o.beginPath();
+        o.ellipse(ex + eye.x, 386.8 + eye.y, r, Math.max(4, r * blink), 0, 0, Math.PI * 2);
+        o.fill();
+      });
+      o.lineWidth = 45 * 1.25; o.lineCap = "round";
+      o.beginPath(); o.moveTo(4238.3 + eye.x * 0.3, 256.2); o.quadraticCurveTo(4334.8 + eye.x * 0.3, 179.5, 4431.3 + eye.x * 0.3, 256.2); o.stroke();
+      return o.getImageData(0, 0, cols, rows).data;
+    }
+    function frame(now) {
+      // oči
+      if (pointer) {
+        var b = cv.getBoundingClientRect();
+        var px = (pointer.x - b.left) / cw - cx, py = (pointer.y - b.top) / ch - cy;
+        var d = Math.sqrt(px * px + py * py) || 1;
+        var k = Math.min(1, d / 40);
+        eye.tx = (px / d) * 70 * k; eye.ty = -(py / d) * 55 * k;
+      } else {
+        var tt = now / 1000;
+        eye.tx = Math.sin(tt * 0.6) * 45; eye.ty = Math.sin(tt * 0.37) * 18;
+      }
+      eye.x += (eye.tx - eye.x) * 0.12; eye.y += (eye.ty - eye.y) * 0.12;
+      // žmurknutie
+      if (!nextBlink) nextBlink = now + 1800 + Math.random() * 2500;
+      if (blinkStart < 0 && now > nextBlink) blinkStart = now;
+      if (blinkStart >= 0) {
+        var p = (now - blinkStart) / 220;
+        blink = p < 0.5 ? 1 - p * 2 * 0.92 : 0.08 + (p - 0.5) * 2 * 0.92;
+        if (p >= 1) { blink = 1; blinkStart = -1; nextBlink = now + 2500 + Math.random() * 3500; }
+      }
+      var data = paintShape();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.font = fs + 'px "JetBrains Mono", ui-monospace, Menlo, monospace';
+      ctx.textBaseline = "top";
+      ctx.fillStyle = GOLD;
+      for (var c = 0; c < lineEnd; c++) ctx.fillText("-", c * cw, (cy - 0.5) * ch);
+      for (var r = 0; r < rows; r++) {
+        for (var c2 = 0; c2 < cols; c2++) {
+          var a = data[(r * cols + c2) * 4 + 3] / 255;
+          var chr = charFor(a);
+          if (chr === " ") continue;
+          var live = a < 0.9 && Math.random() < 0.06;
+          ctx.fillStyle = live ? "#8A867E" : INK;
+          ctx.fillText(live ? NOISE.charAt(Math.floor(Math.random() * NOISE.length)) : chr, c2 * cw, r * ch);
+        }
+      }
+    }
+    function loop(now) {
+      if (now - last > 33) { last = now; frame(now); }
+      raf = visible ? requestAnimationFrame(loop) : null;
+    }
+    function start() {
+      layout();
+      if (reduce) { frame(0); return; }
+      if (!raf) raf = requestAnimationFrame(loop);
+    }
+    window.addEventListener("pointermove", function (e) { pointer = { x: e.clientX, y: e.clientY }; });
+    document.addEventListener("pointerleave", function () { pointer = null; });
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        if (visible && ready && !reduce && !raf) raf = requestAnimationFrame(loop);
+      }).observe(cv);
+    }
+    var rt = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { if (ready && Math.abs(cv.clientWidth - cols * cw) > cw * 2) { layout(); frame(performance.now()); } }, 200);
+    });
+    var fontsReady = document.fonts && document.fonts.load ? document.fonts.load('10px "JetBrains Mono"') : Promise.resolve();
+    var started = false;
+    function go() { if (!started) { started = true; start(); } }
+    fontsReady.then(go, go);
+    setTimeout(go, 1200);
+  })();
+
+  // Popisky sekcií sa pri prvom zobrazení „dešifrujú“
+  (function () {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    var GL = "ABCDEFGHIJKLMNOPRSTUVZ0123456789#%*+=";
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        var el = e.target, final = el.textContent, len = final.length, start = performance.now(), dur = 700;
+        (function step(now) {
+          var p = Math.min(1, (now - start) / dur), out = "";
+          for (var i = 0; i < len; i++) {
+            var c = final.charAt(i);
+            out += (c === " " || i < p * len) ? c : GL.charAt(Math.floor(Math.random() * GL.length));
+          }
+          el.textContent = out;
+          if (p < 1) requestAnimationFrame(step); else el.textContent = final;
+        })(start);
+      });
+    }, { threshold: 1 });
+    document.querySelectorAll(".sec-head .label, .sol-text .kind .label, .about-text .label").forEach(function (el) { io.observe(el); });
+  })();
+
+  // Magnetické tlačidlá (len myš)
+  if (hasGsap && !reduce && window.matchMedia("(pointer: fine)").matches) {
+    document.querySelectorAll(".btn").forEach(function (b) {
+      b.addEventListener("mousemove", function (e) {
+        var r = b.getBoundingClientRect();
+        gsap.to(b, { x: (e.clientX - r.left - r.width / 2) * 0.22, y: (e.clientY - r.top - r.height / 2) * 0.35, duration: 0.3, ease: "power3.out" });
+      });
+      b.addEventListener("mouseleave", function () { gsap.to(b, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.45)" }); });
+    });
+  }
 })();
 </script>
 
