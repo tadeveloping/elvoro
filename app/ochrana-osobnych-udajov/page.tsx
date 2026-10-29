@@ -44,7 +44,7 @@ export default function OchranaOsobnychUdajov() {
         <p>Používame overených poskytovateľov, ktorí údaje spracúvajú len podľa našich pokynov:</p>
         <ul>
           <li>Vercel (prevádzka webu),</li>
-          <li>Supabase (databáza prihlášok, <span className="todo">overiť región EÚ</span>),</li>
+          <li>Neon (databáza prihlášok, <span className="todo">overiť región EÚ</span>),</li>
           <li>Resend (odoslanie upozornenia o novej prihláške e-mailom).</li>
         </ul>
         <p>

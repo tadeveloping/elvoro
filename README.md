@@ -11,7 +11,7 @@ npm run dev
 
 ## Prihlášky
 - Formulár posiela na `/api/prihlaska` (`app/api/prihlaska/route.ts`).
-- Ukladá do Supabase (tabuľka `prihlasky`, migrácia v `supabase/migrations/`) a posiela upozornenie cez Resend.
+- Ukladá do databázy Neon (tabuľka `prihlasky`, schéma v `db/`, vytvorenie `npm run db:setup`) a posiela upozornenie cez Resend.
 - Premenné prostredia sú v `.env.example`. Bez nich sa prihláška mimo produkcie len vypíše do logu.
 
 ## Kde čo je

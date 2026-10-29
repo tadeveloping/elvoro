@@ -1,6 +1,7 @@
+import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
 
-// Prijme prihlášku z formulára, uloží ju do Supabase a pošle upozornenie e-mailom (Resend).
+// Prijme prihlášku z formulára, uloží ju do databázy Neon a pošle upozornenie e-mailom (Resend).
 // Kľúče sú len v premenných prostredia (.env.example), nikdy v kóde.
 
 type Prihlaska = {
@@ -76,13 +77,12 @@ export async function POST(req: Request) {
   if (!p.firma || !p.meno) return chyba("Vyplňte názov firmy a meno.", 400);
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email)) return chyba("Napíšte e-mail v tvare meno@firma.sk.", 400);
 
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const databaseUrl = process.env.DATABASE_URL;
   const resendKey = process.env.RESEND_API_KEY;
   const to = process.env.PRIHLASKY_TO;
   const from = process.env.PRIHLASKY_FROM;
 
-  if (!(supabaseUrl && supabaseKey) && !(resendKey && to && from)) {
+  if (!databaseUrl && !(resendKey && to && from)) {
     if (process.env.VERCEL_ENV === "production") {
       console.error("Prihlášky nie sú zapojené: chýbajú premenné prostredia.");
       return chyba("Prihlášku sa teraz nepodarilo odoslať. Skúste to prosím neskôr.", 503);
@@ -94,39 +94,18 @@ export async function POST(req: Request) {
   let ulozene = false;
   let odoslane = false;
 
-  if (supabaseUrl && supabaseKey) {
-    const r = await fetch(`${supabaseUrl}/rest/v1/prihlasky`, {
-      method: "POST",
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({
-        cesta: p.cesta,
-        firma: p.firma,
-        web: p.web || null,
-        velkost: p.velkost || null,
-        co_robite: p.coRobite || null,
-        cas: p.cas,
-        nastroje: p.nastroje,
-        napad: p.napad || null,
-        mame: p.mame || null,
-        uloha: p.uloha || null,
-        ai: p.ai || null,
-        kedy: p.kedy || null,
-        meno: p.meno,
-        email: p.email,
-        telefon: p.telefon || null,
-        prilezitosti: p.prilezitosti,
-      }),
-    }).catch((e) => {
-      console.error("Supabase nedostupný:", e);
-      return null;
-    });
-    ulozene = !!r && r.ok;
-    if (r && !r.ok) console.error("Supabase odmietol prihlášku:", r.status, await r.text());
+  if (databaseUrl) {
+    try {
+      const sql = neon(databaseUrl);
+      await sql`
+        insert into prihlasky (cesta, firma, web, velkost, co_robite, cas, nastroje, napad, mame, uloha, ai, kedy, meno, email, telefon, prilezitosti)
+        values (${p.cesta}, ${p.firma}, ${p.web || null}, ${p.velkost || null}, ${p.coRobite || null}, ${p.cas}, ${p.nastroje},
+                ${p.napad || null}, ${p.mame || null}, ${p.uloha || null}, ${p.ai || null}, ${p.kedy || null},
+                ${p.meno}, ${p.email}, ${p.telefon || null}, ${p.prilezitosti})`;
+      ulozene = true;
+    } catch (e) {
+      console.error("Prihlášku sa nepodarilo uložiť do databázy:", e);
+    }
   }
 
   if (resendKey && to && from) {
@@ -150,7 +129,7 @@ export async function POST(req: Request) {
       "Príležitosti, ktoré videl na webe:",
       ...p.prilezitosti.map((x) => `- ${x}`),
       "",
-      ulozene ? "Uložené v Supabase (tabuľka prihlasky)." : "POZOR: do databázy sa neuložila, údaje sú len v tomto e-maile.",
+      ulozene ? "Uložené v databáze (tabuľka prihlasky)." : "POZOR: do databázy sa neuložila, údaje sú len v tomto e-maile.",
     ].filter((x): x is string => x !== null);
 
     const r = await fetch("https://api.resend.com/emails", {

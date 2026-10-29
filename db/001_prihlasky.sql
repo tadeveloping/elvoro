@@ -1,5 +1,5 @@
--- Prihlášky firiem z webu elvoro. Zapisuje do nich len server webu cez service role kľúč,
--- preto RLS bez politík: verejný (anon) kľúč nevidí ani nezapíše nič.
+-- Prihlášky firiem z webu elvoro (databáza Neon). Zapisuje do nich len server webu.
+-- Spustenie: npm run db:setup (potrebuje DATABASE_URL).
 create table if not exists public.prihlasky (
   id uuid primary key default gen_random_uuid(),
   vytvorene timestamptz not null default now(),
@@ -21,7 +21,5 @@ create table if not exists public.prihlasky (
   telefon text,
   prilezitosti text[] not null default '{}'
 );
-
-alter table public.prihlasky enable row level security;
 
 create index if not exists prihlasky_vytvorene_idx on public.prihlasky (vytvorene desc);

@@ -62,9 +62,42 @@ export default function Home() {
               <p>Firmy v príkladoch sú vymyslené, postupy sú skutočné. Presne takéto riešenia staviame na mieru.</p>
             </div>
 
+            <article className="solution" id="r3">
+              <div className="sol-text">
+                <div className="kind"><span className="n">01</span><span className="label">Vlastný firemný systém</span></div>
+                <h3>Celá firma v jednom systéme. S AI, ktorá ju pozná.</h3>
+                <p>Objednávky, úlohy, sklad aj dokumenty na jednom mieste, postavené podľa toho, ako vaša firma funguje. AI v systéme pozná celú firmu, takže sa jej opýtate ako kolegu. Dáta ostávajú u vás a systém je váš, nie prenajatý.</p>
+                <p>Staviame po kúskoch: najprv to, čo vás najviac brzdí. Účtovníctvo ani e-mail neprerábame, prepojíme ich.</p>
+                <p className="for">Pre: <b>firmy, ktoré prerástli Excel a päť rôznych appiek</b></p>
+                <span className="example-tag">Príklad · obchodná firma</span>
+              </div>
+              <div className="stage">
+                <div className="stage-top"><span className="label">Predtým a teraz</span><button className="btn ghost small" type="button" id="mergeBtn">Spojiť do systému</button></div>
+                <div className="merge">
+                  <div className="scatter" id="scatter">
+                    <span className="chip"><svg className="i"><use href="#kanban"/></svg>Úlohy v ClickUpe</span>
+                    <span className="chip f"><svg className="i"><use href="#table"/></svg>objednavky_FINAL_v3.xlsx</span>
+                    <span className="chip"><svg className="i"><use href="#envelope-simple"/></svg>Dohody v e-mailoch</span>
+                    <span className="chip"><svg className="i"><use href="#whatsapp-logo"/></svg>Skupina „Sklad“</span>
+                    <span className="chip"><svg className="i"><use href="#notebook"/></svg>Zošit na predajni</span>
+                  </div>
+                  <span className="arrow" aria-hidden="true"><svg className="i"><use href="#arrow-right"/></svg></span>
+                  <div className="sys" id="sys">
+                    <div className="sys-bar"><span>Firemný systém</span><span>3 ľudia online</span></div>
+                    <div className="cols">
+                      <div className="col"><h4>Objednávky</h4><div className="row">Stavebniny Kováč <em>nová</em></div><div className="row">Hotel Lipa <em>expedovaná</em></div><div className="row">Ing. Šimko <em>uhradená</em></div></div>
+                      <div className="col"><h4>Úlohy</h4><div className="row">Objednať tovar <em>Jana</em></div><div className="row">Faktúra Lipa <em>Peter</em></div><div className="row">Inventúra <em>piatok</em></div></div>
+                      <div className="col"><h4>Sklad</h4><div className="row">Dlažba 60×60 <em>42 m²</em></div><div className="row">Lepidlo C2 <em>18 ks</em></div><div className="row">Silikón <em>dochádza</em></div></div>
+                    </div>
+                    <div className="sys-ask"><span className="who">Opýtať sa</span><p className="q">Čo je so zákazkou Hotel Lipa?</p><p className="a">Expedovaná v utorok. Faktúru pripravuje Peter, termín piatok.</p></div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
             <article className="solution" id="r1">
               <div className="sol-text">
-                <div className="kind"><span className="n">01</span><span className="label">Automatizácia</span></div>
+                <div className="kind"><span className="n">02</span><span className="label">Automatizácia</span></div>
                 <h3>Dopyt sa sám zmení na ponuku, zákazníka aj faktúru.</h3>
                 <p>Systém prečíta dopyt, pripraví ponuku podľa vášho cenníka, zapíše zákazníka a pripomenie, keď treba zavolať. Vy len skontrolujete a potvrdíte.</p>
                 <p className="for">Pre: <b>servisné, stavebné a remeselné firmy</b></p>
@@ -92,7 +125,7 @@ export default function Home() {
 
             <article className="solution" id="r2">
               <div className="sol-text">
-                <div className="kind"><span className="n">02</span><span className="label">AI hlasový agent</span></div>
+                <div className="kind"><span className="n">03</span><span className="label">AI hlasový agent</span></div>
                 <h3>Telefón zdvihne vždy. Aj keď vy práve nemôžete.</h3>
                 <p>Agent pozná vaše služby, ceny a voľné termíny. Hovorí prirodzene, povie, že je AI, vybaví objednávku a všetko zapíše. Kto chce hovoriť s človekom, toho prepojí.</p>
                 <p className="for">Pre: <b>salóny, autoservisy, reštaurácie a firmy s množstvom telefonátov</b></p>
@@ -127,37 +160,6 @@ export default function Home() {
                   </aside>
                 </div>
                 <p className="note">Ilustračný prepis. Nahrávku so skutočným agentom doplníme.</p>
-              </div>
-            </article>
-
-            <article className="solution" id="r3">
-              <div className="sol-text">
-                <div className="kind"><span className="n">03</span><span className="label">Vlastný firemný systém</span></div>
-                <h3>Päť nástrojov a zošit nahradí jeden systém.</h3>
-                <p>Objednávky, úlohy aj sklad na jednom mieste, postavené presne podľa toho, ako vaša firma funguje. Každý vidí to, čo potrebuje, a nič sa nestratí v e-mailoch.</p>
-                <p className="for">Pre: <b>obchodné firmy a tímy, ktoré prerástli Excel</b></p>
-                <span className="example-tag">Príklad · obchodná firma</span>
-              </div>
-              <div className="stage">
-                <div className="stage-top"><span className="label">Predtým a teraz</span><button className="btn ghost small" type="button" id="mergeBtn">Spojiť do systému</button></div>
-                <div className="merge">
-                  <div className="scatter" id="scatter">
-                    <span className="chip"><svg className="i"><use href="#kanban"/></svg>Úlohy v ClickUpe</span>
-                    <span className="chip f"><svg className="i"><use href="#table"/></svg>objednavky_FINAL_v3.xlsx</span>
-                    <span className="chip"><svg className="i"><use href="#envelope-simple"/></svg>Dohody v e-mailoch</span>
-                    <span className="chip"><svg className="i"><use href="#whatsapp-logo"/></svg>Skupina „Sklad“</span>
-                    <span className="chip"><svg className="i"><use href="#notebook"/></svg>Zošit na predajni</span>
-                  </div>
-                  <span className="arrow" aria-hidden="true"><svg className="i"><use href="#arrow-right"/></svg></span>
-                  <div className="sys" id="sys">
-                    <div className="sys-bar"><span>Firemný systém</span><span>3 ľudia online</span></div>
-                    <div className="cols">
-                      <div className="col"><h4>Objednávky</h4><div className="row">Stavebniny Kováč <em>nová</em></div><div className="row">Hotel Lipa <em>expedovaná</em></div><div className="row">Ing. Šimko <em>uhradená</em></div></div>
-                      <div className="col"><h4>Úlohy</h4><div className="row">Objednať tovar <em>Jana</em></div><div className="row">Faktúra Lipa <em>Peter</em></div><div className="row">Inventúra <em>piatok</em></div></div>
-                      <div className="col"><h4>Sklad</h4><div className="row">Dlažba 60×60 <em>42 m²</em></div><div className="row">Lepidlo C2 <em>18 ks</em></div><div className="row">Silikón <em>dochádza</em></div></div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </article>
           </div>
@@ -390,6 +392,7 @@ export default function Home() {
               <details><summary>Potrebujeme vlastného technika alebo IT oddelenie?</summary><p>Nie. Riešenie postavíme, zavedieme a tím zaučíme. Vy nám dáte prístup k tomu, čo treba prepojiť.</p></details>
               <details><summary>Komu patria účty a dáta?</summary><p>Vám. Všetky účty sú na meno a kartu vašej firmy, my sme iba správcovia s dvojfaktorovým prihlásením. Keď spoluprácu ukončíte, všetko ostáva u vás.</p></details>
               <details><summary>Je to bezpečné? Čo GDPR?</summary><p>Pri každom riešení určíme, aké údaje sa spracúvajú, kde a ako dlho. Ak niečo hovorí so zákazníkmi, napríklad hlasový agent, na začiatku povie, že je AI. Pri citlivých veciach odporúčame overenie vaším právnikom.</p></details>
+              <details><summary>Čo ak spoluprácu ukončíme?</summary><p>Systém zostáva vám. Beží na vašich účtoch a kód aj dokumentácia patria vám, takže ho môže ďalej rozvíjať ktokoľvek.</p></details>
               <details><summary>Pre aké firmy je Elvoro?</summary><p>Najčastejšie pre firmy s 20 až 250 ľuďmi, ktoré chcú zmenu vo fungovaní firmy, nie ďalší nástroj. Kurzy a návody, ako si to spraviť sami, nerobíme.</p></details>
             </div>
           </div>
