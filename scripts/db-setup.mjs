@@ -10,12 +10,21 @@ if (!url) {
   process.exit(0);
 }
 
-const sql = neon(url);
 const schema = readFileSync(new URL("../db/001_prihlasky.sql", import.meta.url), "utf8");
 const prikazy = schema
   .split(";")
   .map((p) => p.replace(/^\s*--.*$/gm, "").trim())
   .filter(Boolean);
 
-for (const prikaz of prikazy) await sql.query(prikaz);
-console.log(`Hotovo: ${prikazy.length} príkazy prebehli.`);
+// Chyba databázy nesmie zhodiť nasadenie webu: vypíše sa a build pokračuje.
+// Prihlášky medzitým chodia aspoň e-mailom, ak je nastavený Resend.
+try {
+  if (!/^postgres(ql)?:\/\//.test(url)) {
+    throw new Error("DATABASE_URL musí začínať postgresql:// (skopíruj len samotný reťazec, bez psql a úvodzoviek).");
+  }
+  const sql = neon(url);
+  for (const prikaz of prikazy) await sql.query(prikaz);
+  console.log(`Tabuľka prihlášok je pripravená (${prikazy.length} príkazy).`);
+} catch (e) {
+  console.error("POZOR: tabuľku prihlášok sa nepodarilo pripraviť:", e instanceof Error ? e.message : e);
+}
