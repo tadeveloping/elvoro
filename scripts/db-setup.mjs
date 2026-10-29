@@ -1,11 +1,13 @@
-// Vytvorí tabuľku prihlášok v databáze z DATABASE_URL. Spustenie: npm run db:setup
+// Vytvorí tabuľku prihlášok v databáze z DATABASE_URL, ak ešte neexistuje.
+// Spúšťa sa pri každom builde na Verceli (vercel-build) aj ručne cez npm run db:setup.
 import { readFileSync } from "node:fs";
 import { neon } from "@neondatabase/serverless";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
-  console.error("Chýba DATABASE_URL (vlož ju do .env.local alebo prostredia).");
-  process.exit(1);
+  // Bez databázy (napr. prvý build pred pripojením Neonu) sa tabuľka len preskočí.
+  console.warn("DATABASE_URL nie je nastavená, tabuľka prihlášok sa nevytvára.");
+  process.exit(0);
 }
 
 const sql = neon(url);
