@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Doto, Inter, JetBrains_Mono, Syne } from "next/font/google";
+import { DEFINICIA, SITE_URL } from "./config";
 import "./globals.css";
 
 // Písma sa hostujú spolu s webom, prehliadač sa nepýta Googlu (GDPR).
@@ -9,9 +10,19 @@ const mono = JetBrains_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "
 const doto = Doto({ subsets: ["latin"], weight: ["700", "900"], variable: "--f-doto" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Elvoro · Ukážeme vám kde. A postavíme to.",
-  description:
-    "Zmapujeme, kde vaša firma stráca čas, a postavíme riešenie na mieru, ktoré rutinu prevezme. Od jednoduchých automatizácií po vlastný firemný systém.",
+  description: DEFINICIA,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "sk_SK",
+    siteName: "Elvoro",
+    title: "Elvoro · Ukážeme vám kde. A postavíme to.",
+    description: DEFINICIA,
+    url: "/",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
