@@ -78,9 +78,11 @@ export async function POST(req: Request) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email)) return chyba("Napíšte e-mail v tvare meno@firma.sk.", 400);
 
   const databaseUrl = process.env.DATABASE_URL;
-  const resendKey = process.env.RESEND_API_KEY;
-  const to = process.env.PRIHLASKY_TO;
-  const from = process.env.PRIHLASKY_FROM;
+  const resendKey = process.env.RESEND_API_KEY?.trim();
+  const to = process.env.PRIHLASKY_TO?.trim();
+  // Odosielateľ nie je tajný: predvolene testovací odosielateľ Resendu (posiela len na e-mail
+  // majiteľa účtu). Po overení domény nastaviť PRIHLASKY_FROM, napr. "Elvoro web <web@elvoro.sk>".
+  const from = process.env.PRIHLASKY_FROM?.trim() || "Elvoro web <onboarding@resend.dev>";
 
   if (!databaseUrl && !(resendKey && to && from)) {
     if (process.env.VERCEL_ENV === "production") {
