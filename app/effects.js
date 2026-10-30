@@ -192,7 +192,7 @@ export function initEffects(gsap) {
     objednavky: "Objednávky a sklad prepojené na jednom mieste",
     planovanie: "Termíny a pripomienky, ktoré sa naplánujú samy",
     reporty: "Reporty pre vedenie, ktoré sa pripravia samy",
-    telefony: "AI hlasový agent, ktorý zdvihne každý telefonát",
+    telefony: "Telefonáty a dopyty zachytené a zapísané, aby žiadny zákazník neodišiel",
     znalosti: "Firemný AI asistent, ktorý pozná vaše dokumenty a postupy",
     obsah: "Príprava obsahu na sociálne siete s pomocou AI"
   };
