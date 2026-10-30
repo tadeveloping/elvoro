@@ -108,6 +108,15 @@ export async function POST(req: Request) {
     }
   }
 
+  const chybaResend = [
+    ["RESEND_API_KEY", resendKey],
+    ["PRIHLASKY_TO", to],
+    ["PRIHLASKY_FROM", from],
+  ].filter(([, v]) => !v).map(([k]) => k);
+  if (chybaResend.length > 0 && chybaResend.length < 3) {
+    console.warn("E-mail o prihláške sa neposiela, chýba nastavenie:", chybaResend.join(", "));
+  }
+
   if (resendKey && to && from) {
     const riadky = [
       `Nová prihláška: ${p.firma}`,
