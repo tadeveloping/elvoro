@@ -71,11 +71,11 @@ export default function Home() {
               <h2>Kde začať s AI vo firme?</h2>
             </div>
             <div className="answer-a">
-              <p>Záleží na tom, čo vás brzdí najviac. Ak sa stráca čas na e-mailoch, ponukách a prepisovaní, začnite automatizáciou jedného procesu, napríklad od dopytu po faktúru. Ak máte dáta rozhádzané v piatich nástrojoch, najprv ich spojte do jedného firemného systému, až potom má AI z čoho čerpať. A ak vám unikajú zákazníci, lebo nikto nezdvihne telefón, pomôže AI hlasový agent. Kde presne začať u vás, zistíme z krátkej prihlášky.</p>
+              <p>Záleží na tom, čo vás brzdí najviac. Ak sa stráca čas na e-mailoch, ponukách a prepisovaní, začnite automatizáciou jedného procesu, napríklad od dopytu po faktúru. Ak máte dáta rozhádzané v piatich nástrojoch, najprv ich spojte do jedného firemného systému, až potom má AI z čoho čerpať. Kde presne začať u vás, zistíme na Mape firmy.</p>
               <ul className="answer-links">
                 <li><a href="#r3">Firemný systém</a></li>
                 <li><a href="#r1">Automatizácia</a></li>
-                <li><a href="#r2">Hlasový agent</a></li>
+                <li><a href="#postup">Mapa firmy</a></li>
               </ul>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function Home() {
             <ul className="pains">
               <li className="pain"><q>Polovica dňa ide na e-maily, ponuky a prepisovanie do tabuliek.</q><p>Riešenie: <a href="#r1">automatizácia</a></p></li>
               <li className="pain"><q>Každé oddelenie má vlastný systém a nič spolu nehovorí. Report pre vedenie skladáme ručne.</q><p>Riešenie: prepojenie systémov a reporty, ktoré sa pripravia samy.</p></li>
-              <li className="pain"><q>Zákazník volal, nikto to nezdvihol a zákazku dostal niekto iný.</q><p>Riešenie: <a href="#r2">AI hlasový agent</a></p></li>
+              <li className="pain"><q>Zákazník volal, nikto to nezdvihol a zákazku dostal niekto iný.</q><p>Riešenie: <a href="#r2">AI hlasový agent</a> (pripravujeme)</p></li>
               <li className="pain"><q>Ľudia používajú AI na vlastnú päsť a nevieme, aké firemné dáta do nej posielajú.</q><p>Riešenie: jasné pravidlá a bezpečné AI nástroje pre celú firmu.</p></li>
               <li className="pain"><q>Úlohy máme v jednej appke, čísla v Exceli a dohody v e-mailoch. Prehľad nemá nikto.</q><p>Riešenie: <a href="#r3">vlastný firemný systém</a></p></li>
               <li className="pain"><q>Know-how je v hlavách pár ľudí. Nový človek sa zaúča mesiace.</q><p>Riešenie: firemný AI asistent, ktorý pozná vaše dokumenty a postupy.</p></li>
@@ -170,7 +170,7 @@ export default function Home() {
 
             <article className="solution" id="r2">
               <div className="sol-text">
-                <div className="kind"><span className="n">03</span><span className="label">AI hlasový agent</span></div>
+                <div className="kind"><span className="n">03</span><span className="label">AI hlasový agent</span><span className="soon">Pripravujeme</span></div>
                 <h3>Telefón zdvihne vždy. Aj keď vy práve nemôžete.</h3>
                 <p>Agent pozná vaše služby, ceny a voľné termíny. Hovorí prirodzene, povie, že je AI, vybaví objednávku a všetko zapíše. Kto chce hovoriť s človekom, toho prepojí.</p>
                 <p className="for">Pre: <b>salóny, autoservisy, reštaurácie a firmy s množstvom telefonátov</b></p>
@@ -259,10 +259,10 @@ export default function Home() {
             </div>
             <ol className="steps5">
               <li><span className="sn">1</span><h3>Prihláška</h3><p>Opíšete, čo vaša firma robí a kde stráca čas. Zaberie to pár minút.</p></li>
-              <li><span className="sn">2</span><h3>Pripravíme sa</h3><p>Prejdeme vaše odpovede a nájdeme miesta, kde sa dá ušetriť najviac.</p></li>
-              <li><span className="sn">3</span><h3>Hovor</h3><p>Ukážeme konkrétne návrhy a spolu vyberieme, čím začať.</p></li>
-              <li><span className="sn">4</span><h3>Postavíme a zaučíme</h3><p>Riešenie postavíme na mieru a naučíme tím, ako s ním pracovať.</p></li>
-              <li><span className="sn">5</span><h3>Ostávame po ruke</h3><p>Keď firma rastie alebo sa niečo zmení, riešenie upravíme.</p></li>
+              <li><span className="sn">2</span><h3>Úvodný hovor</h3><p>30 minút, zadarmo. Prejdeme vašu prihlášku a povieme, či a kde vám vieme pomôcť.</p></li>
+              <li><span className="sn">3</span><h3>Mapa firmy</h3><p>Pol dňa až deň u vás. Dostanete prehľad, kde strácate čas, a 3 riešenia s cenou a poradím. 300 až 500 €, odpočíta sa zo zákazky.</p></li>
+              <li><span className="sn">4</span><h3>Prvý modul</h3><p>Postavíme riešenie pre jeden proces, zavedieme ho a zaučíme tím.</p></li>
+              <li><span className="sn">5</span><h3>Ostávame po ruke</h3><p>Mesačná správa: systém udržiavame, upravujeme a pridávame ďalšie časti, keď firma rastie.</p></li>
             </ol>
           </div>
         </section>

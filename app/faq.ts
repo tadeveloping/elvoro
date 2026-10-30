@@ -3,8 +3,8 @@
 export const FAQ: { otazka: string; odpoved: string; hotova: boolean }[] = [
   {
     otazka: "Koľko to stojí?",
-    odpoved: "Každé riešenie je na mieru, preto cenu navrhneme po prvom hovore, keď vieme, čo presne potrebujete. [Doplniť: od akej sumy alebo ako cenu počítame.]",
-    hotova: false,
+    odpoved: "Úvodný hovor je zadarmo. Potom robíme Mapu firmy za 300 až 500 €, ktorá sa odpočíta zo zákazky. Prvý modul pre jeden proces býva 1 500 až 4 000 €, presnú cenu dostanete po Mape firmy. Ceny k októbru 2026.",
+    hotova: true,
   },
   {
     otazka: "Ako dlho to trvá?",
@@ -33,7 +33,7 @@ export const FAQ: { otazka: string; odpoved: string; hotova: boolean }[] = [
   },
   {
     otazka: "Pre aké firmy je Elvoro?",
-    odpoved: "Najčastejšie pre firmy s 20 až 250 ľuďmi, ktoré chcú zmenu vo fungovaní firmy, nie ďalší nástroj. Kurzy a návody, ako si to spraviť sami, nerobíme.",
+    odpoved: "Pre malé a stredné firmy, zvyčajne s 5 až 250 ľuďmi, ktoré chcú zmenu vo fungovaní firmy, nie ďalší nástroj. Kurzy a návody, ako si to spraviť sami, nerobíme.",
     hotova: true,
   },
 ];
