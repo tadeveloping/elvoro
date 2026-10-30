@@ -1,6 +1,33 @@
 import { Effects } from "./Effects";
 import { Sprite } from "./Sprite";
-import { PREVADZKOVATEL } from "./config";
+import { DEFINICIA, INSTAGRAM, PREVADZKOVATEL, SITE_URL } from "./config";
+import { FAQ } from "./faq";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organizacia`,
+      name: "Elvoro",
+      url: SITE_URL,
+      logo: `${SITE_URL}/elvoro-logo.png`,
+      description: DEFINICIA,
+      slogan: "AI po ľudsky",
+      areaServed: { "@type": "Country", name: "Slovensko" },
+      knowsLanguage: "sk",
+      sameAs: [INSTAGRAM],
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQ.filter((f) => f.hotova).map((f) => ({
+        "@type": "Question",
+        name: f.otazka,
+        acceptedAnswer: { "@type": "Answer", text: f.odpoved },
+      })),
+    },
+  ],
+};
 
 export default function Home() {
   return (
@@ -29,9 +56,27 @@ export default function Home() {
                 <a className="btn" href="#prihlaska">Zistiť, či sme pre seba <svg className="i"><use href="#arrow-right"/></svg></a>
                 <a className="btn ghost" href="#riesenia">Pozrieť príklady</a>
               </div>
+              <p className="hero-def" data-in>{DEFINICIA}</p>
             </div>
             <div className="smiley-wrap" data-in>
               <canvas id="smiley" role="img" aria-label="Smajlík Elvora zo znakov"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <section className="block answer" id="kde-zacat">
+          <div className="wrap">
+            <div className="answer-q">
+              <span className="label">Najčastejšia otázka</span>
+              <h2>Kde začať s AI vo firme?</h2>
+            </div>
+            <div className="answer-a">
+              <p>Záleží na tom, čo vás brzdí najviac. Ak sa stráca čas na e-mailoch, ponukách a prepisovaní, začnite automatizáciou jedného procesu, napríklad od dopytu po faktúru. Ak máte dáta rozhádzané v piatich nástrojoch, najprv ich spojte do jedného firemného systému, až potom má AI z čoho čerpať. A ak vám unikajú zákazníci, lebo nikto nezdvihne telefón, pomôže AI hlasový agent. Kde presne začať u vás, zistíme z krátkej prihlášky.</p>
+              <ul className="answer-links">
+                <li><a href="#r3">Firemný systém</a></li>
+                <li><a href="#r1">Automatizácia</a></li>
+                <li><a href="#r2">Hlasový agent</a></li>
+              </ul>
             </div>
           </div>
         </section>
@@ -387,13 +432,9 @@ export default function Home() {
               <h2>Čo sa nás firmy pýtajú.</h2>
             </div>
             <div className="qa">
-              <details><summary>Koľko to stojí?</summary><p>Každé riešenie je na mieru, preto cenu navrhneme po prvom hovore, keď vieme, čo presne potrebujete. [Doplniť: od akej sumy alebo ako cenu počítame.]</p></details>
-              <details><summary>Ako dlho to trvá?</summary><p>[Doplniť: typická dĺžka od hovoru po prvé fungujúce riešenie.]</p></details>
-              <details><summary>Potrebujeme vlastného technika alebo IT oddelenie?</summary><p>Nie. Riešenie postavíme, zavedieme a tím zaučíme. Vy nám dáte prístup k tomu, čo treba prepojiť.</p></details>
-              <details><summary>Komu patria účty a dáta?</summary><p>Vám. Všetky účty sú na meno a kartu vašej firmy, my sme iba správcovia s dvojfaktorovým prihlásením. Keď spoluprácu ukončíte, všetko ostáva u vás.</p></details>
-              <details><summary>Je to bezpečné? Čo GDPR?</summary><p>Pri každom riešení určíme, aké údaje sa spracúvajú, kde a ako dlho. Ak niečo hovorí so zákazníkmi, napríklad hlasový agent, na začiatku povie, že je AI. Pri citlivých veciach odporúčame overenie vaším právnikom.</p></details>
-              <details><summary>Čo ak spoluprácu ukončíme?</summary><p>Systém zostáva vám. Beží na vašich účtoch a kód aj dokumentácia patria vám, takže ho môže ďalej rozvíjať ktokoľvek.</p></details>
-              <details><summary>Pre aké firmy je Elvoro?</summary><p>Najčastejšie pre firmy s 20 až 250 ľuďmi, ktoré chcú zmenu vo fungovaní firmy, nie ďalší nástroj. Kurzy a návody, ako si to spraviť sami, nerobíme.</p></details>
+              {FAQ.map((f) => (
+                <details key={f.otazka}><summary>{f.otazka}</summary><p>{f.odpoved}</p></details>
+              ))}
             </div>
           </div>
         </section>
@@ -402,6 +443,7 @@ export default function Home() {
       <footer className="foot">
         <div className="wrap"><span>ELVORO · AI po ľudsky</span><span>{PREVADZKOVATEL}</span><a href="/ochrana-osobnych-udajov">Ochrana osobných údajov</a></div>
       </footer>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Effects />
     </>
   );
