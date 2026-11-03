@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Doto, Inter, JetBrains_Mono, Syne } from "next/font/google";
 import { DEFINICIA, SITE_URL } from "./config";
 import "./globals.css";
+import "./v4.css";
 
 // Písma sa hostujú spolu s webom, prehliadač sa nepýta Googlu (GDPR).
 const syne = Syne({ subsets: ["latin", "latin-ext"], weight: ["600", "700"], variable: "--f-syne" });
@@ -25,9 +26,16 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+// Tmavý režim sa nastaví pred vykreslením, aby stránka pri načítaní neblikla.
+const TEMA = `try{if(localStorage.getItem("elvoro-tema")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="sk" className={`${syne.variable} ${inter.variable} ${mono.variable} ${doto.variable}`}>
+    <html lang="sk" className={`${syne.variable} ${inter.variable} ${mono.variable} ${doto.variable}`} suppressHydrationWarning>
+      <head>
+        <meta name="theme-color" content="#FFFFFF" />
+        <script dangerouslySetInnerHTML={{ __html: TEMA }} />
+      </head>
       <body>{children}</body>
     </html>
   );
