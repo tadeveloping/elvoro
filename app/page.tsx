@@ -305,7 +305,7 @@ export default function Home() {
               <fieldset className="q" data-step="1">
                 <h3 className="qt">S čím vám môžeme pomôcť?</h3>
                 <div className="opts col">
-                  <label className="opt"><input type="radio" name="cesta" value="A" id="cA" /><span><b>Zjednodušiť prácu vo firme</b><small>Automatizácie a AI tam, kde sa stráca čas</small></span></label>
+                  <label className="opt"><input type="radio" name="cesta" value="A" id="cA" /><span><b>Zjednodušiť prácu vo firme</b><small>Pomôžeme nájsť, kde vám AI ušetrí najviac času, a zavedieme ju</small></span></label>
                   <label className="opt"><input type="radio" name="cesta" value="B" id="cB" /><span><b>Systém na mieru</b><small>Nahradiť rozhádzané nástroje a Excely jedným systémom</small></span></label>
                   <label className="opt"><input type="radio" name="cesta" value="C" id="cC" /><span><b>Mám nápad na projekt</b><small>Viem, čo chcem postaviť, hľadám, kto to zrealizuje</small></span></label>
                 </div>
