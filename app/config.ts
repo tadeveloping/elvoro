@@ -9,4 +9,7 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://elvoro-viri
 export const DEFINICIA =
   "Elvoro stavia malým a stredným firmám na Slovensku firemné systémy a automatizácie s AI na mieru, aby ľudia trávili menej času rutinou.";
 
+// Rezervácia úvodného hovoru (napr. Cal.com). Kým nie je nastavená, tlačidlá vedú na prihlášku.
+export const REZERVACIA_URL = process.env.NEXT_PUBLIC_REZERVACIA_URL?.trim() ?? "";
+
 export const INSTAGRAM = "https://www.instagram.com/elvoro.sk/";

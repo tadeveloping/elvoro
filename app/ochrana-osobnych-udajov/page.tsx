@@ -45,7 +45,8 @@ export default function OchranaOsobnychUdajov() {
         <ul>
           <li>Vercel (prevádzka webu),</li>
           <li>Neon (databáza prihlášok, <span className="todo">overiť región EÚ</span>),</li>
-          <li>Resend (odoslanie upozornenia o novej prihláške e-mailom).</li>
+          <li>Resend (odoslanie upozornenia o novej prihláške e-mailom),</li>
+          <li>Cal.com (rezervácia termínu úvodného hovoru, ak ju použijete; údaje zadávate priamo na ich stránke).</li>
         </ul>
         <p>
           Niektorí poskytovatelia sídlia v USA. Prenos je chránený štandardnými zmluvnými doložkami alebo rámcom

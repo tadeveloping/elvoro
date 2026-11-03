@@ -1,6 +1,6 @@
 import { Effects } from "./Effects";
 import { Sprite } from "./Sprite";
-import { DEFINICIA, INSTAGRAM, PREVADZKOVATEL, SITE_URL } from "./config";
+import { DEFINICIA, INSTAGRAM, PREVADZKOVATEL, REZERVACIA_URL, SITE_URL } from "./config";
 import { FAQ } from "./faq";
 
 const jsonLd = {
@@ -54,7 +54,11 @@ export default function Home() {
               <p className="lead" data-in>Zmapujeme, kde vaša firma stráca čas, a postavíme riešenie na mieru, ktoré rutinu prevezme. Od jednoduchých automatizácií po vlastný firemný systém.</p>
               <div className="cta" data-in>
                 <a className="btn" href="#prihlaska">Zistiť, či sme pre seba <svg className="i"><use href="#arrow-right"/></svg></a>
-                <a className="btn ghost" href="#riesenia">Pozrieť príklady</a>
+                {REZERVACIA_URL ? (
+                  <a className="btn ghost" href={REZERVACIA_URL} target="_blank" rel="noopener">Rezervovať 30 min hovor</a>
+                ) : (
+                  <a className="btn ghost" href="#riesenia">Pozrieť príklady</a>
+                )}
               </div>
               <p className="hero-def" data-in>{DEFINICIA}</p>
             </div>
@@ -259,7 +263,7 @@ export default function Home() {
             </div>
             <ol className="steps5">
               <li><span className="sn">1</span><h3>Prihláška</h3><p>Opíšete, čo vaša firma robí a kde stráca čas. Zaberie to pár minút.</p></li>
-              <li><span className="sn">2</span><h3>Úvodný hovor</h3><p>30 minút, zadarmo. Prejdeme vašu prihlášku a povieme, či a kde vám vieme pomôcť.</p></li>
+              <li><span className="sn">2</span><h3>Úvodný hovor</h3><p>30 minút, zadarmo. Prejdeme vašu prihlášku a povieme, či a kde vám vieme pomôcť.</p>{REZERVACIA_URL && <p><a className="step-link" href={REZERVACIA_URL} target="_blank" rel="noopener">Rezervovať termín →</a></p>}</li>
               <li><span className="sn">3</span><h3>Mapa firmy</h3><p>Pol dňa až deň u vás. Dostanete prehľad, kde strácate čas, a 3 riešenia s cenou a poradím. 300 až 500 €, odpočíta sa zo zákazky.</p></li>
               <li><span className="sn">4</span><h3>Prvý modul</h3><p>Postavíme riešenie pre jeden proces, zavedieme ho a zaučíme tím.</p></li>
               <li><span className="sn">5</span><h3>Ostávame po ruke</h3><p>Mesačná správa: systém udržiavame, upravujeme a pridávame ďalšie časti, keď firma rastie.</p></li>
@@ -418,7 +422,11 @@ export default function Home() {
                 <h3 id="doneTitle">Ďakujeme.</h3>
                 <p>Toto vidíme z vašich odpovedí už teraz. Na hovore to prejdeme podrobne:</p>
                 <ul className="opps" id="opps"></ul>
-                <p className="fine">Ozveme sa vám e-mailom s návrhom termínu hovoru.</p>
+                {REZERVACIA_URL ? (
+                  <p className="fine">Termín úvodného hovoru si môžete <a href={REZERVACIA_URL} target="_blank" rel="noopener">rezervovať hneď tu</a>, alebo sa vám ozveme e-mailom.</p>
+                ) : (
+                  <p className="fine">Ozveme sa vám e-mailom s návrhom termínu hovoru.</p>
+                )}
                 <button className="btn ghost small" type="button" id="wizReset">Vyplniť znova</button>
               </div>
             </form>
