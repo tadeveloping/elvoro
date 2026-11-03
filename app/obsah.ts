@@ -13,35 +13,35 @@ export type Ukazka = {
   kroky: Krok[];
 };
 
-export const UKAZKA_DOPYT: Ukazka = {
-  id: "dopyt",
-  stitok: "Dopyt a cenová ponuka",
-  nadpis: ["Menej prepisovania.", "Ponuka ešte v ten deň."],
-  text: "Systém prečíta dopyt z e-mailu, pripraví ponuku podľa vášho cenníka a skontroluje, či niečo nechýba. Vy ponuku len skontrolujete a odošlete. Čo potrebuje človeka, príde konkrétnemu človeku aj s podkladmi.",
-  dnes: "Prečítať e-mail. Nájsť cenník. Ručne zrátať položky. Spätne sa pýtať na chýbajúce údaje. Pripomenúť si, že treba zavolať.",
-  teraz: "Ponuka pripravená na kontrolu, chýbajúce údaje označené a úloha s termínom pridelená správnemu človeku.",
-  nastroje: ["Gmail", "Excel cenník", "Firemný systém"],
+export const UKAZKA_FAKTURA: Ukazka = {
+  id: "faktura",
+  stitok: "Spracovanie faktúr",
+  nadpis: ["Menej prepisovania.", "Jasnejšie schvaľovanie."],
+  text: "Systém prečíta faktúru, pripraví návrh dokladu a porovná sumu s objednávkou. Na kontrolu ide len to, čo nesedí, a podklady sú hneď pri tom.",
+  dnes: "Otvoriť PDF. Prepísať údaje. Nájsť objednávku. Naháňať schválenie.",
+  teraz: "Pripravený doklad, hotová kontrola a jasný zoznam toho, čo potrebuje človeka.",
+  nastroje: ["Gmail", "Pohoda", "Slack"],
   kroky: [
-    { nazov: "Prijať", titul: "Do schránky príde dopyt.", text: "Systém ho zachytí v e-maile a uloží k novému zákazníkovi." },
-    { nazov: "Pripraviť", titul: "Ponuka sa zostaví z cenníka.", text: "Položky a ceny sa doplnia z vášho cenníka, nič sa neprepisuje ručne." },
-    { nazov: "Skontrolovať", titul: "Chýbajúci údaj sa označí.", text: "Zákazník neuviedol objem bojlera. Ponuka čaká, kým to niekto overí." },
-    { nazov: "Odovzdať", titul: "Úloha ide správnemu človeku.", text: "Technik dostane úlohu zavolať zákazníkovi a ponuka je pripravená na odoslanie." },
+    { nazov: "Prijať", titul: "Do schránky príde faktúra.", text: "Príloha sa zachytí priamo z e-mailu od dodávateľa." },
+    { nazov: "Vyčítať", titul: "Údaje sa prenesú do návrhu dokladu.", text: "Dodávateľ, číslo faktúry a suma bez ručného prepisovania." },
+    { nazov: "Skontrolovať", titul: "Suma nesedí s objednávkou.", text: "Objednávka OBJ-204 je na 2 200 €, faktúra na 2 400 €. Rozdiel sa ukáže hneď." },
+    { nazov: "Odovzdať", titul: "Rozdiel ide na schválenie.", text: "Faktúra počká, kým ju niekto zodpovedný neskontroluje a nepotvrdí." },
   ],
 };
 
-export const UKAZKA_OBJEDNAVKA: Ukazka = {
-  id: "objednavka",
-  stitok: "Objednávky a sklad",
-  nadpis: ["Objednávka z e-mailu.", "Sklad overený za vás."],
-  text: "Objednávky chodia e-mailom, telefonicky aj cez WhatsApp. Systém z nich vyčíta položky, porovná ich so skladom a pripraví potvrdenie. Keď niečo chýba, vznikne úloha na doobjednanie.",
-  dnes: "Prepísať objednávku do Excelu. Ísť pozrieť do skladu. Napísať zákazníkovi. Nezabudnúť objednať, čo chýba.",
-  teraz: "Položky zapísané, sklad skontrolovaný, potvrdenie pripravené na odoslanie a nákup vie, čo doobjednať.",
-  nastroje: ["E-mail", "WhatsApp", "Firemný systém"],
+export const UKAZKA_PODPORA: Ukazka = {
+  id: "podpora",
+  stitok: "Zákaznícka podpora",
+  nadpis: ["Tá istá otázka.", "Odpoveď pripravená na kontrolu."],
+  text: "Systém roztriedi prichádzajúce otázky, dohľadá údaje o zákazníkovi a na opakované otázky pripraví odpoveď. Váš tím rieši len to, čo potrebuje úsudok, a celú históriu má pred sebou.",
+  dnes: "Prečítať každú správu. Hľadať v ďalšom systéme. Písať stále tú istú odpoveď. Ťažšie prípady posúvať ďalej.",
+  teraz: "Bežné odpovede pripravené na kontrolu. Výnimky pridelené správnemu človeku aj s celou históriou.",
+  nastroje: ["E-mail", "Shoptet", "Slack"],
   kroky: [
-    { nazov: "Prečítať", titul: "Príde objednávka.", text: "Stavebniny Kováč (vymyslená firma) píšu, čo potrebujú a kedy." },
-    { nazov: "Vyčítať", titul: "Položky sa zapíšu samy.", text: "Systém z voľného textu spraví riadky objednávky s množstvom." },
-    { nazov: "Overiť sklad", titul: "Dlažby je menej, ako treba.", text: "Na sklade je 32 m², objednávka chce 40 m². Rozdiel sa ukáže hneď." },
-    { nazov: "Odovzdať", titul: "Každý vie, čo má robiť.", text: "Potvrdenie čaká na kontrolu a nákup má úlohu doobjednať 8 m² dlažby." },
+    { nazov: "Prečítať", titul: "Príde otázka od zákazníčky.", text: "„Kde je moja objednávka?“ Správa sa zaradí medzi bežné otázky." },
+    { nazov: "Dohľadať", titul: "Objednávka sa nájde v e-shope.", text: "Je odoslaná a sledovanie zásielky je dostupné." },
+    { nazov: "Pripraviť", titul: "Odpoveď je pripravená.", text: "S odkazom na sledovanie a so zdrojom, odkiaľ sú údaje." },
+    { nazov: "Roztriediť", titul: "Ľudia riešia, čo potrebuje úsudok.", text: "Bežná odpoveď čaká na kontrolu. Reklamácia ide priamo k človeku z podpory." },
   ],
 };
 

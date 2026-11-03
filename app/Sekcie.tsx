@@ -1,37 +1,42 @@
 import { NASTROJE_1, NASTROJE_2, OBLASTI, POSTUP, type Ukazka } from "./obsah";
 
-// Sekcie 01 až 03 (inšpirácia rozložením moshn.co, texty a ukážky vlastné). Interakcie sú v effects.js.
+// Sekcie 01 až 03 (inšpirácia rozložením moshn.co, texty a ukážky vlastné). Interakcie sú v efektyV4.js.
 
 function Scena({ id }: { id: string }) {
-  if (id === "dopyt") {
+  if (id === "faktura") {
     return (
       <div className="demo-scena">
-        <div className="doc" data-od="1">
-          <div className="zdroj"><svg className="i"><use href="#envelope-simple" /></svg><span>dopyty@vasafirma.sk</span></div>
-          <div className="papier">
-            <span className="k">Nový dopyt · Po 08:12</span>
-            <strong>Peter Horváth</strong>
-            <p>„Dobrý deň, potrebujem vymeniť bojler v rodinnom dome v Nitre. Kedy by ste mohli prísť?“</p>
+        <div className="doc-stlpec">
+          <div className="doc" data-od="1">
+            <div className="zdroj"><svg className="i"><use href="#envelope-simple" /></svg><span>uctovnictvo@vasafirma.sk</span></div>
+            <div className="papier">
+              <span className="k">Faktúra od dodávateľa</span>
+              <div className="papier-riadok"><strong>Javorník Stav</strong><span className="mono">FA-1842</span></div>
+              <div className="suma">2 400 €<span>splatná 30. 11.</span></div>
+              <div className="papier-riadok ciara"><span>Stavebný materiál</span><span>2 400 €</span></div>
+              <div className="papier-riadok ciara"><span>Objednávka</span><strong>OBJ-204</strong></div>
+              <span className="priloha">↳ faktura-1842.pdf</span>
+            </div>
           </div>
         </div>
         <div className="proc">
           <div className="karta zaznam" data-od="2">
-            <div className="kh"><svg className="i"><use href="#file-text" /></svg><strong>Ponuka č. 2026-0418</strong><span className="st">Návrh</span></div>
+            <div className="kh"><span className="znak" aria-hidden="true">P</span><strong>Návrh dokladu</strong><span className="st ok">Vyčítané</span></div>
             <dl>
-              <div><dt>Bojler 120 l s montážou</dt><dd>690 €</dd></div>
-              <div><dt>Demontáž a odvoz starého</dt><dd>60 €</dd></div>
-              <div><dt>Spolu</dt><dd>750 €</dd></div>
+              <div><dt>Dodávateľ</dt><dd>Javorník Stav</dd></div>
+              <div><dt>Faktúra</dt><dd>FA-1842</dd></div>
+              <div><dt>Suma</dt><dd>2 400 €</dd></div>
             </dl>
           </div>
           <div className="karta kontrola" data-od="3">
             <span className="vykricnik">!</span>
-            <div><strong>Chýba objem bojlera</strong><p>Cena ráta so 120 l. Treba overiť u zákazníka.</p></div>
-            <b>?</b>
+            <div><strong>Suma nesedí s objednávkou</strong><p>OBJ-204: 2 200 € · faktúra: 2 400 €</p></div>
+            <b>+200 €</b>
           </div>
           <div className="karta smer" data-od="4">
-            <svg className="i"><use href="#bell-ringing" /></svg>
-            <div><strong>Úloha: zavolať zákazníkovi</strong><p>Technik Marek · do utorka 12:00</p></div>
-            <span className="pill">Pridelené</span>
+            <span className="znak" aria-hidden="true">#</span>
+            <div><strong>#schvalovanie-faktur</strong><p>Pred schválením skontrolovať rozdiel.</p></div>
+            <span className="pill">Pozastavené</span>
           </div>
         </div>
       </div>
@@ -39,32 +44,31 @@ function Scena({ id }: { id: string }) {
   }
   return (
     <div className="demo-scena">
-      <div className="doc" data-od="1">
-        <div className="zdroj"><svg className="i"><use href="#envelope-simple" /></svg><span>objednavky@vasafirma.sk</span></div>
-        <div className="papier">
-          <span className="k">Objednávka · Ut 14:05</span>
-          <strong>Stavebniny Kováč</strong>
-          <p>„Prosím 40 m² dlažby 60×60 a 10 vriec lepidla C2, dovoz v piatok.“</p>
+      <div className="doc-stlpec">
+        <div className="doc" data-od="1">
+          <div className="zdroj"><svg className="i"><use href="#envelope-simple" /></svg><span>Podpora / #1086</span><span className="pill jemna">Bežná</span></div>
+          <div className="papier sprava">
+            <span className="avatar" aria-hidden="true">JK</span>
+            <div><strong>Jana K.</strong><p>„Dobrý deň, kde je objednávka č. 1042? Od pondelka nemám žiadnu správu.“</p></div>
+          </div>
+        </div>
+        <div className="karta kontext" data-od="2">
+          <span className="znak" aria-hidden="true">S</span>
+          <div><strong>Objednávka č. 1042</strong><p>Odoslaná · sledovanie dostupné</p></div>
+          <span className="pill ok">✓ Nájdená</span>
         </div>
       </div>
       <div className="proc">
-        <div className="karta zaznam" data-od="2">
-          <div className="kh"><svg className="i"><use href="#table" /></svg><strong>Objednávka č. 1187</strong><span className="st">Zapísaná</span></div>
-          <dl>
-            <div><dt>Dlažba 60×60</dt><dd>40 m²</dd></div>
-            <div><dt>Lepidlo C2</dt><dd>10 ks</dd></div>
-            <div><dt>Dovoz</dt><dd>piatok</dd></div>
-          </dl>
-        </div>
-        <div className="karta kontrola" data-od="3">
-          <span className="vykricnik">!</span>
-          <div><strong>Dlažba: na sklade 32 m²</strong><p>Objednávka chce 40 m², chýba 8 m².</p></div>
-          <b>−8 m²</b>
+        <div className="karta zaznam" data-od="3">
+          <div className="kh"><span className="iskra" aria-hidden="true">✦</span><strong>Navrhnutá odpoveď</strong><span className="st ok">Na kontrolu</span></div>
+          <p className="odpoved">Dobrý deň, pani Jana, vaša objednávka je už na ceste. Zásielku môžete sledovať cez odkaz nižšie.</p>
+          <span className="odkaz">Sledovať zásielku ↗</span>
+          <p className="zdroje">Zdroj: objednávka č. 1042 · pravidlá dopravy</p>
         </div>
         <div className="karta smer" data-od="4">
-          <svg className="i"><use href="#kanban" /></svg>
-          <div><strong>Nákup: doobjednať 8 m²</strong><p>Potvrdenie zákazníkovi čaká na kontrolu.</p></div>
-          <span className="pill">Na kontrolu</span>
+          <span className="sipka" aria-hidden="true">↗</span>
+          <div><strong>Reklamácia č. 1087</strong><p>Odovzdaná človeku z podpory aj s celou konverzáciou.</p></div>
+          <span className="pill teplo">Rieši človek</span>
         </div>
       </div>
     </div>

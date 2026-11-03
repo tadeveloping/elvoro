@@ -215,3 +215,26 @@ canvas.pole { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100
 @media (max-width: 520px) {
   nav.links > .btn.small { display: none; }
 }
+
+/* Scény ukážok: faktúra a podpora */
+.doc-stlpec { display: grid; gap: 10px; align-content: start; }
+.papier-riadok { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+.papier-riadok.ciara { border-top: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); padding-top: 8px; }
+.papier .mono, .papier .priloha { font: 400 11px/1.4 var(--mono); opacity: .7; }
+.suma { font: 600 30px/1.1 var(--body); letter-spacing: -.02em; display: flex; align-items: baseline; gap: 8px; margin: 4px 0; }
+.suma span { font-size: 12px; font-weight: 400; opacity: .7; letter-spacing: 0; }
+.kh .st.ok, .pill.ok { color: #1F8A5B; }
+.pill.ok { background: rgba(31, 138, 91, .1); border-color: rgba(31, 138, 91, .3); }
+.pill.teplo { color: #B4532A; background: rgba(180, 83, 42, .1); border-color: rgba(180, 83, 42, .3); }
+.pill.jemna { margin-left: auto; font: 500 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: 5px 8px; border-radius: 6px; background: var(--paper); border: 1px solid var(--line); color: var(--muted); }
+.sprava { display: flex; gap: 12px; align-items: flex-start; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--paper); color: var(--ink); display: grid; place-items: center; font: 600 12px/1 var(--body); flex: none; }
+.kontext { display: flex; align-items: center; gap: 10px; }
+.kontext .pill { margin-left: auto; font: 500 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--line); white-space: nowrap; }
+.iskra { color: var(--gold-text); }
+.odpoved { font-size: 13px !important; color: var(--ink) !important; margin-top: 10px !important; line-height: 1.55 !important; }
+.odkaz { display: inline-block; margin-top: 6px; font-size: 12.5px; font-weight: 500; color: var(--gold-text); }
+.zdroje { font: 400 10.5px/1.4 var(--mono) !important; }
+.sipka { width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 12px; color: #B4532A; background: rgba(180, 83, 42, .12); }
+:root[data-theme="dark"] .kh .st.ok, :root[data-theme="dark"] .pill.ok { color: #4ADE80; }
+:root[data-theme="dark"] .pill.teplo, :root[data-theme="dark"] .sipka { color: #FB923C; }

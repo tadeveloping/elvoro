@@ -2,7 +2,7 @@ import { Effects } from "./Effects";
 import { Sprite } from "./Sprite";
 import { DEFINICIA, INSTAGRAM, PREVADZKOVATEL, REZERVACIA_URL, SITE_URL } from "./config";
 import { FAQ } from "./faq";
-import { UKAZKA_DOPYT, UKAZKA_OBJEDNAVKA } from "./obsah";
+import { UKAZKA_FAKTURA, UKAZKA_PODPORA } from "./obsah";
 import { Nastroje, Oblasti, Postup, Ukazka } from "./Sekcie";
 
 const jsonLd = {
@@ -115,13 +115,13 @@ export default function Home() {
             <div className="c-head">
               <span className="label">01 / Automatizácia v praxi</span>
               <h2>Z e-mailu rovno do systému. <em>Vy len potvrdíte.</em></h2>
-              <p>Jeden príklad za všetky: príde dopyt, ponuka sa pripraví sama a to, čo potrebuje človeka, dostane konkrétny človek.</p>
+              <p>Jeden príklad: príde faktúra, údaje sa pripravia samy a nezrovnalosť dostane správny človek.</p>
               <p className="pozn">Ukážky sú ilustračné, s vymyslenými údajmi. Vaše riešenie postavíme podľa vašich postupov a nástrojov.</p>
             </div>
-            <Ukazka u={UKAZKA_DOPYT} />
+            <Ukazka u={UKAZKA_FAKTURA} />
             <details className="viac">
-              <summary><span><span className="label">Ďalší príklad</span><strong>A čo objednávky a sklad?</strong></span></summary>
-              <Ukazka u={UKAZKA_OBJEDNAVKA} />
+              <summary><span><span className="label">Ďalší príklad</span><strong>A čo zákaznícka podpora?</strong></span></summary>
+              <Ukazka u={UKAZKA_PODPORA} />
             </details>
           </div>
         </section>
