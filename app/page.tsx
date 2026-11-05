@@ -449,7 +449,7 @@ export default function Home() {
       </main>
 
       <footer className="foot">
-        <div className="wrap"><span>ELVORO · AI po ľudsky</span><span>{PREVADZKOVATEL}</span><a href="/ochrana-osobnych-udajov">Ochrana osobných údajov</a></div>
+        <div className="wrap"><span>ELVORO · AI po ľudsky</span><span>{PREVADZKOVATEL}</span><a href="/aeo">AEO kontrola webu</a><a href="/ochrana-osobnych-udajov">Ochrana osobných údajov</a></div>
       </footer>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Effects />

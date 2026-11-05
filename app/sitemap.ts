@@ -5,6 +5,7 @@ import { SITE_URL } from "./config";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_URL}/`, lastModified: "2026-10-30" },
+    { url: `${SITE_URL}/aeo`, lastModified: "2026-11-05" },
     { url: `${SITE_URL}/ochrana-osobnych-udajov`, lastModified: "2026-10-29" },
   ];
 }
