@@ -2,6 +2,8 @@ import { Effects } from "./Effects";
 import { Sprite } from "./Sprite";
 import { DEFINICIA, INSTAGRAM, PREVADZKOVATEL, REZERVACIA_URL, SITE_URL } from "./config";
 import { FAQ } from "./faq";
+import { UKAZKA_FAKTURA, UKAZKA_PODPORA } from "./obsah";
+import { Nastroje, Oblasti, Postup, Ukazka } from "./Sekcie";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -35,18 +37,23 @@ export default function Home() {
       <Sprite />
       <header className="top">
         <div className="wrap">
-          <a className="logo" href="#uvod"><svg className="logo-svg" viewBox="-380 -675 5142 700" role="img" aria-label="Elvoro"><g transform="scale(1 -1)"><rect x="-370.0" y="312.5" width="4294.0" height="22.0" fill="#A6843F"/><path transform="translate(0.0 0)" d="M210 270V111H709V0H77V647H708V536H210V375H618V270Z" fill="#09090B"/><path transform="translate(749.0 0)" d="M210 647V111H640V0H77V647Z" fill="#09090B"/><path transform="translate(1416.0 0)" d="M306 0 20 647H167L412 63H366L610 647H755L472 0Z" fill="#09090B"/><path transform="translate(2171.0 0)" d="M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z" fill="#09090B"/><path transform="translate(3075.0 0)" d="M77 0V647H516Q591 647 646.5 626.5Q702 606 733.0 562.5Q764 519 764 451Q764 405 748.0 373.0Q732 341 703.5 321.0Q675 301 638.0 290.5Q601 280 559 277L545 285Q615 284 660.0 273.5Q705 263 727.5 235.5Q750 208 750 154V0H617V145Q617 182 604.0 202.5Q591 223 557.5 231.0Q524 239 461 239H210V0ZM210 343H516Q572 343 601.5 370.0Q631 397 631 443Q631 487 601.5 510.0Q572 533 516 533H210Z" fill="#09090B"/><path transform="translate(3881.0 0)" d="M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z" fill="#09090B"/><circle cx="4248.9" cy="386.8" r="36.4" fill="#09090B"/><circle cx="4415.0" cy="386.8" r="36.4" fill="#09090B"/><path d="M4238.3 256.2 Q4334.8 179.5 4431.3 256.2" stroke="#09090B" strokeWidth="45.0" fill="none" strokeLinecap="round"/></g></svg></a>
+          <a className="logo" href="#uvod"><svg className="logo-svg" viewBox="-380 -675 5142 700" role="img" aria-label="Elvoro"><g transform="scale(1 -1)"><rect className="logo-ciara" x="-370.0" y="312.5" width="4294.0" height="22.0"/><path transform="translate(0.0 0)" d="M210 270V111H709V0H77V647H708V536H210V375H618V270Z" fill="currentColor"/><path transform="translate(749.0 0)" d="M210 647V111H640V0H77V647Z" fill="currentColor"/><path transform="translate(1416.0 0)" d="M306 0 20 647H167L412 63H366L610 647H755L472 0Z" fill="currentColor"/><path transform="translate(2171.0 0)" d="M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z" fill="currentColor"/><path transform="translate(3075.0 0)" d="M77 0V647H516Q591 647 646.5 626.5Q702 606 733.0 562.5Q764 519 764 451Q764 405 748.0 373.0Q732 341 703.5 321.0Q675 301 638.0 290.5Q601 280 559 277L545 285Q615 284 660.0 273.5Q705 263 727.5 235.5Q750 208 750 154V0H617V145Q617 182 604.0 202.5Q591 223 557.5 231.0Q524 239 461 239H210V0ZM210 343H516Q572 343 601.5 370.0Q631 397 631 443Q631 487 601.5 510.0Q572 533 516 533H210Z" fill="currentColor"/><path transform="translate(3881.0 0)" d="M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z" fill="currentColor"/><circle cx="4248.9" cy="386.8" r="36.4" fill="currentColor"/><circle cx="4415.0" cy="386.8" r="36.4" fill="currentColor"/><path d="M4238.3 256.2 Q4334.8 179.5 4431.3 256.2" stroke="currentColor" strokeWidth="45.0" fill="none" strokeLinecap="round"/></g></svg></a>
           <nav className="links" aria-label="Hlavná navigácia">
-            <a className="nl" href="#problemy">Čo riešime</a>
-            <a className="nl" href="#riesenia">Príklady</a>
+            <a className="nl" href="#v-praxi">Ukážka</a>
+            <a className="nl" href="#staviame">Čo staviame</a>
             <a className="nl" href="#postup">Ako to prebieha</a>
+            <button className="tema" type="button" id="tema" aria-label="Prepnúť na tmavý režim" aria-pressed="false">
+              <svg className="mesiac" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.6 6.6 0 0 0 10.7 10.7z" /></svg>
+              <svg className="slnko" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" /></svg>
+            </button>
             <a className="btn small" href="#prihlaska">Zistiť, či sme pre seba</a>
           </nav>
         </div>
       </header>
 
       <main>
-        <section className="hero" id="uvod">
+        <section className="hero ma-pole" id="uvod">
+          <canvas className="pole" data-pole="uvod" aria-hidden="true"></canvas>
           <div className="wrap">
             <div className="hero-main">
               <p className="eyebrow" data-in>Chcete vo firme využiť AI, ale neviete ako?</p>
@@ -57,7 +64,7 @@ export default function Home() {
                 {REZERVACIA_URL ? (
                   <a className="btn ghost" href={REZERVACIA_URL} target="_blank" rel="noopener">Rezervovať 30 min hovor</a>
                 ) : (
-                  <a className="btn ghost" href="#riesenia">Pozrieť príklady</a>
+                  <a className="btn ghost" href="#v-praxi">Pozrieť ukážku</a>
                 )}
               </div>
               <p className="hero-def" data-in>{DEFINICIA}</p>
@@ -77,8 +84,8 @@ export default function Home() {
             <div className="answer-a">
               <p>Záleží na tom, čo vás brzdí najviac. Ak sa stráca čas na e-mailoch, ponukách a prepisovaní, začnite automatizáciou jedného procesu, napríklad od dopytu po faktúru. Ak máte dáta rozhádzané v piatich nástrojoch, najprv ich spojte do jedného firemného systému, až potom má AI z čoho čerpať. Kde presne začať u vás, zistíme na Mape firmy.</p>
               <ul className="answer-links">
-                <li><a href="#r3">Firemný systém</a></li>
-                <li><a href="#r1">Automatizácia</a></li>
+                <li><a href="#staviame">Firemný systém</a></li>
+                <li><a href="#v-praxi">Automatizácia</a></li>
                 <li><a href="#postup">Mapa firmy</a></li>
               </ul>
             </div>
@@ -93,128 +100,61 @@ export default function Home() {
               <p>Toto počúvame od malých firiem aj od veľkých tímov. Ku každej situácii máme riešenie.</p>
             </div>
             <ul className="pains">
-              <li className="pain"><q>Polovica dňa ide na e-maily, ponuky a prepisovanie do tabuliek.</q><p>Riešenie: <a href="#r1">automatizácia</a></p></li>
+              <li className="pain"><q>Polovica dňa ide na e-maily, ponuky a prepisovanie do tabuliek.</q><p>Riešenie: <a href="#v-praxi">automatizácia</a></p></li>
               <li className="pain"><q>Každé oddelenie má vlastný systém a nič spolu nehovorí. Report pre vedenie skladáme ručne.</q><p>Riešenie: prepojenie systémov a reporty, ktoré sa pripravia samy.</p></li>
-              <li className="pain"><q>Zákazník volal, nikto to nezdvihol a zákazku dostal niekto iný.</q><p>Riešenie: <a href="#r2">AI hlasový agent</a> (pripravujeme)</p></li>
+              <li className="pain"><q>Zákazník volal, nikto to nezdvihol a zákazku dostal niekto iný.</q><p>Riešenie: <a href="#staviame">AI hlasový agent</a> (pripravujeme)</p></li>
               <li className="pain"><q>Ľudia používajú AI na vlastnú päsť a nevieme, aké firemné dáta do nej posielajú.</q><p>Riešenie: jasné pravidlá a bezpečné AI nástroje pre celú firmu.</p></li>
-              <li className="pain"><q>Úlohy máme v jednej appke, čísla v Exceli a dohody v e-mailoch. Prehľad nemá nikto.</q><p>Riešenie: <a href="#r3">vlastný firemný systém</a></p></li>
+              <li className="pain"><q>Úlohy máme v jednej appke, čísla v Exceli a dohody v e-mailoch. Prehľad nemá nikto.</q><p>Riešenie: <a href="#staviame">vlastný firemný systém</a></p></li>
               <li className="pain"><q>Know-how je v hlavách pár ľudí. Nový človek sa zaúča mesiace.</q><p>Riešenie: firemný AI asistent, ktorý pozná vaše dokumenty a postupy.</p></li>
             </ul>
           </div>
         </section>
 
-        <section className="block" id="riesenia">
+        <section className="block" id="v-praxi">
           <div className="wrap">
-            <div className="sec-head">
-              <span className="label">Čo vieme postaviť</span>
-              <h2>Tri príklady. Každý pre iný typ firmy.</h2>
-              <p>Firmy v príkladoch sú vymyslené, postupy sú skutočné. Presne takéto riešenia staviame na mieru.</p>
+            <div className="c-head">
+              <span className="label">01 / Automatizácia v praxi</span>
+              <h2>Z e-mailu rovno do systému. <em>Vy len potvrdíte.</em></h2>
+              <p>Jeden príklad: príde faktúra, údaje sa pripravia samy a nezrovnalosť dostane správny človek.</p>
+              <p className="pozn">Ukážky sú ilustračné, s vymyslenými údajmi. Vaše riešenie postavíme podľa vašich postupov a nástrojov.</p>
             </div>
-
-            <article className="solution" id="r3">
-              <div className="sol-text">
-                <div className="kind"><span className="n">01</span><span className="label">Vlastný firemný systém</span></div>
-                <h3>Celá firma v jednom systéme. S AI, ktorá ju pozná.</h3>
-                <p>Objednávky, úlohy, sklad aj dokumenty na jednom mieste, postavené podľa toho, ako vaša firma funguje. AI v systéme pozná celú firmu, takže sa jej opýtate ako kolegu. Dáta ostávajú u vás a systém je váš, nie prenajatý.</p>
-                <p>Staviame po kúskoch: najprv to, čo vás najviac brzdí. Účtovníctvo ani e-mail neprerábame, prepojíme ich.</p>
-                <p className="for">Pre: <b>firmy, ktoré prerástli Excel a päť rôznych appiek</b></p>
-                <span className="example-tag">Príklad · obchodná firma</span>
-              </div>
-              <div className="stage">
-                <div className="stage-top"><span className="label">Predtým a teraz</span><button className="btn ghost small" type="button" id="mergeBtn">Spojiť do systému</button></div>
-                <div className="merge">
-                  <div className="scatter" id="scatter">
-                    <span className="chip"><svg className="i"><use href="#kanban"/></svg>Úlohy v ClickUpe</span>
-                    <span className="chip f"><svg className="i"><use href="#table"/></svg>objednavky_FINAL_v3.xlsx</span>
-                    <span className="chip"><svg className="i"><use href="#envelope-simple"/></svg>Dohody v e-mailoch</span>
-                    <span className="chip"><svg className="i"><use href="#whatsapp-logo"/></svg>Skupina „Sklad“</span>
-                    <span className="chip"><svg className="i"><use href="#notebook"/></svg>Zošit na predajni</span>
-                  </div>
-                  <span className="arrow" aria-hidden="true"><svg className="i"><use href="#arrow-right"/></svg></span>
-                  <div className="sys" id="sys">
-                    <div className="sys-bar"><span>Firemný systém</span><span>3 ľudia online</span></div>
-                    <div className="cols">
-                      <div className="col"><h4>Objednávky</h4><div className="row">Stavebniny Kováč <em>nová</em></div><div className="row">Hotel Lipa <em>expedovaná</em></div><div className="row">Ing. Šimko <em>uhradená</em></div></div>
-                      <div className="col"><h4>Úlohy</h4><div className="row">Objednať tovar <em>Jana</em></div><div className="row">Faktúra Lipa <em>Peter</em></div><div className="row">Inventúra <em>piatok</em></div></div>
-                      <div className="col"><h4>Sklad</h4><div className="row">Dlažba 60×60 <em>42 m²</em></div><div className="row">Lepidlo C2 <em>18 ks</em></div><div className="row">Silikón <em>dochádza</em></div></div>
-                    </div>
-                    <div className="sys-ask"><span className="who">Opýtať sa</span><p className="q">Čo je so zákazkou Hotel Lipa?</p><p className="a">Expedovaná v utorok. Faktúru pripravuje Peter, termín piatok.</p></div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article className="solution" id="r1">
-              <div className="sol-text">
-                <div className="kind"><span className="n">02</span><span className="label">Automatizácia</span></div>
-                <h3>Dopyt sa sám zmení na ponuku, zákazníka aj faktúru.</h3>
-                <p>Systém prečíta dopyt, pripraví ponuku podľa vášho cenníka, zapíše zákazníka a pripomenie, keď treba zavolať. Vy len skontrolujete a potvrdíte.</p>
-                <p className="for">Pre: <b>servisné, stavebné a remeselné firmy</b></p>
-                <span className="example-tag">Príklad · inštalatérska firma</span>
-              </div>
-              <div className="stage">
-                <div className="stage-top"><span className="label">Jeden dopyt, od e-mailu po faktúru</span><button className="btn ghost small" type="button" id="flowReplay">Prehrať znova</button></div>
-                <ol className="flow" id="flow">
-                  <li className="step on"><svg className="i"><use href="#envelope-simple"/></svg>Dopyt</li>
-                  <li className="step"><svg className="i"><use href="#file-text"/></svg>Ponuka</li>
-                  <li className="step"><svg className="i"><use href="#user-plus"/></svg>Zákazník</li>
-                  <li className="step"><svg className="i"><use href="#bell-ringing"/></svg>Pripomienka</li>
-                  <li className="step"><svg className="i"><use href="#receipt"/></svg>Faktúra</li>
-                </ol>
-                <div className="flow-track" aria-hidden="true"><div className="flow-bar" id="flowBar"></div></div>
-                <ul className="log" id="log">
-                  <li className="on"><time>Po 08:12</time><span>Prišiel e-mail: „Potrebujem vymeniť bojler, rodinný dom, Nitra.“</span></li>
-                  <li><time>Po 08:12</time><span>Pripravená ponuka č. 2026-0418 podľa cenníka firmy, čaká na vaše potvrdenie</span></li>
-                  <li><time>Po 08:13</time><span>Zákazník zapísaný, priradený technik Marek</span></li>
-                  <li><time>St 08:00</time><span>Ponuka je 2 dni bez odpovede: pripomienka zavolať zákazníkovi</span></li>
-                  <li><time>St 10:41</time><span>Zákazník potvrdil: faktúra vystavená a odoslaná</span></li>
-                </ul>
-              </div>
-            </article>
-
-            <article className="solution" id="r2">
-              <div className="sol-text">
-                <div className="kind"><span className="n">03</span><span className="label">AI hlasový agent</span><span className="soon">Pripravujeme</span></div>
-                <h3>Telefón zdvihne vždy. Aj keď vy práve nemôžete.</h3>
-                <p>Agent pozná vaše služby, ceny a voľné termíny. Hovorí prirodzene, povie, že je AI, vybaví objednávku a všetko zapíše. Kto chce hovoriť s človekom, toho prepojí.</p>
-                <p className="for">Pre: <b>salóny, autoservisy, reštaurácie a firmy s množstvom telefonátov</b></p>
-                <span className="example-tag">Príklad · autoservis</span>
-              </div>
-              <div className="stage">
-                <div className="call">
-                  <div>
-                    <div className="player">
-                      <button className="play" type="button" id="callPlay" aria-label="Prehrať ukážku hovoru"><svg className="i" id="callIcon"><use href="#play"/></svg></button>
-                      <div className="wave" id="wave" aria-hidden="true"></div>
-                      <span className="t" id="callTime">0:00 / 0:48</span>
-                    </div>
-                    <ol className="transcript" id="transcript">
-                      <li className="agent"><span className="who">Agent</span><span>Dobrý deň, tu je virtuálna asistentka Autoservisu Horák. Hovor nahrávame, aby sme mohli vybaviť vašu požiadavku. S čím vám pomôžem?</span></li>
-                      <li><span className="who">Zákazník</span><span>Potreboval by som prezuť pneumatiky. Máte tento týždeň voľno?</span></li>
-                      <li className="agent"><span className="who">Agent</span><span>Áno, vo štvrtok o 9:00 alebo o 14:30. Ide o osobné auto?</span></li>
-                      <li><span className="who">Zákazník</span><span>Áno. Dajte mi štvrtok o deviatej.</span></li>
-                      <li className="agent"><span className="who">Agent</span><span>Zapísané. Chcete u nás uskladniť letné pneumatiky?</span></li>
-                      <li><span className="who">Zákazník</span><span>To by bolo super.</span></li>
-                      <li className="agent"><span className="who">Agent</span><span>Dobre. Potvrdenie aj cenu vám pošlem v SMS. Pekný deň.</span></li>
-                    </ol>
-                  </div>
-                  <aside className="record" aria-label="Čo sa zapísalo do systému">
-                    <span className="label">Zapísané do systému</span>
-                    <dl>
-                      <div><dt>Termín</dt><dd>Štvrtok 9:00</dd></div>
-                      <div><dt>Služba</dt><dd>Prezutie, osobné auto</dd></div>
-                      <div><dt>Navyše</dt><dd>Uskladnenie pneumatík</dd></div>
-                    </dl>
-                    <span className="ok"><svg className="i"><use href="#check-circle"/></svg>SMS s potvrdením odoslaná</span>
-                  </aside>
-                </div>
-                <p className="note">Ilustračný prepis. Nahrávku so skutočným agentom doplníme.</p>
-              </div>
-            </article>
+            <Ukazka u={UKAZKA_FAKTURA} />
+            <details className="viac">
+              <summary><span><span className="label">Ďalší príklad</span><strong>A čo zákaznícka podpora?</strong></span></summary>
+              <Ukazka u={UKAZKA_PODPORA} />
+            </details>
           </div>
         </section>
 
-        <section className="block idea" id="napad">
+        <section className="block" id="staviame">
+          <div className="wrap">
+            <div className="c-head">
+              <span className="label">02 / Čo ešte staviame</span>
+              <h2>Začnite tým, čo vás brzdí <em>každý týždeň.</em></h2>
+              <p>Report, ktorý niekto skladá každý piatok. Dopyt, na ktorý sa zabudlo. Postup, ktorý vie len jeden človek. Vyberte oblasť a pozrite, čo vieme zobrať z plecí vášmu tímu.</p>
+            </div>
+            <Oblasti />
+          </div>
+        </section>
+
+        <section className="block" id="nastroje">
+          <div className="wrap">
+            <div className="c-head">
+              <span className="label">Nástroje, ktoré už máte</span>
+              <h2>Postavené okolo toho, <em>čo už používate.</em></h2>
+              <p>Nič neprerábame zbytočne. Najprv pozrieme, s čím vaši ľudia pracujú a čo sa dá prepojiť. Ak by sa oplatil nový nástroj, dozviete sa dôvod aj cenu skôr, než sa rozhodnete.</p>
+            </div>
+            <Nastroje />
+            <div className="pas-vyzva">
+              <p>Menej ručnej práce v celej firme.</p>
+              <a className="btn" href={REZERVACIA_URL || "#prihlaska"} {...(REZERVACIA_URL ? { target: "_blank", rel: "noopener" } : {})}>Rezervovať úvodný hovor <svg className="i"><use href="#arrow-right"/></svg></a>
+              <small>30 minút · zadarmo · nezáväzne</small>
+            </div>
+          </div>
+        </section>
+
+        <section className="block idea ma-pole" id="napad">
+          <canvas className="pole" data-pole="vyzva" aria-hidden="true"></canvas>
           <div className="wrap">
             <div>
               <h2>Máte vlastný nápad? Postavíme ho.</h2>
@@ -256,18 +196,21 @@ export default function Home() {
 
         <section className="block" id="postup">
           <div className="wrap">
-            <div className="sec-head">
-              <span className="label">Ako to prebieha</span>
-              <h2>Od prihlášky po fungujúce riešenie.</h2>
-              <p>Mapovanie začína už vo formulári. Na prvý hovor preto neprichádzame s otázkami, ale s návrhmi.</p>
+            <div className="c-head">
+              <span className="label">03 / Ako to prebieha</span>
+              <h2>Začnite jedným procesom. <em>Uvidíte, čo sa zmení.</em></h2>
+              <p>Mapovanie začína už v prihláške. Na prvý hovor preto neprichádzame s otázkami, ale s návrhmi.</p>
             </div>
-            <ol className="steps5">
-              <li><span className="sn">1</span><h3>Prihláška</h3><p>Opíšete, čo vaša firma robí a kde stráca čas. Zaberie to pár minút.</p></li>
-              <li><span className="sn">2</span><h3>Úvodný hovor</h3><p>30 minút, zadarmo. Prejdeme vašu prihlášku a povieme, či a kde vám vieme pomôcť.</p>{REZERVACIA_URL && <p><a className="step-link" href={REZERVACIA_URL} target="_blank" rel="noopener">Rezervovať termín →</a></p>}</li>
-              <li><span className="sn">3</span><h3>Mapa firmy</h3><p>Pol dňa až deň u vás. Dostanete prehľad, kde strácate čas, a 3 riešenia s cenou a poradím. 300 až 500 €, odpočíta sa zo zákazky.</p></li>
-              <li><span className="sn">4</span><h3>Prvý modul</h3><p>Postavíme riešenie pre jeden proces, zavedieme ho a zaučíme tím.</p></li>
-              <li><span className="sn">5</span><h3>Ostávame po ruke</h3><p>Mesačná správa: systém udržiavame, upravujeme a pridávame ďalšie časti, keď firma rastie.</p></li>
-            </ol>
+            <Postup rezervacia={REZERVACIA_URL} />
+            <details className="viac os-viac">
+              <summary><span><strong>Čo treba od vás a koľko to stojí?</strong></span></summary>
+              <dl>
+                <div><dt>Od vás</dt><dd>Človek, ktorý proces pozná, prístup k dohodnutým nástrojom a pár skutočných príkladov (e-maily, ponuky, tabuľky).</dd></div>
+                <div><dt>Od nás</dt><dd>Nastavenie, prepojenia, testy s vaším tímom, návod a zaučenie ľudí.</dd></div>
+                <div><dt>Pred rozhodnutím</dt><dd>Cenu stavby, mesačné náklady na nástroje a AI aj správu poznáte vopred. Mapa firmy stojí 300 až 500 € a odpočíta sa zo zákazky.</dd></div>
+                <div><dt>Systém a dáta</dt><dd>Patria vašej firme. Ak spoluprácu ukončíme, všetko ostáva u vás.</dd></div>
+              </dl>
+            </details>
           </div>
         </section>
 
