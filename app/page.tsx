@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Effects } from "./Effects";
 import { Sprite } from "./Sprite";
 import { DEFINICIA, INSTAGRAM, PREVADZKOVATEL, REZERVACIA_URL, SITE_URL } from "./config";
@@ -14,6 +15,7 @@ const jsonLd = {
       logo: `${SITE_URL}/elvoro-logo.png`,
       description: DEFINICIA,
       slogan: "AI po ľudsky",
+      founder: { "@type": "Person", name: "Tadeáš Sivák", jobTitle: "zakladateľ", image: `${SITE_URL}/tadeas-sivak.webp` },
       areaServed: { "@type": "Country", name: "Slovensko" },
       knowsLanguage: "sk",
       sameAs: [INSTAGRAM],
@@ -273,16 +275,22 @@ export default function Home() {
 
         <section className="block" id="kto">
           <div className="wrap about">
-            <figure className="portrait small">
-              <span className="ph">Fotka zakladateľa · doplniť</span>
+            <figure className="zakladatel">
+              <Image
+                src="/tadeas-sivak.webp"
+                alt="Tadeáš Sivák, zakladateľ Elvora"
+                width={1254}
+                height={1254}
+                sizes="(max-width: 860px) 70vw, 380px"
+              />
             </figure>
             <div className="about-text">
               <span className="label">Kto stojí za Elvorom</span>
               <h2>AI na rutinu. Hlava a kreativita zostávajú vaše.</h2>
-              <p>Elvoro založil [meno, doplniť]. Pre firmy stavia systémy, automatizácie a weby a pri každom projekte videl to isté: firmy AI chcú, ale nemajú čas ani ľudí, aby sa ju naučili samy. Preto Elvoro neučí kurzy. Riešenie postavíme a zavedieme za vás.</p>
+              <p>Elvoro založil Tadeáš Sivák. Pre firmy stavia systémy, automatizácie a weby a pri každom projekte videl to isté: firmy AI chcú, ale nemajú čas ani ľudí, aby sa ju naučili samy. Preto Elvoro neučí kurzy. Riešenie postavíme a zavedieme za vás.</p>
               <blockquote>
-                <p>„Citát zakladateľa v prvej osobe: prečo to robím a na čom mi záleží. Doplniť.“</p>
-                <footer>Meno Priezvisko, zakladateľ</footer>
+                <p>„AI automatizuje ekonomiku a jediný spôsob, ako zostať relevantný, je pomáhať jej v tom.“</p>
+                <footer>Tadeáš Sivák, zakladateľ</footer>
               </blockquote>
             </div>
           </div>
