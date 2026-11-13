@@ -1,5 +1,6 @@
 // Interakcie úvodnej stránky (prenesené z náhľadu nahlad/elvoro-nahlad.html).
 // Spúšťa ich komponent Effects raz po načítaní.
+import { initV4 } from "./efektyV4";
 export function initEffects(gsap) {
   if (window.__elvoroEffects) return;
   window.__elvoroEffects = true;
@@ -12,95 +13,8 @@ export function initEffects(gsap) {
     gsap.from("[data-in]", { y: 18, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.08, clearProps: "all" });
   }
 
-  // 1: tok dopytu
-  var steps = Array.prototype.slice.call(document.querySelectorAll("#flow .step"));
-  var logs = Array.prototype.slice.call(document.querySelectorAll("#log li"));
-  var bar = document.getElementById("flowBar");
-  var flowTimer = null, flowIdx = 0, flowVisible = false;
-  function setFlow(i) {
-    steps.forEach(function (s, k) { s.classList.toggle("on", k <= i); });
-    logs.forEach(function (l, k) { l.classList.toggle("on", k === i); });
-    var w = ((i + 1) / steps.length * 100) + "%";
-    if (hasGsap && !reduce) gsap.to(bar, { width: w, duration: 0.5, ease: "power2.inOut" });
-    else bar.style.width = w;
-  }
-  function tickFlow() {
-    flowIdx = (flowIdx + 1) % (steps.length + 1);
-    if (flowIdx === steps.length) { flowIdx = -1; flowTimer = setTimeout(tickFlow, 1400); return; }
-    setFlow(flowIdx);
-    flowTimer = setTimeout(tickFlow, flowIdx === steps.length - 1 ? 3200 : 1700);
-  }
-  function startFlow(fromStart) {
-    clearTimeout(flowTimer);
-    if (fromStart) { flowIdx = 0; setFlow(0); }
-    if (!reduce) flowTimer = setTimeout(tickFlow, 1700);
-  }
-  document.getElementById("flowReplay").addEventListener("click", function () { startFlow(true); });
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting && !flowVisible) { flowVisible = true; startFlow(true); }
-        else if (!e.isIntersecting && flowVisible) { flowVisible = false; clearTimeout(flowTimer); }
-      });
-    }, { threshold: 0.35 }).observe(document.getElementById("r1"));
-  }
-
-  // 2: ukážka hovoru (prepis sa zvýrazňuje, kým nie je skutočná nahrávka)
-  var wave = document.getElementById("wave");
-  var seed = [3,5,8,6,9,4,7,10,6,5,8,3,6,9,7,4,8,10,5,6,4,7,9,6,3,5,8,7,4,6,9,5,7,3,6,8,4,7,5,9,6,4];
-  seed.forEach(function (v) { var b = document.createElement("i"); b.style.height = (v * 9) + "%"; wave.appendChild(b); });
-  var bars = Array.prototype.slice.call(wave.children);
-  var lines = Array.prototype.slice.call(document.querySelectorAll("#transcript li"));
-  var playBtn = document.getElementById("callPlay"), icon = document.getElementById("callIcon"), timeEl = document.getElementById("callTime");
-  var durs = [9, 5, 6, 4, 6, 3, 6];
-  var total = durs.reduce(function (a, b) { return a + b; }, 0) * 1000;
-  var playing = false, startT = 0, elapsed = 0, raf = null;
-  function fmt(ms) { var s = Math.floor(ms / 1000); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
-  function render(ms) {
-    var acc = 0, idx = -1;
-    for (var k = 0; k < durs.length; k++) { if (ms >= acc) idx = k; acc += durs[k] * 1000; }
-    lines.forEach(function (l, k) { l.classList.toggle("on", playing && k === idx); });
-    var p = ms / total;
-    bars.forEach(function (b, k) { b.style.background = (k / bars.length) < p ? "var(--ink)" : "#CFCAC0"; });
-    timeEl.textContent = fmt(ms) + " / " + fmt(total);
-  }
-  function loop(now) {
-    elapsed = now - startT;
-    if (elapsed >= total) { stop(true); return; }
-    render(elapsed);
-    raf = requestAnimationFrame(loop);
-  }
-  function setIcon(name) { icon.innerHTML = '<use href="#' + name + '"/>'; }
-  function stop(reset) {
-    playing = false; cancelAnimationFrame(raf); setIcon("play");
-    playBtn.setAttribute("aria-label", "Prehrať ukážku hovoru");
-    if (reset) elapsed = 0;
-    render(elapsed);
-  }
-  playBtn.addEventListener("click", function () {
-    if (playing) { stop(false); return; }
-    playing = true; setIcon("pause"); playBtn.setAttribute("aria-label", "Pozastaviť ukážku hovoru");
-    startT = performance.now() - elapsed; raf = requestAnimationFrame(loop);
-  });
-  timeEl.textContent = "0:00 / " + fmt(total);
-
-  // 3: spojenie nástrojov do systému
-  var merged = false;
-  document.getElementById("mergeBtn").addEventListener("click", function () {
-    var chips = document.querySelectorAll("#scatter .chip");
-    var btn = this;
-    if (!hasGsap || reduce) return;
-    if (!merged) {
-      gsap.to(chips, { y: 24, opacity: 0.25, scale: 0.96, duration: 0.45, ease: "power2.inOut", stagger: 0.05 });
-      gsap.fromTo("#sys", { scale: 0.97 }, { scale: 1, duration: 0.5, ease: "power3.out", delay: 0.25 });
-      gsap.fromTo("#sys .row", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out", stagger: 0.03, delay: 0.3 });
-      btn.textContent = "Ukázať predtým";
-    } else {
-      gsap.to(chips, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "power3.out", stagger: 0.04 });
-      btn.textContent = "Spojiť do systému";
-    }
-    merged = !merged;
-  });
+  // Režim, pole znakov, ukážky a záložky
+  initV4(reduce);
 
   // Prihláška: kroky, vetvy podľa cesty, okamžité príležitosti
   var form = document.getElementById("wiz");
@@ -263,7 +177,15 @@ export function initEffects(gsap) {
     var ctx = cv.getContext("2d");
     var RAMP = " .:-=+*#%@";
     var NOISE = ".:-=+*#%@01/\\<>{}[]~^";
-    var INK = "#09090B", GOLD = "#A6843F";
+    var INK = "#09090B", GOLD = "#A6843F", SIVA = "#8A867E";
+    function farby() {
+      var cs = getComputedStyle(document.documentElement);
+      INK = cs.getPropertyValue("--ink").trim() || INK;
+      GOLD = cs.getPropertyValue("--gold").trim() || GOLD;
+      SIVA = cs.getPropertyValue("--muted").trim() || SIVA;
+    }
+    farby();
+    window.addEventListener("elvoro-tema", function () { farby(); if (ready && !raf) frame(performance.now()); });
     var P_O = new Path2D("M462 -13Q333 -13 241.5 27.5Q150 68 101.5 143.0Q53 218 53 323Q53 429 101.5 504.0Q150 579 241.5 619.5Q333 660 462 660Q592 660 683.0 619.5Q774 579 822.5 504.0Q871 429 871 323Q871 218 822.5 143.0Q774 68 683.0 27.5Q592 -13 462 -13ZM462 102Q542 102 602.5 126.0Q663 150 697.5 199.0Q732 248 732 323Q732 398 697.5 447.0Q663 496 602.5 520.5Q542 545 462 545Q383 545 321.0 520.5Q259 496 224.0 447.0Q189 398 189 323Q189 248 224.0 199.0Q259 150 321.0 126.0Q383 102 462 102Z");
     var OX = 3881, OCX = 3881 + 462, OCY = 323.5, OW = 818, OH = 673;
     var cols = 0, rows = 0, fs = 9, cw = 5.4, ch = 9.5, sq = 1, s = 1, cx = 0, cy = 0, dpr = 1;
@@ -344,7 +266,7 @@ export function initEffects(gsap) {
           var chr = charFor(a);
           if (chr === " ") continue;
           var live = a < 0.9 && Math.random() < 0.06;
-          ctx.fillStyle = live ? "#8A867E" : INK;
+          ctx.fillStyle = live ? SIVA : INK;
           ctx.fillText(live ? NOISE.charAt(Math.floor(Math.random() * NOISE.length)) : chr, c2 * cw, r * ch);
         }
       }
@@ -398,7 +320,7 @@ export function initEffects(gsap) {
         })(start);
       });
     }, { threshold: 1 });
-    document.querySelectorAll(".sec-head .label, .sol-text .kind .label, .about-text .label").forEach(function (el) { io.observe(el); });
+    document.querySelectorAll(".sec-head .label, .c-head .label, .about-text .label").forEach(function (el) { io.observe(el); });
   })();
 
   // Magnetické tlačidlá (len myš)
